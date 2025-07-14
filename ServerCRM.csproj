@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+	  
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
+  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="Genesyslab.Core">
+			<HintPath>DLL\Genesyslab.Core.dll</HintPath>
+			<Private>true</Private>
+		</Reference>
+		<Reference Include="Genesyslab.Platform.ApplicationBlocks.SipEndpoint">
+			<HintPath>DLL\Genesyslab.Platform.ApplicationBlocks.SipEndpoint.dll</HintPath>
+			<Private>true</Private>
+		</Reference>
+		<Reference Include="Genesyslab.Platform.Commons.Collections">
+			<HintPath>DLL\Genesyslab.Platform.Commons.Collections.dll</HintPath>
+			<Private>true</Private>
+		</Reference>
+		<Reference Include="Genesyslab.Platform.Commons.Connection">
+			<HintPath>DLL\Genesyslab.Platform.Commons.Connection.dll</HintPath>
+			<Private>true</Private>
+		</Reference>
+		<Reference Include="Genesyslab.Platform.Commons">
+			<HintPath>DLL\Genesyslab.Platform.Commons.dll</HintPath>
+			<Private>true</Private>
+		</Reference>
+		<Reference Include="Genesyslab.Platform.Commons.Protocols">
+			<HintPath>DLL\Genesyslab.Platform.Commons.Protocols.dll</HintPath>
+			<Private>true</Private>
+		</Reference>
+		<Reference Include="Genesyslab.Platform.Outbound.Protocols">
+			<HintPath>DLL\Genesyslab.Platform.Outbound.Protocols.dll</HintPath>
+			<Private>true</Private>
+		</Reference>
+		<Reference Include="Genesyslab.Platform.Voice.Protocols">
+			<HintPath>DLL\Genesyslab.Platform.Voice.Protocols.dll</HintPath>
+			<Private>true</Private>
+		</Reference>
+	</ItemGroup>
+
+</Project>

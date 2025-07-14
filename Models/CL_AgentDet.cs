@@ -1,0 +1,69 @@
+﻿namespace ServerCRM.Models
+{
+    public class CL_AgentDet
+    {
+        public string opoid { get; set; }
+        public string user_name { get; set; }
+        public string employee_id { get; set; }
+        public int? login_code { get; set; }
+        public string dn { get; set; }
+        public int? ID { get; set; }
+        public string Prefix { get; set; }
+        public int? ManualPrefix { get; set; }
+        public string ProcessName { get; set; }
+        public string TserverIP { get; set; }
+        public string TserverIP_OFFICE { get; set; }
+        public string TserverPort { get; set; }
+        public int? SipPort { get; set; }
+        public string DBQuery { get; set; }
+        public string DBSource { get; set; }
+        public string IframeSource { get; set; }
+        public string ConfChannel { get; set; }
+        public int? PhoneNoMaskIs { get; set; }
+        public int? DialAccess { get; set; }
+        public string SingleStepTransfer { get; set; }
+        public string ThreeStepTransfer { get; set; }
+        public bool? OTPRequired { get; set; }
+        public string APKVersion { get; set; }
+        public string APKURL { get; set; }
+        public string ProcessType { get; set; }
+        public int? IsConf { get; set; }
+        public string ClientUrl { get; set; }
+        public int? IsManual { get; set; }
+        public string ApiCallCut { get; set; }
+        public string CallLogApi { get; set; }
+        public string ConfApi { get; set; }
+        public string Location { get; set; }
+        public int? IsCalc { get; set; }
+        public string IframeSource_OFFICE { get; set; }
+        public string BreakTypes { get; set; }
+        public string KMS_OFFICE { get; set; }
+        public int? IsAutoWrap { get; set; }
+        public int? AutoWrapTime { get; set; }
+        public int? BridgeCall_Connect { get; set; }
+        public string pcbavl { get; set; }
+        public int? InfoPageRequired { get; set; }
+        public string AttachedInfofields { get; set; }
+        public string HoldMusic_Path { get; set; }
+        public string CRMVersion { get; set; }
+        public string BCP_InfoPage { get; set; }
+        public int? IsAutoGetnext { get; set; }
+        public int? AutogetnextTime { get; set; }
+        public int? IdleGetNextTimer { get; set; }
+        public int? AutoGetNextTimer { get; set; }
+        public int? IsRedial { get; set; }
+        public int? IsAutoDial { get; set; }
+        public int? IsNumber_Editable { get; set; }
+        public string IsTest_Required { get; set; }
+        public int? Ishome { get; set; }
+        public string BioLoginStatus { get; set; }
+        public string IsScreen_Record { get; set; }
+        public string NotReady { get; set; }
+        public string AsteriskIP { get; set; }
+        public int? AsteriskSipPort { get; set; }
+        public int? AHTDuration { get; set; }
+        public int? IsAsterisk { get; set; }
+        public int? Break_Limit { get; set; }
+        public int? Check_CRM_For_Bio { get; set; }
+    }
+}
