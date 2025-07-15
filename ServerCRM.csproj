@@ -44,5 +44,9 @@
 			<Private>true</Private>
 		</Reference>
 	</ItemGroup>
+	<ItemGroup>
+	  <None Include="wwwroot\Pages\CTI.html" />
+	  <None Include="wwwroot\Pages\LogIn.html" />
+	</ItemGroup>
 
 </Project>

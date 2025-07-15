@@ -39,6 +39,7 @@ D:\VisualStudio_2022\ServerCRM\ServerCRM\obj\Debug\net6.0\ServerCRM.csproj.CoreC
 D:\VisualStudio_2022\ServerCRM\ServerCRM\obj\Debug\net6.0\ServerCRM.MvcApplicationPartsAssemblyInfo.cache
 D:\VisualStudio_2022\ServerCRM\ServerCRM\obj\Debug\net6.0\ServerCRM.RazorAssemblyInfo.cache
 D:\VisualStudio_2022\ServerCRM\ServerCRM\obj\Debug\net6.0\ServerCRM.RazorAssemblyInfo.cs
+D:\VisualStudio_2022\ServerCRM\ServerCRM\obj\Debug\net6.0\ServerCRM.sourcelink.json
 D:\VisualStudio_2022\ServerCRM\ServerCRM\obj\Debug\net6.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 D:\VisualStudio_2022\ServerCRM\ServerCRM\obj\Debug\net6.0\scopedcss\bundle\ServerCRM.styles.css
 D:\VisualStudio_2022\ServerCRM\ServerCRM\obj\Debug\net6.0\scopedcss\projectbundle\ServerCRM.bundle.scp.css

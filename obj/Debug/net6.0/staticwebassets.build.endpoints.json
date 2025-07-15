@@ -3,6 +3,170 @@
   "ManifestType": "Build",
   "Endpoints": [
     {
+      "Route": "Pages/CTI.4pqi5xifqu.html",
+      "AssetFile": "Pages/CTI.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "9486"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"WH+8zg+jC27i+tRE1pFqQnr5Bf1gbyeHbBKQ6Dtn2xI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 15 Jul 2025 13:21:24 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4pqi5xifqu"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-WH+8zg+jC27i+tRE1pFqQnr5Bf1gbyeHbBKQ6Dtn2xI="
+        },
+        {
+          "Name": "label",
+          "Value": "Pages/CTI.html"
+        }
+      ]
+    },
+    {
+      "Route": "Pages/CTI.html",
+      "AssetFile": "Pages/CTI.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "9486"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"WH+8zg+jC27i+tRE1pFqQnr5Bf1gbyeHbBKQ6Dtn2xI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 15 Jul 2025 13:21:24 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-WH+8zg+jC27i+tRE1pFqQnr5Bf1gbyeHbBKQ6Dtn2xI="
+        }
+      ]
+    },
+    {
+      "Route": "Pages/LogIn.html",
+      "AssetFile": "Pages/LogIn.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1116"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"bgNYQF9l6Ztgr42wlr6t2NvKqPAoKld/z0b5uKr7HHU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 15 Jul 2025 10:36:54 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-bgNYQF9l6Ztgr42wlr6t2NvKqPAoKld/z0b5uKr7HHU="
+        }
+      ]
+    },
+    {
+      "Route": "Pages/LogIn.uobdrfv0c7.html",
+      "AssetFile": "Pages/LogIn.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1116"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"bgNYQF9l6Ztgr42wlr6t2NvKqPAoKld/z0b5uKr7HHU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 15 Jul 2025 10:36:54 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "uobdrfv0c7"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-bgNYQF9l6Ztgr42wlr6t2NvKqPAoKld/z0b5uKr7HHU="
+        },
+        {
+          "Name": "label",
+          "Value": "Pages/LogIn.html"
+        }
+      ]
+    },
+    {
       "Route": "ServerCRM.muryem098h.styles.css",
       "AssetFile": "ServerCRM.styles.css",
       "Selectors": [],
@@ -29,7 +193,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 14 Jul 2025 11:49:18 GMT"
+          "Value": "Tue, 15 Jul 2025 13:11:39 GMT"
         }
       ],
       "EndpointProperties": [
@@ -74,7 +238,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 14 Jul 2025 11:49:18 GMT"
+          "Value": "Tue, 15 Jul 2025 13:11:39 GMT"
         }
       ],
       "EndpointProperties": [

@@ -72,16 +72,23 @@
                     <button class="btn btn-dark btn-sm" type="submit">🕵️ Ready</button>
                 </form>
             </li>
+            <li class="nav-item">
+                <form method="post" asp-controller="CTI" asp-action="Transfer">
+
+                    <select class="form-select form-select-sm" name="Route" onchange="this.form.submit()">
+                        <option disabled selected>⏬ Select route</option>
+                        <option value="2000003">2000003</option>
+                    </select>
+                </form>
+            </li>
+
 
         </ul>
 
         <div class="ms-4 text-white fw-bold d-flex flex-column align-items-end">
             <div>Status: <span id="status" class="badge bg-light text-dark">...</span></div>
            
-                <div class="alert alert-info mt-2 mb-0 py-1 px-2 text-dark text-center" style="font-size: 0.875rem;">
-                    ✅ Agent login successful.
-                </div>
-            
+              
         </div>
     </div>
 </nav>

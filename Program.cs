@@ -31,7 +31,8 @@ app.UseRouting();
 
 app.UseSession();
 app.UseAuthorization();
-
+app.UseStaticFiles();
+app.UseDefaultFiles();
 app.MapHub<CtiHub>("/ctihub");
 
 app.MapControllerRoute(

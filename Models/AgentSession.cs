@@ -12,6 +12,9 @@ namespace ServerCRM.Models
         public ConnectionId IVRConnID { get; set; }
 
         public string ConforenceNumber { get; set; }
-
+        public bool isOnCall { get; set; }
+        public bool isConforence { get; set; }
+        public string CurrentStatus { get; set; }
+        public object LockObj { get; } = new object();
     }
 }

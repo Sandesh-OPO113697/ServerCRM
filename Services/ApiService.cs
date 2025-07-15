@@ -29,7 +29,11 @@ namespace ServerCRM.Services
             var result = await response.Content.ReadAsStringAsync();
             var wrappedJson = JsonSerializer.Deserialize<string>(result);
             var agents = JsonSerializer.Deserialize<List<CL_AgentDet>>(wrappedJson);
+            
             return agents?.FirstOrDefault();
         }
+
+       
+
     }
 }
