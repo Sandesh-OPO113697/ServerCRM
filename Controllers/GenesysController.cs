@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ServerCRM.Models;
 using ServerCRM.Models.CTI;
 using ServerCRM.Models.LogIn;
 using ServerCRM.Services;
@@ -23,17 +24,17 @@ namespace ServerCRM.Controllers
             if (string.IsNullOrEmpty(request.empCode))
                 return BadRequest("empCode is required");
 
-            var agent = await _apiService.GetAgentDetailsAsync(request.empCode);
+            CL_AgentDet agent = await _apiService.GetAgentDetailsAsync(request.empCode);
 
             if (agent == null)
                 return NotFound("Agent not found");
 
             HttpContext.Session.SetString("login_code", agent.login_code.ToString());
             HttpContext.Session.SetString("dn", agent.dn ?? "");
-            HttpContext.Session.SetString("Prefix", agent.Prefix ?? "");
+            HttpContext.Session.SetString("Prefix", "8530,9120" ?? "");
 
             string error;
-            bool success = CTIConnectionManager.LoginAgent(
+            bool success = CTIConnectionManager.LoginAgent(agent ,
                 agent.login_code.ToString(), agent.dn, agent.TserverIP_OFFICE, agent.TserverPort, out error
             );
 
@@ -46,6 +47,7 @@ namespace ServerCRM.Controllers
         [HttpPost("makecall")]
         public IActionResult MakeCall([FromBody] CallRequest request)
         {
+            
             string dn = HttpContext.Session.GetString("dn");
             string login_code = HttpContext.Session.GetString("login_code");
             string rawPrefix = HttpContext.Session.GetString("Prefix");

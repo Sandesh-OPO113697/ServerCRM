@@ -1,4 +1,8 @@
-﻿namespace ServerCRM.Services
+﻿using Microsoft.AspNetCore.SignalR;
+using ServerCRM.Models;
+using System.Collections.Concurrent;
+
+namespace ServerCRM.Services
 {
     public static class AgentStatusMapper
     {
@@ -34,10 +38,15 @@
             [27] = "Vat BREAK"
         };
 
-        public static string GetStatusName(int statusId)
+        public static void UpdateAgentStatus(int statusId, AgentSession session, IHubContext<CtiHub> hubContext)
         {
-            return StatusMap.TryGetValue(statusId, out var name) ? name : "Unknown";
+            session.CurrentStatusID = statusId;
+            if (hubContext != null && StatusMap.TryGetValue(statusId, out var statusLabel))
+            {
+                 hubContext.Clients.Group(session.AgentId).SendAsync("ReceiveStatus", statusLabel);
+            }
         }
     }
+
 
 }
