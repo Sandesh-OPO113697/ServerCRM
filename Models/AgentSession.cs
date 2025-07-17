@@ -15,10 +15,11 @@ namespace ServerCRM.Models
         public string? CampaignPhone { get; set; }
         public string? CampaignMode { get; set; }
         public string? HoldMusic_Path { get; set; }
-        
+        public bool? isbreak { get; set; }
         public string? MasterPhone { get; set; }
         public  double MyCode = 0;
         public bool isOnCall { get; set; }
+        public bool isMarge { get; set; }
         public bool isConforence { get; set; }
         public int CurrentStatusID { get; set; }
         public  string? DialAccess { get; set; }

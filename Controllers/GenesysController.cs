@@ -31,7 +31,7 @@ namespace ServerCRM.Controllers
 
             HttpContext.Session.SetString("login_code", agent.login_code.ToString());
             HttpContext.Session.SetString("dn", agent.dn ?? "");
-            HttpContext.Session.SetString("Prefix", "8530,9120" ?? "");
+            HttpContext.Session.SetString("Prefix", agent.Prefix ?? "");
 
             string error;
             bool success = CTIConnectionManager.LoginAgent(agent ,
@@ -50,15 +50,11 @@ namespace ServerCRM.Controllers
             
             string dn = HttpContext.Session.GetString("dn");
             string login_code = HttpContext.Session.GetString("login_code");
-            string rawPrefix = HttpContext.Session.GetString("Prefix");
+            string Prefix = HttpContext.Session.GetString("Prefix");
 
-            if (string.IsNullOrWhiteSpace(request.Phone) || string.IsNullOrWhiteSpace(dn) || string.IsNullOrWhiteSpace(login_code) || string.IsNullOrWhiteSpace(rawPrefix))
-            {
-                return BadRequest("Missing required parameters");
-            }
+       
 
-            string prefix = rawPrefix.TrimEnd('\\').Split(',')[0].Trim();
-            CTIConnectionManager.MakeCall(dn, login_code, prefix + request.Phone);
+            CTIConnectionManager.MakeCall(dn, login_code, Prefix + request.Phone);
             return Ok("Call initiated");
         }
 
@@ -122,8 +118,8 @@ namespace ServerCRM.Controllers
         public IActionResult Conference([FromBody] ConferenceRequest request)
         {
             string login_code = HttpContext.Session.GetString("login_code");
-            string rawPrefix = HttpContext.Session.GetString("Prefix");
-            string prefix = rawPrefix?.TrimEnd('\\').Split(',')[0].Trim() ?? "";
+            string prefix = HttpContext.Session.GetString("Prefix");
+           
             CTIConnectionManager.Conference(login_code, prefix + request.Number);
             return Ok("Conference started");
         }

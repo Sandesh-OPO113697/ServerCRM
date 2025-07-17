@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "C7pkdIMrEznFxpsuqVooGU5wvigC3t1H53BP7bAoFqw=",
+  "Hash": "z+m/+dh9bEokepjHSjmoTlS83sljhZxm9BxtM/BtIwE=",
   "Source": "ServerCRM",
   "BasePath": "_content/ServerCRM",
   "Mode": "Default",
@@ -1354,8 +1354,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "4pqi5xifqu",
-      "Integrity": "WH+8zg+jC27i+tRE1pFqQnr5Bf1gbyeHbBKQ6Dtn2xI=",
+      "Fingerprint": "1lns1cen7p",
+      "Integrity": "m6jMN8s1C8mKeJFMVxUm2BaOy1SNkQI3qyoIioRwBfc=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Pages\\CTI.html"
@@ -6386,7 +6386,7 @@
       ]
     },
     {
-      "Route": "Pages/CTI.4pqi5xifqu.html",
+      "Route": "Pages/CTI.1lns1cen7p.html",
       "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\CTI.html",
       "Selectors": [],
       "ResponseHeaders": [
@@ -6396,7 +6396,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "9486"
+          "Value": "15248"
         },
         {
           "Name": "Content-Type",
@@ -6404,11 +6404,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"WH+8zg+jC27i+tRE1pFqQnr5Bf1gbyeHbBKQ6Dtn2xI=\""
+          "Value": "\"m6jMN8s1C8mKeJFMVxUm2BaOy1SNkQI3qyoIioRwBfc=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Jul 2025 13:21:24 GMT"
+          "Value": "Thu, 17 Jul 2025 11:41:20 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6418,7 +6418,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "4pqi5xifqu"
+          "Value": "1lns1cen7p"
         },
         {
           "Name": "label",
@@ -6426,7 +6426,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-WH+8zg+jC27i+tRE1pFqQnr5Bf1gbyeHbBKQ6Dtn2xI="
+          "Value": "sha256-m6jMN8s1C8mKeJFMVxUm2BaOy1SNkQI3qyoIioRwBfc="
         }
       ]
     },
@@ -6441,7 +6441,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "9486"
+          "Value": "15248"
         },
         {
           "Name": "Content-Type",
@@ -6449,11 +6449,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"WH+8zg+jC27i+tRE1pFqQnr5Bf1gbyeHbBKQ6Dtn2xI=\""
+          "Value": "\"m6jMN8s1C8mKeJFMVxUm2BaOy1SNkQI3qyoIioRwBfc=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Jul 2025 13:21:24 GMT"
+          "Value": "Thu, 17 Jul 2025 11:41:20 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6463,7 +6463,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-WH+8zg+jC27i+tRE1pFqQnr5Bf1gbyeHbBKQ6Dtn2xI="
+          "Value": "sha256-m6jMN8s1C8mKeJFMVxUm2BaOy1SNkQI3qyoIioRwBfc="
         }
       ]
     },
@@ -6572,7 +6572,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 16 Jul 2025 12:26:45 GMT"
+          "Value": "Thu, 17 Jul 2025 10:47:32 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6609,7 +6609,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 16 Jul 2025 12:26:45 GMT"
+          "Value": "Thu, 17 Jul 2025 10:47:32 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6654,7 +6654,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 16 Jul 2025 12:26:45 GMT"
+          "Value": "Thu, 17 Jul 2025 10:47:32 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6699,7 +6699,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 16 Jul 2025 12:26:45 GMT"
+          "Value": "Thu, 17 Jul 2025 10:47:32 GMT"
         },
         {
           "Name": "Cache-Control",

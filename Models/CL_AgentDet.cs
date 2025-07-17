@@ -30,7 +30,7 @@
         public int? IsConf { get; set; }
         public string ClientUrl { get; set; }
         public int? IsManual { get; set; }
-        public string ApiCallCut { get; set; }
+        public int? ApiCallCut { get; set; }
         public string CallLogApi { get; set; }
         public string ConfApi { get; set; }
         public string Location { get; set; }

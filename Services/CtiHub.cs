@@ -21,7 +21,7 @@ namespace ServerCRM.Services
 
         public async Task SendStatusAttachData(string message)
         {
-            await Clients.All.SendAsync("ReceiveStatus", message);
+            await Clients.All.SendAsync("ReceiveAttachedData", message);
         }
     }
 }

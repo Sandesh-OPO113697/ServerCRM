@@ -16,35 +16,35 @@
 
                 <li class="nav-item d-flex align-items-center">
                     <input id="phoneInput" type="text" class="form-control form-control-sm" placeholder="Enter mobile number" />
-                    <button class="btn btn-success btn-sm" onclick="makeCall()">📞 Call</button>
+                    <button class="btn btn-success btn-sm" id="call_button" onclick="makeCall()">📞 Call</button>
                 </li>
 
                 <li class="nav-item">
-                    <button class="btn btn-warning btn-sm" onclick="callAPI('/api/Genesys/hold')">⏸ Hold</button>
+                    <button class="btn btn-warning btn-sm" id="hold_button" onclick="callAPI('/api/Genesys/hold')">⏸ Hold</button>
                 </li>
 
                 <li class="nav-item">
-                    <button class="btn btn-info btn-sm" onclick="callAPI('/api/Genesys/unhold')">▶ Unhold</button>
+                    <button class="btn btn-info btn-sm"  id="unhold_button" onclick="callAPI('/api/Genesys/unhold')">▶ Unhold</button>
                 </li>
 
                 <li class="nav-item">
-                    <button class="btn btn-secondary btn-sm" onclick="openConferencePrompt()">👥 Conference</button>
+                    <button class="btn btn-secondary btn-sm"  id="conference_button" onclick="openConferencePrompt()">👥 Conference</button>
                 </li>
 
                 <li class="nav-item">
-                    <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/merge')">Merge</button>
+                    <button class="btn btn-dark btn-sm" id="merge_button"  onclick="callAPI('/api/Genesys/merge')">Merge</button>
                 </li>
 
                 <li class="nav-item">
-                    <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/party')">Party Delete</button>
+                    <button class="btn btn-dark btn-sm"id="party_button"  onclick="callAPI('/api/Genesys/party')">Party Delete</button>
                 </li>
 
                 <li class="nav-item">
-                    <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/disconnect')">❌ Disconnect</button>
+                    <button class="btn btn-dark btn-sm" id="dissconnect_button" onclick="callAPI('/api/Genesys/disconnect')">❌ Disconnect</button>
                 </li>
 
                 <li class="nav-item">
-                    <select class="form-select form-select-sm" onchange="sendBreak(this.value)">
+                    <select class="form-select form-select-sm" id="break_button" onchange="sendBreak(this.value)">
                         <option disabled selected>⏬ Select Reason</option>
                         <option value="5">🍵 Tea</option>
                         <option value="6">🍽 Lunch</option>
@@ -56,11 +56,11 @@
                 </li>
 
                 <li class="nav-item">
-                    <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/ready')">🕵️ Ready</button>
+                    <button class="btn btn-dark btn-sm" id="ready_button" onclick="callAPI('/api/Genesys/ready')">🕵️ Ready</button>
                 </li>
 
                 <li class="nav-item">
-                    <select class="form-select form-select-sm" onchange="sendTransfer(this.value)">
+                    <select class="form-select form-select-sm" id="transfer_button" onchange="sendTransfer(this.value)">
                         <option disabled selected>⏬ Select route</option>
                         <option value="2000003">2000003</option>
                     </select>
@@ -91,7 +91,7 @@
         let seconds = 0;
 
         function startTimer() {
-            stopTimer(); // Reset if already running
+            stopTimer();
             seconds = 0;
             timerInterval = setInterval(() => {
                 seconds++;
@@ -111,16 +111,144 @@
             return `${minutes}:${seconds}`;
         }
     </script>
-
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const agentId = urlParams.get('empCode');
+
+            if (!agentId) {
+                console.error("Agent ID (empCode) is missing in the URL.");
+                return;
+            }
+
+            let timerInterval = null;
+
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("/ctihub")
+                .withAutomaticReconnect()
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
+
+            connection.onreconnecting((error) => {
+                console.warn("🔌 SignalR reconnecting...", error);
+                const statusElem = document.getElementById("status");
+                if (statusElem) statusElem.innerText = "Reconnecting...";
+            });
+
+            connection.onreconnected((connectionId) => {
+                console.info("✅ SignalR reconnected:", connectionId);
+                connection.invoke("JoinGroup", agentId)
+                    .then(() => console.log("Rejoined group after reconnect"))
+                    .catch(err => console.error("Error rejoining group:", err));
+            });
+
+            connection.onclose((error) => {
+                console.error("❌ SignalR connection closed permanently:", error);
+                const statusElem = document.getElementById("status");
+                if (statusElem) statusElem.innerText = "Disconnected. Please refresh the page.";
+            });
+
+            connection.on("ReceiveStatus", function (message) {
+                console.log("📥 Status message received:", message);
+                const statusElem = document.getElementById("status");
+                if (statusElem) statusElem.innerText = message;
+
+                const msg = message.toLowerCase();
+
+                if (
+                    msg.includes("talking") ||
+                    msg.includes("established") ||
+                    msg.includes("outbound call established") ||
+                    msg.includes("inbound call established")
+                ) {
+                    startTimer();
+                } else if (
+                    msg.includes("call ended") ||
+                    msg.includes("disconnected") ||
+                    msg.includes("hangup") ||
+                    msg.includes("already on call") ||
+                    msg.includes("abandoned") ||
+                    msg.includes("out of service") ||
+                    msg.includes("destination is busy")
+                ) {
+                    stopTimer();
+                }
+            });
+
+            connection.on("ReceiveAttachedData", function (data) {
+                console.log("📥 Attached Data received:", data);
+                const container = document.getElementById("attachedData");
+                container.innerHTML = "";
+
+                if (data && typeof data === "object") {
+                    for (const key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            const row = document.createElement("div");
+                            row.innerHTML = `<strong>${key}:</strong> ${data[key]}`;
+                            container.appendChild(row);
+                        }
+                    }
+                }
+            });
+
+            async function startConnection() {
+                try {
+                    await connection.start();
+                    console.log("✅ SignalR connected");
+                    await connection.invoke("JoinGroup", agentId);
+                } catch (err) {
+                    console.error("SignalR connection error:", err);
+                    setTimeout(startConnection, 5000);
+                }
+            }
+
+            startConnection();
+
+            function startTimer() {
+                if (!timerInterval) {
+                    console.log("🕒 Starting call timer...");
+                    timerInterval = setInterval(() => {
+                    }, 1000);
+                }
+            }
+
+            function stopTimer() {
+                if (timerInterval) {
+                    console.log("⏹️ Stopping call timer...");
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
+            }
+        });
+    </script>
+
+    <!--<script>
         document.addEventListener("DOMContentLoaded", function () {
             const urlParams = new URLSearchParams(window.location.search);
             const agentId = urlParams.get('empCode');
 
             const connection = new signalR.HubConnectionBuilder()
                 .withUrl("/ctihub")
+                .withAutomaticReconnect()
+                .configureLogging(signalR.LogLevel.Information)
                 .build();
+            connection.onreconnecting((error) => {
+                console.warn("🔌 SignalR reconnecting...", error);
+                const statusElem = document.getElementById("status");
+                if (statusElem) statusElem.innerText = "Reconnecting...";
+            });
 
+            connection.onreconnected((connectionId) => {
+                console.info("✅ SignalR reconnected:", connectionId);
+                connection.invoke("JoinGroup", agentId)
+                    .then(() => console.log("Rejoined group after reconnect"))
+                    .catch(err => console.error("Error rejoining group:", err));
+            });
+            connection.onclose((error) => {
+                console.error("❌ SignalR connection closed permanently:", error);
+                const statusElem = document.getElementById("status");
+                if (statusElem) statusElem.innerText = "Disconnected. Please refresh the page.";
+            });
             connection.on("ReceiveStatus", function (message) {
                 console.log("Status message received:", message);
                 const statusElem = document.getElementById("status");
@@ -150,6 +278,10 @@
                 }
             });
 
+
+
+
+
             connection.start()
                 .then(() => connection.invoke("JoinGroup", agentId))
                 .catch(err => console.error("SignalR Error:", err));
@@ -178,7 +310,7 @@
 
 
 
-    </script>
+    </script>-->
     <script>
 
 

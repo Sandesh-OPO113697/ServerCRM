@@ -12,6 +12,11 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+builder.Services.AddSignalR(options =>
+{
+    options.KeepAliveInterval = TimeSpan.FromSeconds(10); 
+    options.ClientTimeoutInterval = TimeSpan.FromSeconds(30); 
+});
 builder.Services.AddSignalR();
 
 builder.Services.AddHttpContextAccessor();
