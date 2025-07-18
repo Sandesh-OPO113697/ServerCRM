@@ -14,9 +14,14 @@ namespace ServerCRM.Models
         public string? ConforenceNumber { get; set; }
         public string? CampaignPhone { get; set; }
         public string? CampaignMode { get; set; }
+        public string? CampaignName { get; set; }
+        public int? ocsApplicationID { get; set; }
+        public  int requestID = 1;
+
         public string? HoldMusic_Path { get; set; }
         public bool? isbreak { get; set; }
         public string? MasterPhone { get; set; }
+        public string? Prifix { get; set; }
         public  double MyCode = 0;
         public bool isOnCall { get; set; }
         public bool isMarge { get; set; }

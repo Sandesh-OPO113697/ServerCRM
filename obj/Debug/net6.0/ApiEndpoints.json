@@ -59,6 +59,16 @@
   },
   {
     "ContainingType": "ServerCRM.Controllers.GenesysController",
+    "Method": "GetNext",
+    "RelativePath": "api/Genesys/GetNext",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServerCRM.Controllers.GenesysController",
     "Method": "Hold",
     "RelativePath": "api/Genesys/hold",
     "HttpMethod": "POST",

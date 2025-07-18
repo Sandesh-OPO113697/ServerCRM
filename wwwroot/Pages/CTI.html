@@ -24,19 +24,19 @@
                 </li>
 
                 <li class="nav-item">
-                    <button class="btn btn-info btn-sm"  id="unhold_button" onclick="callAPI('/api/Genesys/unhold')">▶ Unhold</button>
+                    <button class="btn btn-info btn-sm" id="unhold_button" onclick="callAPI('/api/Genesys/unhold')">▶ Unhold</button>
                 </li>
 
                 <li class="nav-item">
-                    <button class="btn btn-secondary btn-sm"  id="conference_button" onclick="openConferencePrompt()">👥 Conference</button>
+                    <button class="btn btn-secondary btn-sm" id="conference_button" onclick="openConferencePrompt()">👥 Conference</button>
                 </li>
 
                 <li class="nav-item">
-                    <button class="btn btn-dark btn-sm" id="merge_button"  onclick="callAPI('/api/Genesys/merge')">Merge</button>
+                    <button class="btn btn-dark btn-sm" id="merge_button" onclick="callAPI('/api/Genesys/merge')">Merge</button>
                 </li>
 
                 <li class="nav-item">
-                    <button class="btn btn-dark btn-sm"id="party_button"  onclick="callAPI('/api/Genesys/party')">Party Delete</button>
+                    <button class="btn btn-dark btn-sm" id="party_button" onclick="callAPI('/api/Genesys/party')">Party Delete</button>
                 </li>
 
                 <li class="nav-item">
@@ -58,11 +58,14 @@
                 <li class="nav-item">
                     <button class="btn btn-dark btn-sm" id="ready_button" onclick="callAPI('/api/Genesys/ready')">🕵️ Ready</button>
                 </li>
+                <li class="nav-item">
+                    <button class="btn btn-dark btn-sm" id="ready_button" onclick="callAPI('/api/Genesys/GetNext')">🕵️ GetNext</button>
+                </li>
 
                 <li class="nav-item">
                     <select class="form-select form-select-sm" id="transfer_button" onchange="sendTransfer(this.value)">
                         <option disabled selected>⏬ Select route</option>
-                        <option value="2000003">2000003</option>
+                        <option value="3000002">3000002</option>
                     </select>
                 </li>
 
@@ -132,7 +135,7 @@
             connection.onreconnecting((error) => {
                 console.warn("🔌 SignalR reconnecting...", error);
                 const statusElem = document.getElementById("status");
-                if (statusElem) statusElem.innerText = "Reconnecting...";
+                
             });
 
             connection.onreconnected((connectionId) => {
@@ -222,100 +225,8 @@
         });
     </script>
 
-    <!--<script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const agentId = urlParams.get('empCode');
-
-            const connection = new signalR.HubConnectionBuilder()
-                .withUrl("/ctihub")
-                .withAutomaticReconnect()
-                .configureLogging(signalR.LogLevel.Information)
-                .build();
-            connection.onreconnecting((error) => {
-                console.warn("🔌 SignalR reconnecting...", error);
-                const statusElem = document.getElementById("status");
-                if (statusElem) statusElem.innerText = "Reconnecting...";
-            });
-
-            connection.onreconnected((connectionId) => {
-                console.info("✅ SignalR reconnected:", connectionId);
-                connection.invoke("JoinGroup", agentId)
-                    .then(() => console.log("Rejoined group after reconnect"))
-                    .catch(err => console.error("Error rejoining group:", err));
-            });
-            connection.onclose((error) => {
-                console.error("❌ SignalR connection closed permanently:", error);
-                const statusElem = document.getElementById("status");
-                if (statusElem) statusElem.innerText = "Disconnected. Please refresh the page.";
-            });
-            connection.on("ReceiveStatus", function (message) {
-                console.log("Status message received:", message);
-                const statusElem = document.getElementById("status");
-                if (statusElem) statusElem.innerText = message;
-
-                const messageLower = message.toLowerCase();
-
-                if (
-                    messageLower.includes("talking") ||
-                    messageLower.includes("established") ||
-                    messageLower.includes("outbound call established") ||
-                    messageLower.includes("inbound call established")
-
-                ) {
-                    startTimer();
-                }
-                else if (
-                    messageLower.includes("call ended") ||
-                    messageLower.includes("disconnected") ||
-                    messageLower.includes("hangup") ||
-                    messageLower.includes("already on call") ||
-                    messageLower.includes("abandoned") ||
-                    messageLower.includes("out of service") ||
-                    messageLower.includes("destination is busy")
-                ) {
-                    stopTimer();
-                }
-            });
-
-
-
-
-
-            connection.start()
-                .then(() => connection.invoke("JoinGroup", agentId))
-                .catch(err => console.error("SignalR Error:", err));
-
-
-            connection.on("ReceiveAttachedData", function (data) {
-                console.log("Attached Data received:", data);
-
-                const container = document.getElementById("attachedData");
-                container.innerHTML = ""; // Clear previous data
-
-                if (data && typeof data === "object") {
-                    for (const key in data) {
-                        if (data.hasOwnProperty(key)) {
-                            const row = document.createElement("div");
-                            row.innerHTML = `<strong>${key}:</strong> ${data[key]}`;
-                            container.appendChild(row);
-                        }
-                    }
-                }
-            });
-
-        });
-
-
-
-
-
-    </script>-->
+   
     <script>
-
-
-
-
         function callAPI(url, method = 'POST', data = {}) {
             fetch(url, {
                 method,

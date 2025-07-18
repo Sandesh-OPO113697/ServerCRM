@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "z+m/+dh9bEokepjHSjmoTlS83sljhZxm9BxtM/BtIwE=",
+  "Hash": "1k4ws4cc5r0oxGL0mcbVqoySVquBzh7s2bRyPfaFsQY=",
   "Source": "ServerCRM",
   "BasePath": "_content/ServerCRM",
   "Mode": "Default",
@@ -1354,8 +1354,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "1lns1cen7p",
-      "Integrity": "m6jMN8s1C8mKeJFMVxUm2BaOy1SNkQI3qyoIioRwBfc=",
+      "Fingerprint": "r85m9eng6r",
+      "Integrity": "C9WbWkXDuSFaW1XQWGmFViFq4/9RMySUc51azT5F0U0=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Pages\\CTI.html"
@@ -6386,51 +6386,6 @@
       ]
     },
     {
-      "Route": "Pages/CTI.1lns1cen7p.html",
-      "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\CTI.html",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "15248"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/html"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"m6jMN8s1C8mKeJFMVxUm2BaOy1SNkQI3qyoIioRwBfc=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Thu, 17 Jul 2025 11:41:20 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "1lns1cen7p"
-        },
-        {
-          "Name": "label",
-          "Value": "Pages/CTI.html"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-m6jMN8s1C8mKeJFMVxUm2BaOy1SNkQI3qyoIioRwBfc="
-        }
-      ]
-    },
-    {
       "Route": "Pages/CTI.html",
       "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\CTI.html",
       "Selectors": [],
@@ -6441,7 +6396,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "15248"
+          "Value": "11746"
         },
         {
           "Name": "Content-Type",
@@ -6449,11 +6404,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"m6jMN8s1C8mKeJFMVxUm2BaOy1SNkQI3qyoIioRwBfc=\""
+          "Value": "\"C9WbWkXDuSFaW1XQWGmFViFq4/9RMySUc51azT5F0U0=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 17 Jul 2025 11:41:20 GMT"
+          "Value": "Fri, 18 Jul 2025 12:26:19 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6463,7 +6418,52 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-m6jMN8s1C8mKeJFMVxUm2BaOy1SNkQI3qyoIioRwBfc="
+          "Value": "sha256-C9WbWkXDuSFaW1XQWGmFViFq4/9RMySUc51azT5F0U0="
+        }
+      ]
+    },
+    {
+      "Route": "Pages/CTI.r85m9eng6r.html",
+      "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\CTI.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11746"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"C9WbWkXDuSFaW1XQWGmFViFq4/9RMySUc51azT5F0U0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Fri, 18 Jul 2025 12:26:19 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "r85m9eng6r"
+        },
+        {
+          "Name": "label",
+          "Value": "Pages/CTI.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-C9WbWkXDuSFaW1XQWGmFViFq4/9RMySUc51azT5F0U0="
         }
       ]
     },
@@ -6572,7 +6572,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 17 Jul 2025 10:47:32 GMT"
+          "Value": "Fri, 18 Jul 2025 12:26:25 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6609,7 +6609,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 17 Jul 2025 10:47:32 GMT"
+          "Value": "Fri, 18 Jul 2025 12:26:25 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6654,7 +6654,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 17 Jul 2025 10:47:32 GMT"
+          "Value": "Fri, 18 Jul 2025 12:26:25 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6699,7 +6699,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 17 Jul 2025 10:47:32 GMT"
+          "Value": "Fri, 18 Jul 2025 12:26:25 GMT"
         },
         {
           "Name": "Cache-Control",

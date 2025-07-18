@@ -98,6 +98,15 @@ namespace ServerCRM.Controllers
             return Ok("Agent marked ready");
         }
 
+
+        [HttpPost("GetNext")]
+        public IActionResult GetNext()
+        {
+            string login_code = HttpContext.Session.GetString("login_code");
+            CTIConnectionManager.GetNextCall(login_code);
+            return Ok("Agent marked ready");
+        }
+
         [HttpPost("break")]
         public IActionResult Break([FromBody] BreakRequest request)
         {
