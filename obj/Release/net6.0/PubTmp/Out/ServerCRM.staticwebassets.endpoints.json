@@ -3,6 +3,170 @@
   "ManifestType": "Publish",
   "Endpoints": [
     {
+      "Route": "Pages/CTI.3p356002bf.html",
+      "AssetFile": "Pages/CTI.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "14320"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"9+dgUEJ3aO0O2l6tSJkb7n2qXrbO8imgnrBw2nFhXyI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 19 Jul 2025 07:20:41 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "3p356002bf"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-9+dgUEJ3aO0O2l6tSJkb7n2qXrbO8imgnrBw2nFhXyI="
+        },
+        {
+          "Name": "label",
+          "Value": "Pages/CTI.html"
+        }
+      ]
+    },
+    {
+      "Route": "Pages/CTI.html",
+      "AssetFile": "Pages/CTI.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "14320"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"9+dgUEJ3aO0O2l6tSJkb7n2qXrbO8imgnrBw2nFhXyI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 19 Jul 2025 07:20:41 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-9+dgUEJ3aO0O2l6tSJkb7n2qXrbO8imgnrBw2nFhXyI="
+        }
+      ]
+    },
+    {
+      "Route": "Pages/LogIn.html",
+      "AssetFile": "Pages/LogIn.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1116"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"bgNYQF9l6Ztgr42wlr6t2NvKqPAoKld/z0b5uKr7HHU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 15 Jul 2025 10:36:54 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-bgNYQF9l6Ztgr42wlr6t2NvKqPAoKld/z0b5uKr7HHU="
+        }
+      ]
+    },
+    {
+      "Route": "Pages/LogIn.uobdrfv0c7.html",
+      "AssetFile": "Pages/LogIn.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1116"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"bgNYQF9l6Ztgr42wlr6t2NvKqPAoKld/z0b5uKr7HHU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 15 Jul 2025 10:36:54 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "uobdrfv0c7"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-bgNYQF9l6Ztgr42wlr6t2NvKqPAoKld/z0b5uKr7HHU="
+        },
+        {
+          "Name": "label",
+          "Value": "Pages/LogIn.html"
+        }
+      ]
+    },
+    {
       "Route": "ServerCRM.muryem098h.styles.css",
       "AssetFile": "ServerCRM.styles.css",
       "Selectors": [],

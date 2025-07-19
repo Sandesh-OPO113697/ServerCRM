@@ -58,3 +58,4 @@ D:\VisualStudio_2022\ServerCRM\ServerCRM\bin\Release\net6.0\System.Net.WebSocket
 D:\VisualStudio_2022\ServerCRM\ServerCRM\bin\Release\net6.0\System.Text.Encodings.Web.dll
 D:\VisualStudio_2022\ServerCRM\ServerCRM\bin\Release\net6.0\System.Threading.Channels.dll
 D:\VisualStudio_2022\ServerCRM\ServerCRM\bin\Release\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
+D:\VisualStudio_2022\ServerCRM\ServerCRM\obj\Release\net6.0\ServerCRM.sourcelink.json

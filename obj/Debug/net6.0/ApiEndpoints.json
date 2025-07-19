@@ -125,6 +125,22 @@
   },
   {
     "ContainingType": "ServerCRM.Controllers.GenesysController",
+    "Method": "GetAgentStatus",
+    "RelativePath": "api/Genesys/status",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "agentId",
+        "Type": "ServerCRM.Models.LogIn.LoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServerCRM.Controllers.GenesysController",
     "Method": "Transfer",
     "RelativePath": "api/Genesys/transfer",
     "HttpMethod": "POST",

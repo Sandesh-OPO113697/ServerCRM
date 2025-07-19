@@ -6,6 +6,7 @@ namespace ServerCRM.Models
     {
         public string AgentId { get; set; }
         public string DN { get; set; }
+        public string AgentName { get; set; }
         public TServerProtocol TServerProtocol { get; set; }
         public bool IsRunning { get; set; }
         public ConnectionId? ConnID { get; set; }
@@ -13,6 +14,7 @@ namespace ServerCRM.Models
 
         public string? ConforenceNumber { get; set; }
         public string? CampaignPhone { get; set; }
+        public string? partyFirstPhone { get; set; }
         public string? CampaignMode { get; set; }
         public string? CampaignName { get; set; }
         public int? ocsApplicationID { get; set; }

@@ -5,6 +5,14 @@
       "PackagePath": "staticwebassets\\ServerCRM.muryem098h.bundle.scp.css"
     },
     {
+      "Id": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\CTI.html",
+      "PackagePath": "staticwebassets\\Pages\\CTI.html"
+    },
+    {
+      "Id": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\LogIn.html",
+      "PackagePath": "staticwebassets\\Pages\\LogIn.html"
+    },
+    {
       "Id": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

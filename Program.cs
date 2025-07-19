@@ -28,21 +28,23 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
-
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseDefaultFiles(new DefaultFilesOptions
+{
+    DefaultFileNames = new List<string> { "Pages/LogIn.html" }
+});
+app.UseHttpsRedirection();
+app.MapControllers();
 
 app.UseRouting();
 
 app.UseSession();
 app.UseAuthorization();
-app.UseStaticFiles();
+
 app.UseDefaultFiles();
 app.MapHub<CtiHub>("/ctihub");
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=LogIn}/{action=logInUser}/{id?}");
+app.UseStaticFiles();
 var hubContext = app.Services.GetRequiredService<IHubContext<CtiHub>>();
 CTIConnectionManager.Configure(hubContext);
 

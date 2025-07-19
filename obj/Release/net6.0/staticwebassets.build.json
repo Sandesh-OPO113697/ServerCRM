@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "QzfNkdrc8GTQfZ1Lp1VHilN6iHeHxVkkP30tgpEOTro=",
+  "Hash": "7sZfnsFio+M96sBvg9/XmBKbSYpxZrRGKPYMBMxO/zo=",
   "Source": "ServerCRM",
   "BasePath": "_content/ServerCRM",
   "Mode": "Default",
@@ -1338,6 +1338,48 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Identity": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\CTI.html",
+      "SourceId": "ServerCRM",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\",
+      "BasePath": "_content/ServerCRM",
+      "RelativePath": "Pages/CTI#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "3p356002bf",
+      "Integrity": "9+dgUEJ3aO0O2l6tSJkb7n2qXrbO8imgnrBw2nFhXyI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Pages\\CTI.html"
+    },
+    {
+      "Identity": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\LogIn.html",
+      "SourceId": "ServerCRM",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\",
+      "BasePath": "_content/ServerCRM",
+      "RelativePath": "Pages/LogIn#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "uobdrfv0c7",
+      "Integrity": "bgNYQF9l6Ztgr42wlr6t2NvKqPAoKld/z0b5uKr7HHU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Pages\\LogIn.html"
     }
   ],
   "Endpoints": [
@@ -6340,6 +6382,170 @@
         {
           "Name": "integrity",
           "Value": "sha256-aBc/n/nO9esvq0e80G57lEYLonvE5dKKUgoozaiVfLM="
+        }
+      ]
+    },
+    {
+      "Route": "Pages/CTI.3p356002bf.html",
+      "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\CTI.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "14320"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"9+dgUEJ3aO0O2l6tSJkb7n2qXrbO8imgnrBw2nFhXyI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 19 Jul 2025 07:20:41 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "3p356002bf"
+        },
+        {
+          "Name": "label",
+          "Value": "Pages/CTI.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-9+dgUEJ3aO0O2l6tSJkb7n2qXrbO8imgnrBw2nFhXyI="
+        }
+      ]
+    },
+    {
+      "Route": "Pages/CTI.html",
+      "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\CTI.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "14320"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"9+dgUEJ3aO0O2l6tSJkb7n2qXrbO8imgnrBw2nFhXyI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 19 Jul 2025 07:20:41 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-9+dgUEJ3aO0O2l6tSJkb7n2qXrbO8imgnrBw2nFhXyI="
+        }
+      ]
+    },
+    {
+      "Route": "Pages/LogIn.html",
+      "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\LogIn.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1116"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"bgNYQF9l6Ztgr42wlr6t2NvKqPAoKld/z0b5uKr7HHU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 15 Jul 2025 10:36:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-bgNYQF9l6Ztgr42wlr6t2NvKqPAoKld/z0b5uKr7HHU="
+        }
+      ]
+    },
+    {
+      "Route": "Pages/LogIn.uobdrfv0c7.html",
+      "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\LogIn.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1116"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"bgNYQF9l6Ztgr42wlr6t2NvKqPAoKld/z0b5uKr7HHU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 15 Jul 2025 10:36:54 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "uobdrfv0c7"
+        },
+        {
+          "Name": "label",
+          "Value": "Pages/LogIn.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-bgNYQF9l6Ztgr42wlr6t2NvKqPAoKld/z0b5uKr7HHU="
         }
       ]
     },
