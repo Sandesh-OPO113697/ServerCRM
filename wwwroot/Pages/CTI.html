@@ -8,7 +8,15 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/signalr.min.js"></script>
-   
+    <style>
+
+
+        select, button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 8px;
+        }
+    </style>
 
 </head>
 <body>
@@ -18,15 +26,15 @@
 
         <div class="collapse navbar-collapse w-100">
             <div class="d-flex flex-wrap align-items-center gap-2 me-auto" style="flex: 1 1 auto;">
-             
+
                 <input id="phoneInput" type="text" class="form-control form-control-sm" placeholder="Enter mobile number" style="max-width: 200px;" />
 
-                
+
                 <div id="dialGroup" class="d-flex align-items-center gap-2" style="display: none !important;">
                     <button class="btn btn-success btn-sm" onclick="makeCall()">📞 Call</button>
                 </div>
 
-              
+
                 <div id="onCallGroup" class="d-flex align-items-center gap-2" style="display: none !important;">
                     <button class="btn btn-warning btn-sm" onclick="callAPI('/api/Genesys/hold')">⏸ Hold</button>
                     <button class="btn btn-info btn-sm" onclick="callAPI('/api/Genesys/unhold')">▶ Unhold</button>
@@ -39,7 +47,7 @@
                     </select>
                 </div>
 
-              
+
                 <div id="breakGroup" class="d-flex align-items-center gap-2" style="display: none !important;">
                     <select class="form-select form-select-sm" style="min-width: 130px;" onchange="sendBreak(this.value)">
                         <option disabled selected>⏬ Select Reason</option>
@@ -52,11 +60,12 @@
                     </select>
                 </div>
 
-          
+
                 <div class="d-flex align-items-center gap-2">
                     <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/ready')">🕵️ Ready</button>
                     <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/GetNext')">🕵️ GetNext</button>
                     <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/disconnect')">❌ Disconnect</button>
+                    <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/LogOut')">🕵️ Log-Out</button>
                 </div>
             </div>
 
@@ -67,6 +76,28 @@
             </div>
         </div>
     </nav>
+
+
+    <div class="ms-4 p-3 rounded bg-light shadow" style="min-width: 100px;" id="attachedDataContainer">
+        <h6 class="text-dark mb-2">📄 Capturing Data</h6>
+
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: nowrap;">
+            <label for="disposition" style="margin: 0;">Disposition:</label>
+            <select id="disposition" onchange="updateSubDisposition()" style="width: 150px;">
+                <option value="">-- Select Disposition --</option>
+                <option value="1">Call Back</option>
+                <option value="2">Disconnect</option>
+                <option value="3">Busy</option>
+            </select>
+
+            <label for="subDisposition" style="margin: 0;">Sub-Dispo:</label>
+            <select id="subDisposition" style="width: 180px;">
+                <option value="">-- Select Sub Disposition --</option>
+            </select>
+
+            <button style="width: 119px; margin-right: 613px; " onclick="submitDisposition()" class="btn btn-primary ms-auto">Submit</button>
+        </div>
+    </div>
 
 
     <div class="ms-4 p-3 rounded bg-light shadow" style="min-width: 200px;" id="attachedDataContainer">
@@ -104,10 +135,12 @@
         }
 
         function formatTime(sec) {
-            const minutes = Math.floor(sec / 60).toString().padStart(2, '0');
+            const hours = Math.floor(sec / 3600).toString().padStart(2, '0');
+            const minutes = Math.floor((sec % 3600) / 60).toString().padStart(2, '0');
             const seconds = (sec % 60).toString().padStart(2, '0');
-            return `${minutes}:${seconds}`;
+            return `${hours}:${minutes}:${seconds}`;
         }
+
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -184,11 +217,11 @@
                 else if (msg.includes("wraping")) {
                     $("#dialGroup").css("display", "flex");
                     $("#onCallGroup").attr("style", "display: none !important;");
-                    $("#breakGroup").attr("style", "display: none !important;");
+
                 }
 
                 else {
-                     }
+                }
                 if (
                     msg.includes("talking") ||
                     msg.includes("wraping") ||
@@ -207,6 +240,14 @@
                     msg.includes("idle")
                 ) {
                     stopTimer();
+                }
+
+                if (
+                    msg.includes("break")
+
+                ) {
+                    stopTimer();
+                    startTimer();
                 }
 
             });
@@ -278,7 +319,7 @@
             })
                 .then(async res => {
                     if (!res.ok) {
-                        const errorText = await res.text(); 
+                        const errorText = await res.text();
                         throw new Error(errorText || "API call failed");
                     } else {
                         console.log("✅ API call successful.");
@@ -294,16 +335,23 @@
                 });
         }
 
-
         function makeCall() {
-            const phone = document.getElementById("phoneInput").value;
-            if (!phone) return alert("Please enter a number");
+            const phone = document.getElementById("phoneInput").value.trim();
+
+            if (!phone) {
+                alert("Please enter a number");
+                return;
+            }
+
             const phoneRegex = /^\d{10}$/;
             if (!phoneRegex.test(phone)) {
-                return alert("Phone number must be exactly 10 digits and contain only numbers.");
+                alert("Phone number must be exactly 10 digits and contain only numbers.");
+                return;
             }
-            callAPI("/api/Genesys/makecall", 'POST', { phone });
+
+            callAPI("/api/Genesys/makecall", "POST", { phone });
         }
+
 
         function openConferencePrompt() {
             Swal.fire({
@@ -337,3 +385,83 @@
 
 </body>
 </html>
+
+
+<script>
+    const subDispositions = {
+        1: [
+            { id: 101, name: "Not Available" },
+            { id: 102, name: "Client Requested" },
+            { id: 103, name: "Wrong Time" }
+        ],
+        2: [
+            { id: 201, name: "Customer Hung Up" },
+            { id: 202, name: "Agent Hung Up" },
+            { id: 203, name: "Network Issue" }
+        ],
+        3: [
+            { id: 301, name: "Customer Busy" },
+            { id: 302, name: "On Another Call" },
+            { id: 303, name: "Will Call Later" }
+        ]
+    };
+
+    function updateSubDisposition() {
+        const dispoId = document.getElementById("disposition").value;
+        const subDispoSelect = document.getElementById("subDisposition");
+
+        subDispoSelect.innerHTML = '<option value="">-- Select Sub Disposition --</option>';
+
+        if (subDispositions[dispoId]) {
+            subDispositions[dispoId].forEach(sub => {
+                const option = document.createElement("option");
+                option.value = sub.id;
+                option.textContent = sub.name;
+                subDispoSelect.appendChild(option);
+            });
+        }
+    }
+
+    async function submitDisposition() {
+        const dispoId = parseInt(document.getElementById("disposition").value);
+        const subDispoId = parseInt(document.getElementById("subDisposition").value);
+
+        if (!dispoId || !subDispoId) {
+            alert("Please select both disposition and sub-disposition.");
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/Genesys/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    dispositionId: dispoId,
+                    subDispositionId: subDispoId
+                })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: result.message
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to submit disposition.'
+                });
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Exception',
+                text: error?.message || 'An unexpected error occurred.'
+            });
+        }
+    }
+</script>

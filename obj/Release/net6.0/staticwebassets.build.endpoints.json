@@ -3,51 +3,6 @@
   "ManifestType": "Build",
   "Endpoints": [
     {
-      "Route": "Pages/CTI.3p356002bf.html",
-      "AssetFile": "Pages/CTI.html",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "14320"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/html"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"9+dgUEJ3aO0O2l6tSJkb7n2qXrbO8imgnrBw2nFhXyI=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sat, 19 Jul 2025 07:20:41 GMT"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "3p356002bf"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-9+dgUEJ3aO0O2l6tSJkb7n2qXrbO8imgnrBw2nFhXyI="
-        },
-        {
-          "Name": "label",
-          "Value": "Pages/CTI.html"
-        }
-      ]
-    },
-    {
       "Route": "Pages/CTI.html",
       "AssetFile": "Pages/CTI.html",
       "Selectors": [],
@@ -62,7 +17,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "14320"
+          "Value": "18567"
         },
         {
           "Name": "Content-Type",
@@ -70,17 +25,62 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"9+dgUEJ3aO0O2l6tSJkb7n2qXrbO8imgnrBw2nFhXyI=\""
+          "Value": "\"mGaFCW6sd/8j30YEiEfpcO9Pr6OdCfzQS8wdyVLgdK0=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 19 Jul 2025 07:20:41 GMT"
+          "Value": "Mon, 21 Jul 2025 12:21:51 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-9+dgUEJ3aO0O2l6tSJkb7n2qXrbO8imgnrBw2nFhXyI="
+          "Value": "sha256-mGaFCW6sd/8j30YEiEfpcO9Pr6OdCfzQS8wdyVLgdK0="
+        }
+      ]
+    },
+    {
+      "Route": "Pages/CTI.sfuehpe57j.html",
+      "AssetFile": "Pages/CTI.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "18567"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"mGaFCW6sd/8j30YEiEfpcO9Pr6OdCfzQS8wdyVLgdK0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 21 Jul 2025 12:21:51 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "sfuehpe57j"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-mGaFCW6sd/8j30YEiEfpcO9Pr6OdCfzQS8wdyVLgdK0="
+        },
+        {
+          "Name": "label",
+          "Value": "Pages/CTI.html"
         }
       ]
     },
@@ -193,7 +193,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 14 Jul 2025 05:30:42 GMT"
+          "Value": "Mon, 21 Jul 2025 11:59:01 GMT"
         }
       ],
       "EndpointProperties": [
@@ -238,7 +238,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Mon, 14 Jul 2025 05:30:42 GMT"
+          "Value": "Mon, 21 Jul 2025 11:59:01 GMT"
         }
       ],
       "EndpointProperties": [

@@ -79,6 +79,16 @@
   },
   {
     "ContainingType": "ServerCRM.Controllers.GenesysController",
+    "Method": "AgentLogOUT",
+    "RelativePath": "api/Genesys/LogOut",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServerCRM.Controllers.GenesysController",
     "Method": "MakeCall",
     "RelativePath": "api/Genesys/makecall",
     "HttpMethod": "POST",
@@ -134,6 +144,22 @@
       {
         "Name": "agentId",
         "Type": "ServerCRM.Models.LogIn.LoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServerCRM.Controllers.GenesysController",
+    "Method": "SubmitDisposition",
+    "RelativePath": "api/Genesys/submit",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ServerCRM.Models.DispositionRequest",
         "IsRequired": true
       }
     ],

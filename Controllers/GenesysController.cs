@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServerCRM.Models;
 using ServerCRM.Models.CTI;
 using ServerCRM.Models.LogIn;
 using ServerCRM.Services;
+using System.Threading.Tasks;
 
 namespace ServerCRM.Controllers
 {
@@ -136,13 +136,36 @@ namespace ServerCRM.Controllers
             }
         }
 
-
-        [HttpPost("GetNext")]
-        public IActionResult GetNext()
+        [HttpPost("LogOut")]
+        public async Task<IActionResult> AgentLogOUT()
         {
             string login_code = HttpContext.Session.GetString("login_code");
-            CTIConnectionManager.GetNextCall(login_code);
-            return Ok("Agent marked ready");
+            string returnStatus = await CTIConnectionManager.LogOUT(login_code);
+            if (returnStatus != "")
+            {
+                return BadRequest(returnStatus);
+            }
+            else
+            {
+                return Ok("Agent log out");
+            }
+        }
+
+
+
+        [HttpPost("GetNext")]
+        public async Task<IActionResult> GetNext()
+        {
+            string login_code = HttpContext.Session.GetString("login_code");
+            string returnStatus = await CTIConnectionManager.GetNextCall(login_code);
+            if (returnStatus != "")
+            {
+                return BadRequest(returnStatus);
+            }
+            else
+            {
+                return Ok("Break requested");
+            }
         }
 
         [HttpPost("break")]
@@ -218,6 +241,15 @@ namespace ServerCRM.Controllers
             string status = $"Agent {agentId} is ready";
             return Ok(status);
         }
+        [HttpPost("submit")]
+        public async Task<IActionResult> SubmitDisposition([FromBody] DispositionRequest request)
+        {
+            string login_code = HttpContext.Session.GetString("login_code");
+            var status = await CTIConnectionManager.DisposeCall(login_code, request.DispositionId, request.SubDispositionId);
 
+            return Ok(new { message = status });
+
+
+        }
     }
 }

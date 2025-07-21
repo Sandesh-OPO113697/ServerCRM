@@ -16,6 +16,11 @@ namespace ServerCRM.Models
         public string? CampaignPhone { get; set; }
         public string? partyFirstPhone { get; set; }
         public string? CampaignMode { get; set; }
+        public string? ProcessType { get; set; }
+        public int? attempts { get; set; }
+        public int? upcommingEvent { get; set; }
+        public int? recordHandle { get; set; }
+        public string? IsManual { get; set; }
         public string? CampaignName { get; set; }
         public int? ocsApplicationID { get; set; }
         public  int requestID = 1;

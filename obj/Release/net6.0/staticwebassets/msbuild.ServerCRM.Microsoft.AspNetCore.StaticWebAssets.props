@@ -1110,8 +1110,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>3p356002bf</Fingerprint>
-      <Integrity>9+dgUEJ3aO0O2l6tSJkb7n2qXrbO8imgnrBw2nFhXyI=</Integrity>
+      <Fingerprint>sfuehpe57j</Fingerprint>
+      <Integrity>mGaFCW6sd/8j30YEiEfpcO9Pr6OdCfzQS8wdyVLgdK0=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\Pages\CTI.html'))</OriginalItemSpec>

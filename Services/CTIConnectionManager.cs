@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Http;
 using Genesyslab.Platform.Voice.Protocols.TServer.Requests.Special;
+using static System.Collections.Specialized.BitVector32;
 
 
 namespace ServerCRM.Services
@@ -104,7 +105,10 @@ namespace ServerCRM.Services
                                         requestID = 1,
                                         Prifix = agentvalue.Prefix,
                                         AgentName = agentvalue.user_name,
-                                        partyFirstPhone = null
+                                        partyFirstPhone = null,
+                                        IsManual = Convert.ToString(agentvalue.IsManual),
+                                        ProcessType = agentvalue.ProcessType,
+                                        recordHandle = null
                                     };
                                     agentSessions[agentId] = agentSession;
                                     Task.Run(() => ReceiveLoop(agentSession));
@@ -459,7 +463,7 @@ namespace ServerCRM.Services
                         }
                         break;
                     case EventAttachedDataChanged.MessageName:
-                        EventAttachedDataChanged eventattacheddatachanged = msg as EventAttachedDataChanged;
+                        EventAttachedDataChanged? eventattacheddatachanged = msg as EventAttachedDataChanged;
                         if (eventattacheddatachanged.ThisDN == session.DN)
                         {
                             AgentStatusMapper.UpdateAgentStatus(3, session, hubContext);
@@ -472,6 +476,55 @@ namespace ServerCRM.Services
                                     session.MasterPhone = eventattacheddatachanged.UserData[i].ToString();
                                     CTIConnectionManager.HubContext.Clients.Group(session.AgentId).SendAsync("UpdatePhoneInput", session.CampaignPhone);
                                 }
+
+
+                                if (eventattacheddatachanged.UserData.Keys[i] == "GSW_CALLING_LIST")
+                                {
+
+                                }
+                                else if (eventattacheddatachanged.UserData.Keys[i] == "GSW_RECORD_HANDLE")
+                                {
+                                    session.recordHandle = int.Parse(eventattacheddatachanged.UserData["GSW_RECORD_HANDLE"].ToString());
+                                }
+                                else if (eventattacheddatachanged.UserData.Keys[i] == "GSW_ATTEMPTS")
+                                {
+
+                                }
+                                else if (eventattacheddatachanged.UserData.Keys[i] == "Record_id")
+                                {
+
+                                }
+                                else if (eventattacheddatachanged.UserData.Keys[i] == "GSW_recordid")
+                                {
+
+                                }
+                                else if (eventattacheddatachanged.UserData.Keys[i] == "Batchid")
+                                {
+
+                                }
+                                else if (eventattacheddatachanged.UserData.Keys[i] == "Batch_id")
+                                {
+
+                                }
+                                else if (eventattacheddatachanged.UserData.Keys[i] == "GSW_PHONE")
+                                {
+
+                                }
+                                else if (eventattacheddatachanged.UserData.Keys[i] == "TMasterID")
+                                {
+
+                                }
+                                else if (eventattacheddatachanged.UserData.Keys[i] == "Cus_Number")
+                                {
+
+                                }
+
+
+                                if (eventattacheddatachanged.UserData.Keys[i] == "GSIP_REC_FN")
+                                {
+
+                                }
+
                             }
                             attachedData = new Dictionary<string, string>();
                             for (int i = 0; i < eventattacheddatachanged.UserData.Count; i++)
@@ -487,7 +540,7 @@ namespace ServerCRM.Services
                         break;
                     case EventUserEvent.MessageName:
 
-                        EventUserEvent eventUserEvent = msg as EventUserEvent;
+                        EventUserEvent? eventUserEvent = msg as EventUserEvent;
                         if (eventUserEvent.ThisDN == session.DN)
                         {
                             if (eventUserEvent.UserData.GetAsString("GSW_USER_EVENT") != null)
@@ -550,6 +603,12 @@ namespace ServerCRM.Services
                                     session.MyCode = Convert.ToDouble(eventUserEvent.UserData["TMasterID"].ToString());
                                     if (session.MyCode > 0)
                                     {
+
+                                        session.recordHandle = int.Parse(eventUserEvent.UserData["GSW_RECORD_HANDLE"].ToString());
+
+
+                                        session.attempts = int.Parse(eventUserEvent.UserData["GSW_ATTEMPTS"].ToString());
+
                                         session.CampaignPhone = Convert.ToString(eventUserEvent.UserData["GSW_PHONE"].ToString());
                                         session.MasterPhone = Convert.ToString(eventUserEvent.UserData["GSW_PHONE"].ToString());
                                         CTIConnectionManager.HubContext.Clients.Group(session.AgentId).SendAsync("UpdatePhoneInput", session.CampaignPhone);
@@ -621,6 +680,12 @@ namespace ServerCRM.Services
             {
                 if (session.isOnCall == false)
                 {
+
+                    if (session.isbreak == true)
+                    {
+                        return "Agent is On Break";
+                    }
+
                     if (phoneNumber.Contains('X'))
                     {
                         txph = session.CampaignPhone;
@@ -881,22 +946,31 @@ namespace ServerCRM.Services
             }
             else
             {
-                int statusCode = Convert.ToInt32(brkstatus);
-                string breakReason = AgentStatusMapper.StatusMap.ContainsKey(statusCode) ? AgentStatusMapper.StatusMap[statusCode] : "UNKNOWN";
-                KeyValueCollection reasonCodes = new KeyValueCollection();
-                reasonCodes.Add("ReasonCode", breakReason);
-                RequestAgentNotReady requestAgentNotReady = RequestAgentNotReady.Create(session.DN, AgentWorkMode.AuxWork, null, reasonCodes, reasonCodes);
-                var iMassage = tServer.Request(requestAgentNotReady);
-                if (iMassage.Name == "EventError")
+                if(session.CurrentStatusID==4)
                 {
-                    session.isbreak = false;
+                    session.upcommingEvent = Convert.ToInt32(brkstatus);
                 }
                 else
                 {
-                    session.isbreak = true;
+                    int statusCode = Convert.ToInt32(brkstatus);
+                    string breakReason = AgentStatusMapper.StatusMap.ContainsKey(statusCode) ? AgentStatusMapper.StatusMap[statusCode] : "UNKNOWN";
+                    KeyValueCollection reasonCodes = new KeyValueCollection();
+                    reasonCodes.Add("ReasonCode", breakReason);
+                    RequestAgentNotReady requestAgentNotReady = RequestAgentNotReady.Create(session.DN, AgentWorkMode.AuxWork, null, reasonCodes, reasonCodes);
+                    var iMassage = tServer.Request(requestAgentNotReady);
+                    if (iMassage.Name == "EventError")
+                    {
+                        session.isbreak = false;
+                    }
+                    else
+                    {
+                        session.isbreak = true;
+                    }
+                    AgentStatusMapper.UpdateAgentStatus(Convert.ToInt32(brkstatus), session, CTIConnectionManager.HubContext);
+                    session.CurrentStatusID = Convert.ToInt32(brkstatus);
+
                 }
-                AgentStatusMapper.UpdateAgentStatus(Convert.ToInt32(brkstatus), session, CTIConnectionManager.HubContext);
-                session.CurrentStatusID= Convert.ToInt32( brkstatus);
+                   
             }
             return "";
         }
@@ -998,24 +1072,233 @@ namespace ServerCRM.Services
 
             var tServer = agentConnections[agentId];
             AgentSession session = GetAgentSession(agentId);
-            if (session.ConnID != null)
+            if (session.isConforence == true)
             {
-                var releaseCall = RequestReleaseCall.Create(session.DN, session.ConnID);
-                var Imassage = tServer.Request(releaseCall);
-                if (Imassage.Name == "EventError")
+                if (session.isMarge == false)
                 {
+                    return "You can Not Dissconenct Conference before merge";
                 }
                 else
                 {
-                    session.ConnID = null;
-                    session.IVRConnID = null;
-                    session.isConforence = false;
-                    session.isOnCall = false;
-                    session.isMarge = false;
-                    session.partyFirstPhone = null;
+                    if (session.ConnID != null)
+                    {
+                        var releaseCall = RequestReleaseCall.Create(session.DN, session.ConnID);
+                        var Imassage = tServer.Request(releaseCall);
+                        if (Imassage.Name == "EventError")
+                        {
+                        }
+                        else
+                        {
+                            session.ConnID = null;
+                            session.IVRConnID = null;
+                            session.isConforence = false;
+                            session.isOnCall = false;
+                            session.isMarge = false;
+                            session.partyFirstPhone = null;
+                        }
+                    }
                 }
             }
+            else
+            {
+                if (session.ConnID != null)
+
+                {
+                    var releaseCall = RequestReleaseCall.Create(session.DN, session.ConnID);
+                    var Imassage = tServer.Request(releaseCall);
+                    if (Imassage.Name == "EventError")
+                    {
+                    }
+                    else
+                    {
+                        session.ConnID = null;
+                        session.IVRConnID = null;
+                        session.isConforence = false;
+                        session.isOnCall = false;
+                        session.isMarge = false;
+                        session.partyFirstPhone = null;
+                    }
+                }
+            }
+           
             return "";
+        }
+        public static async Task<string> DisposeCall(string logincode, int dispo, int sub_dispo)
+        {
+           
+            string finishCode = "PCB";
+            AgentSession session = GetAgentSession(logincode);
+            var status = session.CurrentStatusID;
+ 
+            string valueresoon = AgentStatusMapper.StatusMap.ContainsKey(status) ? AgentStatusMapper.StatusMap[status] : "UNKNOWN";
+            if(status ==4)
+            {
+                if ((session.IsManual == "1" && session.ProcessType == "OUTBOUND") || (session.MyCode > 0))
+                {
+                    if (finishCode == "PCB")
+                    {
+                        KeyValueCollection kvp = new KeyValueCollection();
+                        kvp.Add("Disposition", dispo.ToString());
+                        kvp.Add("Sub_Disposition", sub_dispo.ToString());
+                        kvp.Add("GSW_AGENT_REQ_TYPE", "RecordProcessed");
+                        kvp.Add("GSW_APPLICATION_ID",  Convert.ToString( session.ocsApplicationID));
+                        kvp.Add("GSW_RECORD_HANDLE", Convert.ToString(session.recordHandle));
+                        kvp.Add("GSW_RECORD_STATUS", 3);
+                        CommonProperties commonProperties = CommonProperties.Create();
+                        commonProperties.UserData = kvp;
+                        RequestDistributeUserEvent requestDistributeUserEvent1 = RequestDistributeUserEvent.Create(session.DN, commonProperties);
+
+                        var iMessage = session.TServerProtocol.Request(requestDistributeUserEvent1);
+                        System.Threading.Thread.Sleep(1000);
+                        
+                      
+                    }
+                    else if (finishCode == "CCB")
+                    {
+
+                        if (finishCode == "CCB" && session.CampaignName != null)
+                        {
+                            KeyValueCollection kvp = new KeyValueCollection();
+                            kvp.Add("GSW_AGENT_REQ_TYPE", "RecordReschedule");
+                            kvp.Add("GSW_APPLICATION_ID", Convert.ToString(session.ocsApplicationID));
+                            kvp.Add("GSW_CALLBACK_TYPE", "Campaign");
+                            kvp.Add("GSW_CAMPAIGN_NAME", Convert.ToString(session.CampaignName));
+                            kvp.Add("GSW_DATE_TIME", Convert.ToDateTime("10/10/2025").ToString("MM/dd/yyyy HH:mm"));
+                            kvp.Add("GSW_RECORD_HANDLE", Convert.ToString(session.recordHandle));
+                            kvp.Add("Disposition", dispo.ToString());
+                            kvp.Add("Sub_Disposition", sub_dispo.ToString());
+                            kvp.Add("attempt", session.attempts + 1);
+                            kvp.Add("GSW_RECORD_STATUS", 1);
+
+                            CommonProperties commonProperties = CommonProperties.Create();
+                            commonProperties.UserData = kvp;
+                            RequestDistributeUserEvent requestDistributeUserEvent1 = RequestDistributeUserEvent.Create(session.DN, commonProperties);
+                            var iMessage = session.TServerProtocol.Request(requestDistributeUserEvent1);
+                         
+                        }
+                    }
+                    else
+                    {
+
+                        KeyValueCollection kvp = new KeyValueCollection();
+                        kvp.Add("Disposition", dispo.ToString());
+                        kvp.Add("Sub_Disposition", sub_dispo.ToString());
+                        kvp.Add("GSW_AGENT_REQ_TYPE", "RecordProcessed");
+                        kvp.Add("GSW_APPLICATION_ID", Convert.ToString(session.ocsApplicationID));
+                        kvp.Add("GSW_RECORD_HANDLE", Convert.ToString(session.recordHandle));
+                        kvp.Add("GSW_RECORD_STATUS", 3);
+                        CommonProperties commonProperties = CommonProperties.Create();
+                        commonProperties.UserData = kvp;
+                        RequestDistributeUserEvent requestDistributeUserEvent1 = RequestDistributeUserEvent.Create(session.DN, commonProperties);
+                        var iMessage = session.TServerProtocol.Request(requestDistributeUserEvent1);
+                        System.Threading.Thread.Sleep(1000);
+                   
+                    }
+                }
+               
+
+                if(session.upcommingEvent==11)
+                {
+                    RequestAgentLogout requestAgentLogout = RequestAgentLogout.Create(session.DN);
+                    IMessage iMessage = session.TServerProtocol.Request(requestAgentLogout);
+                    session.upcommingEvent = null;
+                    if (session.TServerProtocol.State == ChannelState.Opened)
+                    {
+                        session.TServerProtocol.Close();
+                    }
+                    agentConnections.TryRemove(session.AgentId, out _);
+                    agentSessions.TryRemove(session.AgentId, out _);
+                    return "";
+
+                }
+                else if(session.upcommingEvent==5 || session.upcommingEvent == 6 || session.upcommingEvent == 7 || session.upcommingEvent == 8 || session.upcommingEvent == 9 || session.upcommingEvent == 19)
+                {
+                    int statusCode = Convert.ToInt32(session.upcommingEvent);
+                    string breakReason = AgentStatusMapper.StatusMap.ContainsKey(statusCode) ? AgentStatusMapper.StatusMap[statusCode] : "UNKNOWN";
+                    KeyValueCollection reasonCodes = new KeyValueCollection();
+                    reasonCodes.Add("ReasonCode", breakReason);
+                    RequestAgentNotReady requestAgentNotReady = RequestAgentNotReady.Create(session.DN, AgentWorkMode.AuxWork, null, reasonCodes, reasonCodes);
+                    var iMassage = session.TServerProtocol.Request(requestAgentNotReady);
+                    if (iMassage.Name == "EventError")
+                    {
+                        session.isbreak = false;
+                    }
+                    else
+                    {
+                        session.isbreak = true;
+                        session.CurrentStatusID = Convert.ToInt32(session.upcommingEvent);
+                        AgentStatusMapper.UpdateAgentStatus(Convert.ToInt32(session.upcommingEvent), session, CTIConnectionManager.HubContext);
+                        session.upcommingEvent = null;
+                    }
+                    return "Agent on Break";
+                }
+                else
+                {
+                    AgentReady(session.AgentId);
+                    return "Record Saved Successfully";
+                }
+
+                   
+            }
+            else
+            {
+                return "You current state is  : " + valueresoon + "Please make on Wrap";
+            }
+
+            return "Record Saved Successfully";
+
+        }
+        public static async Task<string> LogOUT(string agentId)
+        {
+            try
+            {
+                if (!agentSessions.ContainsKey(agentId))
+                    return $"Agent {agentId} is not logged in.";
+
+                AgentSession session = GetAgentSession(agentId);
+                if (session == null || session.TServerProtocol == null)
+                    return $"Session not found or invalid for agent {agentId}.";
+                if(session.isbreak==true)
+                {
+                    session.upcommingEvent = 11;
+                }
+                else
+                {
+                    if (session.CurrentStatusID == 4)
+                    {
+                        session.upcommingEvent = Convert.ToInt32(11);
+                    }
+                    else
+                    {
+                        RequestAgentLogout requestAgentLogout = RequestAgentLogout.Create(session.DN);
+                        IMessage iMessage = session.TServerProtocol.Request(requestAgentLogout);
+
+                        if (iMessage.Name != "EventAgentLogout")
+                        {
+                            return $"Logout request failed for agent {agentId}.";
+                        }
+
+                        if (session.TServerProtocol.State == ChannelState.Opened)
+                        {
+                            session.TServerProtocol.Close();
+                        }
+                        agentConnections.TryRemove(agentId, out _);
+                        agentSessions.TryRemove(agentId, out _);
+                        await Broadcast("AgentLoggedOut", agentId);
+
+                        return $"Agent {agentId} successfully logged out.";
+                    }
+                }
+
+
+              
+
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return $"Exception during logout: {ex.Message}";
+            }
         }
 
         public static async Task<string> AgentReady(string agentId)
@@ -1023,35 +1306,65 @@ namespace ServerCRM.Services
             if (!agentConnections.ContainsKey(agentId))
                 return " Agent not logged in.";
 
+
+
             var tServer = agentConnections[agentId];
             AgentSession session = GetAgentSession(agentId);
-            RequestAgentReady requestAgentReady = RequestAgentReady.Create(session.DN, AgentWorkMode.AutoIn);
-            var Imassage = tServer.Request(requestAgentReady);
-            if (Imassage.Name == "EventError")
+
+            if (session.upcommingEvent == 11)
             {
+                RequestAgentLogout requestAgentLogout = RequestAgentLogout.Create(session.DN);
+                IMessage iMessage = session.TServerProtocol.Request(requestAgentLogout);
+                session.upcommingEvent = null;
+                if (session.TServerProtocol.State == ChannelState.Opened)
+                {
+                    session.TServerProtocol.Close();
+                }
+                agentConnections.TryRemove(session.AgentId, out _);
+                agentSessions.TryRemove(session.AgentId, out _);
+                return "Agent Log out Sucessfully...!";
+
             }
             else
             {
-                session.isbreak = false;
-                session.ConnID = null;
-                session.IVRConnID = null;
-                session.isConforence = false;
-                session.isMarge = false;
-                session.isOnCall = false;
-                session.CurrentStatusID = 1;
-                session.partyFirstPhone = null;
+                if (session.CurrentStatusID == 3)
+                {
+                    return "Agent Is On Call";
+                }
+                else
+                {
 
-                CTIConnectionManager.HubContext.Clients.Group(session.AgentId).SendAsync("UserName", session.AgentName);
-                AgentStatusMapper.UpdateAgentStatus(Convert.ToInt32(1), session, CTIConnectionManager.HubContext);
-                session.CurrentStatusID = 1;
+                    RequestAgentReady requestAgentReady = RequestAgentReady.Create(session.DN, AgentWorkMode.AutoIn);
+                    var Imassage = tServer.Request(requestAgentReady);
+                    if (Imassage.Name == "EventError")
+                    {
+                    }
+                    else
+                    {
+                        session.isbreak = false;
+                        session.ConnID = null;
+                        session.IVRConnID = null;
+                        session.isConforence = false;
+                        session.isMarge = false;
+                        session.isOnCall = false;
+                        session.CurrentStatusID = 1;
+                        session.partyFirstPhone = null;
+                        session.upcommingEvent = null;
+                        CTIConnectionManager.HubContext.Clients.Group(session.AgentId).SendAsync("UserName", session.AgentName);
+                        AgentStatusMapper.UpdateAgentStatus(Convert.ToInt32(1), session, CTIConnectionManager.HubContext);
+                        session.CurrentStatusID = 1;
+                    }
+                }
             }
+
+           
             return "";
         }
 
-        public static void GetNextCall(string agentId)
+        public static async Task<string> GetNextCall(string agentId)
         {
             if (!agentConnections.ContainsKey(agentId))
-                throw new Exception(" Agent not logged in.");
+                return " Agent not logged in.";
 
             var tServer = agentConnections[agentId];
             AgentSession session = GetAgentSession(agentId);
@@ -1069,13 +1382,22 @@ namespace ServerCRM.Services
                     int id = session.requestID + 1;
                     requestDistributeUserEvent1.ReferenceID = id;
                     var iMessage = tServer.Request(requestDistributeUserEvent1);
+                    if (iMessage.Name == "EventError")
+                    {
+                    }
+                    else
+                    {
+                        return " Agent ready for next call.";
+
+                    }
+
                 }
             }
             catch
             {
-                return;
+                return " Agent not logged in.";
             }
-
+            return "";
         }
 
 
