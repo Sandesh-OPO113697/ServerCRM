@@ -167,7 +167,7 @@ namespace ServerCRM.Services
                     var message = session.TServerProtocol.Receive();
                     if (message != null)
                     {
-                        LogToFile(message.Name);
+                        LogToFile(message.Name , session.AgentId.ToString());
                         string log = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] 🔔 Received: {message.GetType().Name}";
                         var status = HandleCtiEvent(message, session, ref connID, out attachedData, _hubContext);
                         if (attachedData != null)
@@ -178,7 +178,7 @@ namespace ServerCRM.Services
                 }
                 catch (Exception ex)
                 {
-                    LogToFile($" ReceiveLoop Error: {ex.Message}");
+                    LogToFile($" ReceiveLoop Error: {ex.Message}" , "");
                 }
             }
         }
@@ -336,8 +336,8 @@ namespace ServerCRM.Services
                         EventAgentNotReady eventagentnotready = msg as EventAgentNotReady;
                         if (eventagentnotready.ThisDN == session.DN)
                         {
-                            AgentStatusMapper.UpdateAgentStatus(1, session, hubContext);
-                            session.CurrentStatusID = 1;
+                            //AgentStatusMapper.UpdateAgentStatus(1, session, hubContext);
+                            //session.CurrentStatusID = 1;
                         }
                         break;
                     case EventAgentLogout.MessageName:
@@ -1257,34 +1257,44 @@ namespace ServerCRM.Services
                 if(session.isbreak==true)
                 {
                     session.upcommingEvent = 11;
+                    return $"Agent {agentId} will  logged out. after next event";
                 }
                 else
                 {
-                    if (session.CurrentStatusID == 4)
+                    if(session.CurrentStatusID==3 || session.CurrentStatusID == 2)
                     {
-                        session.upcommingEvent = Convert.ToInt32(11);
+                        return $"Agent {agentId} is on Call You can Not  logged out.";
                     }
                     else
                     {
-                        AgentStatusMapper.UpdateAgentStatus(Convert.ToInt32(11), session, CTIConnectionManager.HubContext);
-                        RequestAgentLogout requestAgentLogout = RequestAgentLogout.Create(session.DN);
-                        IMessage iMessage = session.TServerProtocol.Request(requestAgentLogout);
-
-                        if (iMessage.Name != "EventAgentLogout")
+                        if (session.CurrentStatusID == 4)
                         {
-                            return $"Logout request failed for agent {agentId}.";
+                            session.upcommingEvent = Convert.ToInt32(11);
+                            return $"Agent {agentId} will  logged out. after next event";
                         }
-
-                        if (session.TServerProtocol.State == ChannelState.Opened)
+                        else
                         {
-                            session.TServerProtocol.Close();
-                        }
-                        agentConnections.TryRemove(agentId, out _);
-                        agentSessions.TryRemove(agentId, out _);
-                        await Broadcast("AgentLoggedOut", agentId);
+                            AgentStatusMapper.UpdateAgentStatus(Convert.ToInt32(11), session, CTIConnectionManager.HubContext);
+                            RequestAgentLogout requestAgentLogout = RequestAgentLogout.Create(session.DN);
+                            IMessage iMessage = session.TServerProtocol.Request(requestAgentLogout);
 
-                        return $"Agent {agentId} successfully logged out.";
+                            if (iMessage.Name != "EventAgentLogout")
+                            {
+                                return $"Logout request failed for agent {agentId}.";
+                            }
+
+                            if (session.TServerProtocol.State == ChannelState.Opened)
+                            {
+                                session.TServerProtocol.Close();
+                            }
+                            agentConnections.TryRemove(agentId, out _);
+                            agentSessions.TryRemove(agentId, out _);
+                            await Broadcast("AgentLoggedOut", agentId);
+
+                            return $"Agent {agentId} successfully logged out.";
+                        }
                     }
+                    
                 }
 
 
@@ -1325,7 +1335,7 @@ namespace ServerCRM.Services
             }
             else
             {
-                if (session.CurrentStatusID == 3)
+                if (session.CurrentStatusID == 3 || session.CurrentStatusID == 2   || session.CurrentStatusID  ==10)
                 {
                     return "Agent Is On Call";
                 }
@@ -1412,9 +1422,10 @@ namespace ServerCRM.Services
             }
         }
 
-        private static void LogToFile(string text)
+        private static void LogToFile(string text , string AgentID)
         {
-            string logFilePath = @"D:\Logs\ServerCRM_Log.txt";
+
+            string logFilePath = @"D:\Logs\" + AgentID + "ServerCRM_Log.txt";
 
             try
             {

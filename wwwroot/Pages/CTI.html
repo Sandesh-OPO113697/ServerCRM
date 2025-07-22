@@ -41,29 +41,40 @@
                     <button class="btn btn-secondary btn-sm" onclick="openConferencePrompt()">👥 Conference</button>
                     <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/merge')">Merge</button>
                     <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/party')">Party Delete</button>
-                    <select class="form-select form-select-sm" style="min-width: 130px;" onchange="sendTransfer(this.value)">
-                        <option disabled selected>⏬ Select route</option>
-                        <option value="3000002">3000002</option>
-                    </select>
+                    <div>
+                        <label>Select route Point:</label>
+                        <select class="form-select form-select-sm" style="min-width: 130px;" onchange="sendTransfer(this)">
+                            <option disabled selected>⏬ Select route</option>
+                            <option value="3000002">3000002</option>
+                        </select>
+                    </div>
+                   
                 </div>
 
 
                 <div id="breakGroup" class="d-flex align-items-center gap-2" style="display: none !important;">
-                    <select class="form-select form-select-sm" style="min-width: 130px;" onchange="sendBreak(this.value)">
-                        <option disabled selected>⏬ Select Reason</option>
-                        <option value="5">🍵 Tea</option>
-                        <option value="6">🍽 Lunch</option>
-                        <option value="7">📘 Training</option>
-                        <option value="8">🕵️ Quality</option>
-                        <option value="9">🚻 Bio</option>
-                        <option value="26">🧑‍💼 TL Feedback</option>
-                    </select>
+                    <div>
+                        <label>Select Break:</label>
+                        <select class="form-select form-select-sm" style="min-width: 130px;" onchange="sendBreak(this)">
+                            <option disabled selected>⏬ Select Reason</option>
+                            <option value="5">🍵 Tea</option>
+                            <option value="6">🍽 Lunch</option>
+                            <option value="7">📘 Training</option>
+                            <option value="8">🕵️ Quality</option>
+                            <option value="9">🚻 Bio</option>
+                            <option value="26">🧑‍💼 TL Feedback</option>
+                        </select>
+                    </div>
+                  
                 </div>
 
+                <div id="getnext" class="d-flex align-items-center gap-2" style="display: none !important;">
+                    <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/GetNext')">🕵️ GetNext</button>
+                </div>
 
                 <div class="d-flex align-items-center gap-2">
                     <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/ready')">🕵️ Ready</button>
-                    <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/GetNext')">🕵️ GetNext</button>
+                    
                     <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/disconnect')">❌ Disconnect</button>
                     <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/LogOut')">🕵️ Log-Out</button>
                 </div>
@@ -197,11 +208,13 @@
                 $("#dialGroup").hide();
                 $("#onCallGroup").hide();
                 $("#breakGroup").hide();
-
+                $("#getnext").hide();
+                
                 if (msg.includes("waiting")) {
                     $("#breakGroup").css("display", "flex");
                     $("#dialGroup").css("display", "flex");
                     $("#onCallGroup").attr("style", "display: none !important;");
+                    $("#getnext").css("display", "flex");
                 }
                 else if (
                     msg.includes("talking") ||
@@ -212,16 +225,30 @@
                     $("#onCallGroup").css("display", "flex");
                     $("#dialGroup").attr("style", "display: none !important;");
                     $("#breakGroup").attr("style", "display: none !important;");
+                    $("#getnext").attr("style", "display: none !important;");
+
                 }
 
                 else if (msg.includes("wraping")) {
                     $("#dialGroup").css("display", "flex");
                     $("#onCallGroup").attr("style", "display: none !important;");
+                    $("#getnext").attr("style", "display: none !important;");
+                    $("#breakGroup").css("display", "flex");
 
                 }
-
                 else {
                 }
+
+
+
+                if (msg.includes("waiting")) {
+                    $("#getnext").css("display", "flex"); 
+                }
+                else {
+                    $("#getnext").attr("style", "display: none !important;");
+                }
+
+
                 if (
                     msg.includes("talking") ||
                     msg.includes("wraping") ||
@@ -371,11 +398,14 @@
                 showCancelButton: true,
                 confirmButtonText: 'Join',
                 inputValidator: (value) => {
-                    if (!value) return 'You must enter a number!';
+                    if (!value) {
+                        return 'You must enter a number!';
+                    }
                     const phoneRegex = /^\d{10}$/;
                     if (!phoneRegex.test(value)) {
-                        return alert("Phone number must be exactly 10 digits and contain only numbers.");
+                        return 'Phone number must be exactly 10 digits and contain only numbers.';
                     }
+                    return null; 
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -384,12 +414,42 @@
             });
         }
 
-        function sendBreak(reasonCode) {
+        function sendBreak(selectElement) {
+            const reasonCode = selectElement.value;
+       
+            if (!reasonCode) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'No break reason selected',
+                    text: 'Please select a valid break reason from the dropdown.',
+                    confirmButtonText: 'OK'
+                });
+                selectElement.selectedIndex = 0;
+                return; 
+            }
+           
             callAPI('/api/Genesys/break', 'POST', { reasonCode });
+            setTimeout(() => {
+                selectElement.selectedIndex = 0; 
+            }, 300);
         }
 
-        function sendTransfer(route) {
+        function sendTransfer(selectElement) {
+            const route = selectElement.value;
+            if (!route) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'No transfer route selected',
+                    text: 'Please select a valid transfer destination.',
+                    confirmButtonText: 'OK'
+                });
+                selectElement.selectedIndex = 0;
+                return;
+            }
             callAPI('/api/Genesys/transfer', 'POST', { route });
+            setTimeout(() => {
+                selectElement.selectedIndex = 0;
+            }, 300);
         }
     </script>
 
