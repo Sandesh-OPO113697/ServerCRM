@@ -35,7 +35,7 @@ namespace ServerCRM.Controllers
 
             string error;
             bool success = CTIConnectionManager.LoginAgent(agent,
-                agent.login_code.ToString(), agent.dn, agent.TserverIP_OFFICE, agent.TserverPort, out error
+                Convert.ToString( agent.login_code), agent.dn, agent.TserverIP_OFFICE, agent.TserverPort, out error
             );
 
             if (!success)
@@ -94,7 +94,7 @@ namespace ServerCRM.Controllers
         [HttpPost("merge")]
         public async Task<IActionResult> Merge()
         {
-            string login_code = HttpContext.Session.GetString("login_code");
+            string login_code = HttpContext.Session.GetString("login_code") ?? "";
             string returnStatus = await CTIConnectionManager.MergeConference(login_code);
             if (returnStatus != "")
             {

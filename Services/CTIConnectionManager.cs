@@ -149,13 +149,12 @@ namespace ServerCRM.Services
             }
             else
             {
-
             }
         }
         private static async Task ReceiveLoop(AgentSession session)
         {
-            ConnectionId connID = null;
-            Dictionary<string, string> attachedData = null;
+            ConnectionId? connID = null;
+            Dictionary<string, string>? attachedData = null;
             while (session.IsRunning)
             {
                 try
@@ -199,7 +198,6 @@ namespace ServerCRM.Services
                             session.ConnID = eventDialing.ConnID;
                             session.CurrentStatusID = 2;
                             AgentStatusMapper.UpdateAgentStatus(2, session, hubContext);
-
                         }
 
                         break;
@@ -304,7 +302,6 @@ namespace ServerCRM.Services
                                         session.CurrentStatusID = 3;
                                         CTIConnectionManager.HubContext.Clients.Group(session.AgentId).SendAsync("UpdatePhoneInput", session.partyFirstPhone);
                                     }
-
                                 }
                                 else
                                 {
@@ -347,6 +344,8 @@ namespace ServerCRM.Services
                         EventAgentLogout eventagentlogout = msg as EventAgentLogout;
                         if (eventagentlogout.ThisDN == session.DN)
                         {
+                            session.CurrentStatusID = 11;
+                            AgentStatusMapper.UpdateAgentStatus(Convert.ToInt32(11), session, CTIConnectionManager.HubContext);
                         }
                         break;
                     case EventDNOutOfService.MessageName:
@@ -427,7 +426,6 @@ namespace ServerCRM.Services
                                 {
                                     AgentStatusMapper.UpdateAgentStatus(3, session, hubContext);
                                     session.CurrentStatusID = 3;
-
                                 }
                                 catch (Exception ex1)
                                 {
@@ -477,7 +475,6 @@ namespace ServerCRM.Services
                                     CTIConnectionManager.HubContext.Clients.Group(session.AgentId).SendAsync("UpdatePhoneInput", session.CampaignPhone);
                                 }
 
-
                                 if (eventattacheddatachanged.UserData.Keys[i] == "GSW_CALLING_LIST")
                                 {
 
@@ -518,7 +515,6 @@ namespace ServerCRM.Services
                                 {
 
                                 }
-
 
                                 if (eventattacheddatachanged.UserData.Keys[i] == "GSIP_REC_FN")
                                 {
@@ -1126,7 +1122,7 @@ namespace ServerCRM.Services
         public static async Task<string> DisposeCall(string logincode, int dispo, int sub_dispo)
         {
            
-            string finishCode = "PCB";
+            string finishCode = "GEN";
             AgentSession session = GetAgentSession(logincode);
             var status = session.CurrentStatusID;
  
@@ -1199,6 +1195,7 @@ namespace ServerCRM.Services
 
                 if(session.upcommingEvent==11)
                 {
+                    AgentStatusMapper.UpdateAgentStatus(Convert.ToInt32(session.upcommingEvent), session, CTIConnectionManager.HubContext);
                     RequestAgentLogout requestAgentLogout = RequestAgentLogout.Create(session.DN);
                     IMessage iMessage = session.TServerProtocol.Request(requestAgentLogout);
                     session.upcommingEvent = null;
@@ -1234,7 +1231,7 @@ namespace ServerCRM.Services
                 }
                 else
                 {
-                    AgentReady(session.AgentId);
+                  var str = await  AgentReady(session.AgentId);
                     return "Record Saved Successfully";
                 }
 
@@ -1245,7 +1242,6 @@ namespace ServerCRM.Services
                 return "You current state is  : " + valueresoon + "Please make on Wrap";
             }
 
-            return "Record Saved Successfully";
 
         }
         public static async Task<string> LogOUT(string agentId)
@@ -1270,6 +1266,7 @@ namespace ServerCRM.Services
                     }
                     else
                     {
+                        AgentStatusMapper.UpdateAgentStatus(Convert.ToInt32(11), session, CTIConnectionManager.HubContext);
                         RequestAgentLogout requestAgentLogout = RequestAgentLogout.Create(session.DN);
                         IMessage iMessage = session.TServerProtocol.Request(requestAgentLogout);
 
@@ -1313,6 +1310,7 @@ namespace ServerCRM.Services
 
             if (session.upcommingEvent == 11)
             {
+                AgentStatusMapper.UpdateAgentStatus(Convert.ToInt32(session.upcommingEvent), session, CTIConnectionManager.HubContext);
                 RequestAgentLogout requestAgentLogout = RequestAgentLogout.Create(session.DN);
                 IMessage iMessage = session.TServerProtocol.Request(requestAgentLogout);
                 session.upcommingEvent = null;
@@ -1387,7 +1385,7 @@ namespace ServerCRM.Services
                     }
                     else
                     {
-                        return " Agent ready for next call.";
+                        return "Agent ready for next call.";
 
                     }
 
@@ -1399,7 +1397,6 @@ namespace ServerCRM.Services
             }
             return "";
         }
-
 
         public static void LogoutAgent(string agentId)
         {
@@ -1414,7 +1411,6 @@ namespace ServerCRM.Services
                 }
             }
         }
-
 
         private static void LogToFile(string text)
         {
