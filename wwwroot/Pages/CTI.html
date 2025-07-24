@@ -9,19 +9,17 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/signalr.min.js"></script>
     <style>
-
-
-        select, button {
-            width: 100%;
-            margin-top: 10px;
-            padding: 8px;
+        .navbar .btn {
+            height: 36px;
+            padding-top: 0.375rem;
+            padding-bottom: 0.375rem;
+            line-height: 1.2;
         }
     </style>
-
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary px-4 py-2">
+    <!--<nav class="navbar navbar-expand-lg navbar-dark bg-primary px-4 py-2">
         <a class="navbar-brand fs-4 me-4" href="#">📞 CRM Dialer</a>
 
         <div class="collapse navbar-collapse w-100">
@@ -48,7 +46,7 @@
                             <option value="3000002">3000002</option>
                         </select>
                     </div>
-                   
+
                 </div>
 
 
@@ -65,7 +63,7 @@
                             <option value="26">🧑‍💼 TL Feedback</option>
                         </select>
                     </div>
-                  
+
                 </div>
 
                 <div id="getnext" class="d-flex align-items-center gap-2" style="display: none !important;">
@@ -74,7 +72,7 @@
 
                 <div class="d-flex align-items-center gap-2">
                     <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/ready')">🕵️ Ready</button>
-                    
+
                     <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/disconnect')">❌ Disconnect</button>
                     <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/LogOut')">🕵️ Log-Out</button>
                 </div>
@@ -110,10 +108,116 @@
         </div>
     </div>
 
-
+        test
     <div class="ms-4 p-3 rounded bg-light shadow" style="min-width: 200px;" id="attachedDataContainer">
         <h6 class="text-dark">📄 Attached Data</h6>
         <div id="attachedData" class="text-dark small"></div>
+    </div>-->
+  
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm sticky-top px-4 py-2">
+        <a class="navbar-brand fs-4" href="#"><i class="fa-solid fa-phone"></i> CRM Dialer</a>
+
+        <div class="collapse navbar-collapse">
+            <div class="d-flex flex-wrap align-items-center gap-2 w-100">
+
+               
+                <input id="phoneInput" type="text" class="form-control form-control-sm" placeholder="📱 Enter mobile number" style="max-width: 200px;" />
+
+               
+                <div id="dialGroup" class="d-flex align-items-center gap-2" style="display: none !important;">
+                    <button class="btn btn-success btn-sm" onclick="makeCall()"><i class="fa-solid fa-phone"></i> Call</button>
+                </div>
+
+              
+                <div id="onCallGroup" class="d-flex align-items-center gap-2" style="display: none !important;">
+                    <button class="btn btn-warning btn-sm" onclick="callAPI('/api/Genesys/hold')"><i class="fa-solid fa-pause"></i> Hold</button>
+                    <button class="btn btn-info btn-sm" onclick="callAPI('/api/Genesys/unhold')"><i class="fa-solid fa-play"></i> Unhold</button>
+                    <button class="btn btn-secondary btn-sm" onclick="openConferencePrompt()"><i class="fa-solid fa-users"></i> Conference</button>
+                    <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/merge')">🔀 Merge</button>
+                    <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/party')">👤 Party Del</button>
+
+                    <div>
+                        <label class="small mb-0">Route Point</label>
+                        <select class="form-select form-select-sm" style="min-width: 130px;" onchange="sendTransfer(this)">
+                            <option disabled selected>⏬ Select route</option>
+                            <option value="3000002">3000002</option>
+                        </select>
+                    </div>
+                </div>
+
+             
+                <div id="breakGroup" class="d-flex align-items-center gap-2" style="display: none !important;">
+                    <div>
+                        <label class="small mb-0">Break</label>
+                        <select class="form-select form-select-sm" style="min-width: 130px;" onchange="sendBreak(this)">
+                            <option disabled selected>⏬ Select Reason</option>
+                            <option value="5">🍵 Tea</option>
+                            <option value="6">🍽 Lunch</option>
+                            <option value="7">📘 Training</option>
+                            <option value="8">🕵️ Quality</option>
+                            <option value="9">🚻 Bio</option>
+                            <option value="26">🧑‍💼 TL Feedback</option>
+                        </select>
+                    </div>
+                </div>
+
+               
+                <div id="getnext" class="d-flex align-items-center gap-2" style="display: none !important;">
+                    <button class="btn btn-dark btn-sm" onclick="callAPI('/api/Genesys/GetNext')">🕵️ Get Next</button>
+                </div>
+
+       
+                <div class="d-flex align-items-center gap-2 ms-auto">
+                    <button class="btn btn-outline-light btn-sm" onclick="callAPI('/api/Genesys/ready')">🟢 Ready</button>
+                    <button class="btn btn-outline-light btn-sm" onclick="callAPI('/api/Genesys/disconnect')">❌ Disconnect</button>
+                    <button class="btn btn-outline-light btn-sm" onclick="callAPI('/api/Genesys/LogOut')">🚪 Log Out</button>
+                </div>
+
+        
+                <div class="ms-3 bg-dark text-light p-2 px-3 rounded shadow-sm text-end">
+                    <div id="username" class="fw-bold">Agent Name</div>
+                    <div id="status" class="badge bg-warning text-dark mt-1">Status</div>
+                    <div id="callTimer" class="fw-bold mt-1">⏱ 00:00</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container-fluid mt-3 px-4">
+        <div class="row g-3">
+            <div class="col-md-12 col-lg-10">
+                <div class="bg-white p-3 rounded shadow-sm">
+                    <h6 class="mb-3"><i class="fa-solid fa-clipboard-list"></i> Disposition & Wrap-up</h6>
+                    <div class="row g-2 align-items-center">
+                        <div class="col-auto">
+                            <label for="disposition" class="form-label mb-0">Disposition</label>
+                            <select id="disposition" class="form-select form-select-sm" onchange="updateSubDisposition()">
+                                <option value="">-- Select Disposition --</option>
+                                <option value="1">Call Back</option>
+                                <option value="2">Disconnect</option>
+                                <option value="3">Busy</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <label for="subDisposition" class="form-label mb-0">Sub Disposition</label>
+                            <select id="subDisposition" class="form-select form-select-sm">
+                                <option value="">-- Select Sub Disposition --</option>
+                            </select>
+                        </div>
+                        <div class="col-auto mt-4">
+                            <button class="btn btn-primary btn-sm" onclick="submitDisposition()"><i class="fa-solid fa-paper-plane"></i> Submit</button>
+                        </div>
+                    </div>
+                </div>
+
+            
+                <div class="bg-white p-3 rounded shadow-sm mt-3">
+                    <h6><i class="fa-solid fa-paperclip"></i> Attached Data</h6>
+                    <div id="attachedData" class="text-dark small"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -209,7 +313,7 @@
                 $("#onCallGroup").hide();
                 $("#breakGroup").hide();
                 $("#getnext").hide();
-                
+
                 if (msg.includes("waiting")) {
                     $("#breakGroup").css("display", "flex");
                     $("#dialGroup").css("display", "flex");
@@ -242,7 +346,7 @@
 
 
                 if (msg.includes("waiting")) {
-                    $("#getnext").css("display", "flex"); 
+                    $("#getnext").css("display", "flex");
                 }
                 else {
                     $("#getnext").attr("style", "display: none !important;");
@@ -347,17 +451,17 @@
                 .then(async res => {
                     if (!res.ok) {
                         const errorText = await res.text();
-                        if (errorText ==="Agent ready for next call.") {
+                        if (errorText === "Agent ready for next call.") {
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Success',
-                                text: errorText ,
+                                text: errorText,
                             });
                         }
                         else {
                             throw new Error(errorText || "API call failed");
                         }
-                        
+
                     } else {
                         console.log("✅ API call successful.");
                     }
@@ -405,7 +509,7 @@
                     if (!phoneRegex.test(value)) {
                         return 'Phone number must be exactly 10 digits and contain only numbers.';
                     }
-                    return null; 
+                    return null;
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -416,7 +520,7 @@
 
         function sendBreak(selectElement) {
             const reasonCode = selectElement.value;
-       
+
             if (!reasonCode) {
                 Swal.fire({
                     icon: 'warning',
@@ -425,12 +529,12 @@
                     confirmButtonText: 'OK'
                 });
                 selectElement.selectedIndex = 0;
-                return; 
+                return;
             }
-           
+
             callAPI('/api/Genesys/break', 'POST', { reasonCode });
             setTimeout(() => {
-                selectElement.selectedIndex = 0; 
+                selectElement.selectedIndex = 0;
             }, 300);
         }
 
