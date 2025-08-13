@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "BBOewyYgdg8Yit8IaLoGM55bqeRTSWwlW4+BVELSJhg=",
+  "Hash": "lX8ZGS69Phl/1brqa9IeHd0IY0mWpa68xY7oykeBw50=",
   "Source": "ServerCRM",
   "BasePath": "_content/ServerCRM",
   "Mode": "Default",
@@ -99,6 +99,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\js\\jssip.min.js",
+      "SourceId": "ServerCRM",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\",
+      "BasePath": "_content/ServerCRM",
+      "RelativePath": "js/jssip.min#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "23n1vhytrh",
+      "Integrity": "4hFDmw8xgDbvW6TfoQ70yKImDykABwjtByiBTB+r0sU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\jssip.min.js"
     },
     {
       "Identity": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\js\\signalr.min.js",
@@ -1354,8 +1375,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "mhm6976ozl",
-      "Integrity": "Wjyd3r1XGgwfOfV2UBw4rUsLYdDMlD4lOnA5PpSwARQ=",
+      "Fingerprint": "xoqi6pnqgb",
+      "Integrity": "oRHaHMad/IgJk31+CMuB+vkBND062plJtiWMS4CIg/s=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Pages\\CTI.html"
@@ -1380,6 +1401,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Pages\\LogIn.html"
+    },
+    {
+      "Identity": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\sip.html",
+      "SourceId": "ServerCRM",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\",
+      "BasePath": "_content/ServerCRM",
+      "RelativePath": "Pages/sip#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ll4deczd8p",
+      "Integrity": "iUZ0usDRdJM/n3TmZbT9deDyhs6RNhFlZyCG2YXrskU=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Pages\\sip.html"
     }
   ],
   "Endpoints": [
@@ -1544,6 +1586,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM="
+        }
+      ]
+    },
+    {
+      "Route": "js/jssip.min.23n1vhytrh.js",
+      "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\js\\jssip.min.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "279556"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4hFDmw8xgDbvW6TfoQ70yKImDykABwjtByiBTB+r0sU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 02 Jul 2025 06:52:15 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "23n1vhytrh"
+        },
+        {
+          "Name": "label",
+          "Value": "js/jssip.min.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-4hFDmw8xgDbvW6TfoQ70yKImDykABwjtByiBTB+r0sU="
+        }
+      ]
+    },
+    {
+      "Route": "js/jssip.min.js",
+      "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\js\\jssip.min.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "279556"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4hFDmw8xgDbvW6TfoQ70yKImDykABwjtByiBTB+r0sU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 02 Jul 2025 06:52:15 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-4hFDmw8xgDbvW6TfoQ70yKImDykABwjtByiBTB+r0sU="
         }
       ]
     },
@@ -6396,7 +6520,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "27357"
+          "Value": "27336"
         },
         {
           "Name": "Content-Type",
@@ -6404,11 +6528,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Wjyd3r1XGgwfOfV2UBw4rUsLYdDMlD4lOnA5PpSwARQ=\""
+          "Value": "\"oRHaHMad/IgJk31+CMuB+vkBND062plJtiWMS4CIg/s=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 24 Jul 2025 07:03:37 GMT"
+          "Value": "Fri, 25 Jul 2025 13:02:10 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6418,12 +6542,12 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-Wjyd3r1XGgwfOfV2UBw4rUsLYdDMlD4lOnA5PpSwARQ="
+          "Value": "sha256-oRHaHMad/IgJk31+CMuB+vkBND062plJtiWMS4CIg/s="
         }
       ]
     },
     {
-      "Route": "Pages/CTI.mhm6976ozl.html",
+      "Route": "Pages/CTI.xoqi6pnqgb.html",
       "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\CTI.html",
       "Selectors": [],
       "ResponseHeaders": [
@@ -6433,7 +6557,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "27357"
+          "Value": "27336"
         },
         {
           "Name": "Content-Type",
@@ -6441,11 +6565,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Wjyd3r1XGgwfOfV2UBw4rUsLYdDMlD4lOnA5PpSwARQ=\""
+          "Value": "\"oRHaHMad/IgJk31+CMuB+vkBND062plJtiWMS4CIg/s=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Thu, 24 Jul 2025 07:03:37 GMT"
+          "Value": "Fri, 25 Jul 2025 13:02:10 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6455,7 +6579,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "mhm6976ozl"
+          "Value": "xoqi6pnqgb"
         },
         {
           "Name": "label",
@@ -6463,7 +6587,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-Wjyd3r1XGgwfOfV2UBw4rUsLYdDMlD4lOnA5PpSwARQ="
+          "Value": "sha256-oRHaHMad/IgJk31+CMuB+vkBND062plJtiWMS4CIg/s="
         }
       ]
     },
@@ -6550,6 +6674,88 @@
       ]
     },
     {
+      "Route": "Pages/sip.html",
+      "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\sip.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1496"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"iUZ0usDRdJM/n3TmZbT9deDyhs6RNhFlZyCG2YXrskU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 28 Jul 2025 04:45:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-iUZ0usDRdJM/n3TmZbT9deDyhs6RNhFlZyCG2YXrskU="
+        }
+      ]
+    },
+    {
+      "Route": "Pages/sip.ll4deczd8p.html",
+      "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\sip.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1496"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"iUZ0usDRdJM/n3TmZbT9deDyhs6RNhFlZyCG2YXrskU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 28 Jul 2025 04:45:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ll4deczd8p"
+        },
+        {
+          "Name": "label",
+          "Value": "Pages/sip.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-iUZ0usDRdJM/n3TmZbT9deDyhs6RNhFlZyCG2YXrskU="
+        }
+      ]
+    },
+    {
       "Route": "ServerCRM.bundle.scp.css",
       "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\obj\\Release\\net6.0\\scopedcss\\projectbundle\\ServerCRM.bundle.scp.css",
       "Selectors": [],
@@ -6572,7 +6778,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 22 Jul 2025 13:06:43 GMT"
+          "Value": "Fri, 25 Jul 2025 12:58:45 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6609,7 +6815,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 22 Jul 2025 13:06:43 GMT"
+          "Value": "Fri, 25 Jul 2025 12:58:45 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6654,7 +6860,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 22 Jul 2025 13:06:43 GMT"
+          "Value": "Fri, 25 Jul 2025 12:58:45 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6699,7 +6905,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 22 Jul 2025 13:06:43 GMT"
+          "Value": "Fri, 25 Jul 2025 12:58:45 GMT"
         },
         {
           "Name": "Cache-Control",

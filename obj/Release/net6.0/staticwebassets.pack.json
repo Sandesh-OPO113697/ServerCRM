@@ -13,12 +13,20 @@
       "PackagePath": "staticwebassets\\Pages\\LogIn.html"
     },
     {
+      "Id": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\sip.html",
+      "PackagePath": "staticwebassets\\Pages\\sip.html"
+    },
+    {
       "Id": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
       "Id": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\js\\jssip.min.js",
+      "PackagePath": "staticwebassets\\js\\jssip.min.js"
     },
     {
       "Id": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\js\\signalr.min.js",
