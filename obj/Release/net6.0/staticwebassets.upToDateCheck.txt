@@ -1,5 +1,6 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\img\Logo 1 Connect.png
 wwwroot\js\jssip.min.js
 wwwroot\js\signalr.min.js
 wwwroot\js\site.js
@@ -60,6 +61,7 @@ wwwroot\lib\jquery-validation\LICENSE.md
 wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js
 wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js
 wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
+wwwroot\Pages\CRM.html
 wwwroot\Pages\CTI.html
 wwwroot\Pages\LogIn.html
 wwwroot\Pages\sip.html

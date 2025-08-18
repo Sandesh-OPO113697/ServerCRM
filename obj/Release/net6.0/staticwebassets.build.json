@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "lX8ZGS69Phl/1brqa9IeHd0IY0mWpa68xY7oykeBw50=",
+  "Hash": "WpbF3grtMoZubrVOOl0I+6jyvi5HxTXQWWZxw1YRkYw=",
   "Source": "ServerCRM",
   "BasePath": "_content/ServerCRM",
   "Mode": "Default",
@@ -99,6 +99,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\img\\Logo 1 Connect.png",
+      "SourceId": "ServerCRM",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\",
+      "BasePath": "_content/ServerCRM",
+      "RelativePath": "img/Logo 1 Connect#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "iptb8u29ff",
+      "Integrity": "2vQx6A0UYSfT2YOKL83nyOO39lrySDnOZArgpf2vSm4=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\img\\Logo 1 Connect.png"
     },
     {
       "Identity": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\js\\jssip.min.js",
@@ -1361,6 +1382,27 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
     },
     {
+      "Identity": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\CRM.html",
+      "SourceId": "ServerCRM",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\",
+      "BasePath": "_content/ServerCRM",
+      "RelativePath": "Pages/CRM#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ros04g8964",
+      "Integrity": "xeoPL29Ha3uYDxqA48QdoW6x5mvbVcVT1uOebcZgil0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Pages\\CRM.html"
+    },
+    {
       "Identity": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\CTI.html",
       "SourceId": "ServerCRM",
       "SourceType": "Discovered",
@@ -1396,8 +1438,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "uobdrfv0c7",
-      "Integrity": "bgNYQF9l6Ztgr42wlr6t2NvKqPAoKld/z0b5uKr7HHU=",
+      "Fingerprint": "09dz9c6jkx",
+      "Integrity": "LFlPytbXi+GrzY+ED657zWJLHV5MVzpAepF1yOvsyac=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Pages\\LogIn.html"
@@ -1586,6 +1628,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM="
+        }
+      ]
+    },
+    {
+      "Route": "img/Logo 1 Connect.iptb8u29ff.png",
+      "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\img\\Logo 1 Connect.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "7237"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"2vQx6A0UYSfT2YOKL83nyOO39lrySDnOZArgpf2vSm4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 18 Aug 2025 10:58:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "iptb8u29ff"
+        },
+        {
+          "Name": "label",
+          "Value": "img/Logo 1 Connect.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-2vQx6A0UYSfT2YOKL83nyOO39lrySDnOZArgpf2vSm4="
+        }
+      ]
+    },
+    {
+      "Route": "img/Logo 1 Connect.png",
+      "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\img\\Logo 1 Connect.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "7237"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"2vQx6A0UYSfT2YOKL83nyOO39lrySDnOZArgpf2vSm4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 18 Aug 2025 10:58:50 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-2vQx6A0UYSfT2YOKL83nyOO39lrySDnOZArgpf2vSm4="
         }
       ]
     },
@@ -6510,6 +6634,88 @@
       ]
     },
     {
+      "Route": "Pages/CRM.html",
+      "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\CRM.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "79505"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"xeoPL29Ha3uYDxqA48QdoW6x5mvbVcVT1uOebcZgil0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 18 Aug 2025 12:32:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-xeoPL29Ha3uYDxqA48QdoW6x5mvbVcVT1uOebcZgil0="
+        }
+      ]
+    },
+    {
+      "Route": "Pages/CRM.ros04g8964.html",
+      "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\CRM.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "79505"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"xeoPL29Ha3uYDxqA48QdoW6x5mvbVcVT1uOebcZgil0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 18 Aug 2025 12:32:14 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ros04g8964"
+        },
+        {
+          "Name": "label",
+          "Value": "Pages/CRM.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-xeoPL29Ha3uYDxqA48QdoW6x5mvbVcVT1uOebcZgil0="
+        }
+      ]
+    },
+    {
       "Route": "Pages/CTI.html",
       "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\CTI.html",
       "Selectors": [],
@@ -6592,6 +6798,51 @@
       ]
     },
     {
+      "Route": "Pages/LogIn.09dz9c6jkx.html",
+      "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\LogIn.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11945"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"LFlPytbXi+GrzY+ED657zWJLHV5MVzpAepF1yOvsyac=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 18 Aug 2025 11:11:26 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "09dz9c6jkx"
+        },
+        {
+          "Name": "label",
+          "Value": "Pages/LogIn.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-LFlPytbXi+GrzY+ED657zWJLHV5MVzpAepF1yOvsyac="
+        }
+      ]
+    },
+    {
       "Route": "Pages/LogIn.html",
       "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\LogIn.html",
       "Selectors": [],
@@ -6602,7 +6853,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1116"
+          "Value": "11945"
         },
         {
           "Name": "Content-Type",
@@ -6610,11 +6861,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"bgNYQF9l6Ztgr42wlr6t2NvKqPAoKld/z0b5uKr7HHU=\""
+          "Value": "\"LFlPytbXi+GrzY+ED657zWJLHV5MVzpAepF1yOvsyac=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 15 Jul 2025 10:36:54 GMT"
+          "Value": "Mon, 18 Aug 2025 11:11:26 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6624,52 +6875,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-bgNYQF9l6Ztgr42wlr6t2NvKqPAoKld/z0b5uKr7HHU="
-        }
-      ]
-    },
-    {
-      "Route": "Pages/LogIn.uobdrfv0c7.html",
-      "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\LogIn.html",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "1116"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/html"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"bgNYQF9l6Ztgr42wlr6t2NvKqPAoKld/z0b5uKr7HHU=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 15 Jul 2025 10:36:54 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "uobdrfv0c7"
-        },
-        {
-          "Name": "label",
-          "Value": "Pages/LogIn.html"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-bgNYQF9l6Ztgr42wlr6t2NvKqPAoKld/z0b5uKr7HHU="
+          "Value": "sha256-LFlPytbXi+GrzY+ED657zWJLHV5MVzpAepF1yOvsyac="
         }
       ]
     },
