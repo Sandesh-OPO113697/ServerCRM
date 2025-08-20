@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using ServerCRM.Models;
 using ServerCRM.Models.CTI;
 using ServerCRM.Models.LogIn;
 using ServerCRM.Services;
+using System.DirectoryServices.AccountManagement;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
+
 
 namespace ServerCRM.Controllers
 {
@@ -12,20 +16,33 @@ namespace ServerCRM.Controllers
     public class GenesysController : ControllerBase
     {
         private readonly ApiService _apiService;
+        private readonly AuthService _auth;
 
-        public GenesysController(ApiService apiService)
+        public GenesysController(ApiService apiService , AuthService authService)
         {
             _apiService = apiService;
+            _auth = authService;
+        }
+        
+        [HttpPost("checkUser")]
+        public async Task<IActionResult> UserlogInCheckcredentials([FromBody] CheckCredentials request)
+        {
+           
+            var isValid = await _auth.CheckCredentialsAsync(request).ConfigureAwait(false);
+            if (isValid == false)
+            {
+                return BadRequest("Username and password not match");
+            }
+            else
+            {
+                return Ok(new { message = "user match successfully" });
+            }
         }
 
         [HttpPost("dialer")]
         public async Task<IActionResult> Dialer([FromBody] LoginRequest request)
         {
-            if (string.IsNullOrEmpty(request.empCode))
-                return BadRequest("empCode is required");
-
             CL_AgentDet agent = await _apiService.GetAgentDetailsAsync(request.empCode);
-
             if (agent == null)
                 return NotFound("Agent not found");
 
@@ -35,13 +52,14 @@ namespace ServerCRM.Controllers
 
             string error;
             bool success = CTIConnectionManager.LoginAgent(agent,
-                Convert.ToString( agent.login_code), agent.dn, agent.TserverIP_OFFICE, agent.TserverPort, out error
+                Convert.ToString(agent.login_code), agent.dn, agent.TserverIP_OFFICE, agent.TserverPort, out error
             );
 
             if (!success)
                 return StatusCode(500, "CTI login failed: " + error);
 
             return Ok(new { message = "Agent logged in successfully", logincode = agent.login_code });
+
         }
 
         [HttpPost("makecall")]

@@ -4,7 +4,8 @@ using ServerCRM.Services;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
-builder.Services.AddScoped<ApiService>();
+builder.Services.AddTransient<ApiService>();
+builder.Services.AddTransient<AuthService>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {

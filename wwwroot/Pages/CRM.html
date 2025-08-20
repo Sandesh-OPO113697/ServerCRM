@@ -5,6 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <style>
+
+
+
+        .tab-btn {
+            padding: 6px 12px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px 4px 0 0;
+            background: #f9f9f9;
+            cursor: pointer;
+        }
+
+            .tab-btn.active {
+                background: #fff;
+                border-bottom: 1px solid #fff;
+                font-weight: 600;
+            }
+
         * {
             margin: 0;
             padding: 0;
@@ -870,7 +888,7 @@
                     <img style=" width: 49px;" src="../img/Logo 1 Connect.png" />
                 </div>
                 <div class="logo-text">
-                   
+
                 </div>
             </div>
 
@@ -890,25 +908,25 @@
                     <div class="call-controls">
                         <div class="control-group">
 
-                            <div class="control-btn" id="dialGroup">
+                            <div title="Call" class="control-btn" id="dialGroup">
                                 <svg viewBox="0 0 32 32" onclick="makeCall()">
                                     <path d="M10.0502 10.8932C10.0502 10.3143 10.5194 9.84508 11.0983 9.84508H13.3546C13.867 9.84508 14.3042 10.2155 14.3885 10.7208L15.1633 15.37C15.2389 15.8238 15.0097 16.2739 14.5982 16.4797L12.9756 17.291C14.1456 20.1983 16.4662 22.5188 19.3734 23.6888L20.1847 22.0662C20.3905 21.6547 20.8406 21.4255 21.2945 21.5011L25.9436 22.276C26.449 22.3602 26.8194 22.7975 26.8194 23.3098V25.5662C26.8194 26.145 26.3501 26.6143 25.7713 26.6143H23.6751C16.1503 26.6143 10.0502 20.5142 10.0502 12.9893V10.8932Z" fill="#06C270" />
                                 </svg>
                             </div>
-                            <div class="control-btn">
+                            <div title="Disconnect" class="control-btn">
                                 <svg viewBox="0 0 32 32" onclick="callAPI('/api/Genesys/disconnect')">
                                     <path d="M30.0015 19.8085C30.4202 20.2082 30.4355 20.8716 30.0357 21.2903L28.4775 22.9222C28.1237 23.2927 27.5538 23.3532 27.1302 23.0651L23.2326 20.4148C22.8521 20.1561 22.6849 19.6795 22.8203 19.2397L23.3541 17.5059C20.4434 16.3443 17.1626 16.4201 14.3086 17.7148L14.9218 19.4221C15.0774 19.8551 14.9323 20.339 14.5642 20.6149L10.7931 23.4423C10.3831 23.7496 9.8111 23.7155 9.44059 23.3617L7.80867 21.8034C7.39002 21.4037 7.37471 20.7403 7.77446 20.3216L9.22205 18.8056C14.4187 13.3634 23.0432 13.1642 28.4855 18.3609L30.0015 19.8085Z" fill="#FF2C02" />
                                 </svg>
                             </div>
 
-                            <div class="control-btn" id="hold" style="display: none !important;">
+                            <div class="control-btn" id="Hold" style="display: none !important;">
                                 <div class="pause-bars" onclick="callAPI('/api/Genesys/hold')">
                                     <div class="pause-bar"></div>
                                     <div class="pause-bar"></div>
                                 </div>
                             </div>
 
-                            <div class="control-btn" id="unhold" style="display: none !important;">
+                            <div title="Un-Hold" class="control-btn" id="unhold" style="display: none !important;">
                                 <svg width="19.548" height="19.548" fill="none" viewBox="0 0 20 20" onclick="callAPI('/api/Genesys/unhold')">
                                     <path d="M16.8332 8.48601C17.8463 9.04294 17.8463 10.4986 16.8332 11.0556L7.05951 16.4284C6.08242 16.9655 4.88712 16.2585 4.88712 15.1436V4.39804C4.88712 3.28303 6.08242 2.57612 7.05951 3.11324L16.8332 8.48601Z" fill="url(#paint0_linear_1_3733)" />
                                     <defs>
@@ -919,7 +937,7 @@
                                     </defs>
                                 </svg>
                             </div>
-                            <div class="control-btn" id="confo" style="display: none !important;">
+                            <div title="Conference" class="control-btn" id="confo" style="display: none !important;">
                                 <svg width="16" height="16" fill="none" viewBox="0 0 18 16" onclick="openConferencePrompt()">
                                     <path d="M6.93319 8.16425C8.9724 8.16425 10.6308 6.50589 10.6308 4.46667C10.6308 2.42745 8.9724 0.769082 6.93319 0.769082C4.89397 0.769082 3.2356 2.42745 3.2356 4.46667C3.2356 6.50589 4.89397 8.16425 6.93319 8.16425ZM8.31978 9.08865H5.54659C2.48776 9.08865 0.000212848 11.5762 0.000212848 14.635V15.5594H13.8662V14.635C13.8662 11.5762 11.3786 9.08865 8.31978 9.08865Z" fill="#BE5ADC" />
                                     <path d="M13.5002 7.28423C14.0632 6.32478 14.3063 5.21109 14.1944 4.1043C14.0289 2.45518 13.1082 0.997407 11.6033 -1.68085e-05L10.5818 1.54003C11.6162 2.22593 12.2458 3.20302 12.3548 4.28918C12.4051 4.79399 12.3423 5.30367 12.1709 5.78114C11.9995 6.25861 11.7238 6.69188 11.3639 7.04943L10.262 8.15131L11.7577 8.5904C15.6697 9.73665 15.715 13.6709 15.715 13.7106H17.5638C17.5638 12.0569 16.6801 8.82519 13.5002 7.28423Z" fill="#BE5ADC" />
@@ -930,7 +948,7 @@
 
 
 
-                            <div class="control-btn" id="merge" style="display: none !important;">
+                            <div title="Merge" class="control-btn" id="merge" style="display: none !important;">
                                 <svg width="20" height="12" fill="none" viewBox="0 0 20 12" onclick="callAPI('/api/Genesys/merge')">
                                     <path d="M18.3246 6.75117H12.1521C11.0912 6.75117 10.0303 6.46184 9.06586 5.97961C8.10141 5.49738 7.32984 4.72582 6.65473 3.85781C5.78672 2.70047 4.34004 1.92891 2.79691 1.92891H0.964453C0.385781 1.92891 0 1.54313 0 0.964453C0 0.385781 0.385781 0 0.964453 0H2.79691C4.91871 0 6.94406 1.0609 8.19785 2.79691C8.58363 3.37559 9.1623 3.95426 9.83742 4.24359C10.5125 4.62937 11.2841 4.72582 11.9592 4.72582H18.3246C18.9033 4.72582 19.2891 5.1116 19.2891 5.69027C19.2891 6.26895 18.9033 6.75117 18.3246 6.75117Z" fill="#7A7CA6" />
                                     <path d="M2.89336 11.5734H0.964453C0.385781 11.5734 0 11.1876 0 10.609C0 10.0303 0.385781 9.64452 0.964453 9.64452H2.89336C3.66492 9.64452 4.43648 9.45163 5.01516 9.16229C5.69027 8.77651 6.26895 8.29428 6.65473 7.71561C7.2334 6.8476 8.10141 6.17249 9.06586 5.59382C10.0303 5.11159 11.0912 4.82225 12.1521 4.82225H17.3602C17.9388 4.82225 18.3246 5.20803 18.3246 5.78671C18.3246 6.36538 17.9388 6.75116 17.3602 6.75116H12.0557C11.2841 6.75116 10.5125 6.94405 9.93387 7.23339C9.25875 7.61917 8.68008 8.10139 8.2943 8.68007C7.71563 9.54807 6.84762 10.2232 5.88316 10.8019C4.91871 11.2841 3.85781 11.5734 2.89336 11.5734Z" fill="#7A7CA6" />
@@ -939,7 +957,7 @@
                             </div>
 
                             <div class="control-btn" id="party" style="display: none !important;">
-                                <div title="Cancel" onclick="callAPI('/api/Genesys/party')">
+                                <div title="Remove Conference" onclick="callAPI('/api/Genesys/party')">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="#FF3B30">
                                         <circle cx="12" cy="12" r="10" />
                                         <line x1="15" y1="9" x2="9" y2="15" stroke="#fff" stroke-width="2" stroke-linecap="round" />
@@ -970,7 +988,7 @@
 
     <!-- Main Content -->
     <div class="main-content">
-       
+
 
         <!-- Agent Profile Section -->
         <div class="agent-profile-section">
@@ -1003,7 +1021,7 @@
                                     <path d="M16.8262 13.3525L14.6038 13.0987C14.07 13.0375 13.545 13.2212 13.1688 13.5975L11.5588 15.2075C9.0825 13.9475 7.0525 11.9262 5.7925 9.44125L7.41125 7.8225C7.7875 7.44625 7.97125 6.92125 7.91 6.3875L7.65625 4.1825C7.55125 3.29875 6.8075 2.63375 5.915 2.63375H4.40125C3.4125 2.63375 2.59 3.45625 2.65125 4.445C3.115 11.9175 9.09125 17.885 16.555 18.3487C17.5438 18.41 18.3662 17.5875 18.3662 16.5987V15.085C18.375 14.2012 17.71 13.4575 16.8262 13.3525Z" fill="#7993A5" />
                                 </svg>
                             </div>
-                            <div class="action-btn-label">Get Next</div>
+                            <div class="action-btn-label">Next Call</div>
                         </div>
                         <div id="break" class="action-btn" style="position:relative;" onclick="toggleBreakDropdown(event)">
 
@@ -1080,12 +1098,12 @@
                         <div id="dialer-details"
                              style="max-height:0;overflow:hidden;transition:max-height 0.3s ease-out;margin-top:5px;padding:0 10px;border:1px solid #ddd;border-radius:6px;background:#fafafa;">
                             <div style="padding:10px 0;">
-                                <div style="margin-top:3px;"><strong style="color:gray;">Batch ID:</strong> <span id="batchId">12345</span></div>
+                                <div style="margin-top:3px;"><strong style="color:gray;">Batch ID:</strong> <span id="batchId"></span></div>
                                 <div style="margin-top:3px;"><strong style="color:gray;">Campaign Name:</strong> <span id="campaignName">-</span></div>
 
                                 <div style="margin-top:3px;"> <strong style="color:gray;">Mode: </strong><span id="mode">-</span></div>
-                                <div style="margin-top:3px;"> <strong style="color:gray;">MyCode:</strong> <span id="objectId">-</span></div>
-                                <div style="margin-top:3px;"><strong style="color:gray;">Event:</strong> <span id="eventType">Inbound Call</span></div>
+                                <div style="margin-top:3px;"> <strong style="color:gray;">MyCode:</strong> <span id="mycode">-</span></div>
+                                <div style="margin-top:3px;"><strong style="color:gray;">Event:</strong> <span id="eventType"></span></div>
                             </div>
                         </div>
                     </div>
@@ -1093,26 +1111,26 @@
 
                     <div class="dialer-content">
                         <!--<div class="form-section">
-                        <div class="receiving-header">
-                            <div class="form-label">From</div>
-                            <div style="transform: rotate(180deg);">
-                                <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
-                                    <path d="M10.5893 13.0893C10.2638 13.4147 9.73618 13.4147 9.41074 13.0893L5.24408 8.92259C4.91864 8.59715 4.91864 8.06951 5.24408 7.74408C5.56951 7.41864 6.09715 7.41864 6.42259 7.74408L10 11.3215L13.5774 7.74408C13.9028 7.41864 14.4305 7.41864 14.7559 7.74408C15.0814 8.06951 15.0814 8.59715 14.7559 8.92259L10.5893 13.0893Z" fill="#0E0E11" />
-                                </svg>
+                            <div class="receiving-header">
+                                <div class="form-label">From</div>
+                                <div style="transform: rotate(180deg);">
+                                    <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+                                        <path d="M10.5893 13.0893C10.2638 13.4147 9.73618 13.4147 9.41074 13.0893L5.24408 8.92259C4.91864 8.59715 4.91864 8.06951 5.24408 7.74408C5.56951 7.41864 6.09715 7.41864 6.42259 7.74408L10 11.3215L13.5774 7.74408C13.9028 7.41864 14.4305 7.41864 14.7559 7.74408C15.0814 8.06951 15.0814 8.59715 14.7559 8.92259L10.5893 13.0893Z" fill="#0E0E11" />
+                                    </svg>
+                                </div>
                             </div>
-                        </div>
-                    </div>-->
+                        </div>-->
 
                         <div class="form-section">
                             <div class="receiving-header">
-                                <div class="form-label">Receiving</div>
-                                <div class="add-recipients">
+                                <div class="form-label">Mobile Number</div>
+                                <!--<div class="add-recipients">
                                     <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
                                         <path d="M10 16.6667C13.6819 16.6667 16.6667 13.6819 16.6667 10C16.6667 6.3181 13.6819 3.33333 10 3.33333C6.3181 3.33333 3.33333 6.3181 3.33333 10C3.33333 13.6819 6.3181 16.6667 10 16.6667ZM10 18.3333C14.6024 18.3333 18.3333 14.6024 18.3333 10C18.3333 5.39763 14.6024 1.66667 10 1.66667C5.39763 1.66667 1.66667 5.39763 1.66667 10C1.66667 14.6024 5.39763 18.3333 10 18.3333Z" fill="#548FF7" />
                                         <path d="M10 5.83333C9.53976 5.83333 9.16667 6.20643 9.16667 6.66667V9.16667H6.66667C6.20643 9.16667 5.83333 9.53976 5.83333 10C5.83333 10.4602 6.20643 10.8333 6.66667 10.8333H9.16667V13.3333C9.16667 13.7936 9.53976 14.1667 10 14.1667C10.4602 14.1667 10.8333 13.7936 10.8333 13.3333V10.8333H13.3333C13.7936 10.8333 14.1667 10.4602 14.1667 10C14.1667 9.53976 13.7936 9.16667 13.3333 9.16667H10.8333V6.66667C10.8333 6.20643 10.4602 5.83333 10 5.83333Z" fill="#548FF7" />
                                     </svg>
                                     <div class="add-recipients-text">Add Recipients</div>
-                                </div>
+                                </div>-->
                             </div>
 
                             <div class="recipient-card">
@@ -1120,21 +1138,21 @@
 
                                     <div class="recipient-info">
                                         <div class="recipient-name" id="status"> </div>
-                                        <input id="phoneInput" style="height:34px; border:none; border-radius:10px; text-align:center; width:290px; font-size:16px;" type="number" style="height: 34px; border: none; border-radius: 10px;" class="recipient-phone" placeholder="  7058053821" />
+                                        <input id="phoneInput" style="height:34px; border:none; border-radius:10px; text-align:center; width:290px; font-size:16px;" pattern="[0-9]*" inputmode="numeric" style="height: 34px; border: none; border-radius: 10px;" class="recipient-phone" placeholder="  Enter Phone Number" />
 
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="ongoing-call-btn">
+                        <!--<div class="ongoing-call-btn">
                             <div class="ongoing-call-content">
                                 <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M18.125 19C16.3889 19 14.6736 18.6214 12.9792 17.8642C11.2847 17.1069 9.74306 16.0342 8.35417 14.6458C6.96528 13.2569 5.8925 11.7153 5.13583 10.0208C4.37917 8.32639 4.00056 6.61111 4 4.875C4 4.625 4.08333 4.41667 4.25 4.25C4.41667 4.08333 4.625 4 4.875 4H8.25C8.44444 4 8.61806 4.06611 8.77083 4.19833C8.92361 4.33056 9.01389 4.48667 9.04167 4.66667L9.58333 7.58333C9.61111 7.80556 9.60417 7.99306 9.5625 8.14583C9.52083 8.29861 9.44444 8.43056 9.33333 8.54167L7.3125 10.5833C7.59028 11.0972 7.92 11.5936 8.30167 12.0725C8.68333 12.5514 9.10361 13.0133 9.5625 13.4583C9.99306 13.8889 10.4444 14.2883 10.9167 14.6567C11.3889 15.025 11.8889 15.3617 12.4167 15.6667L14.375 13.7083C14.5 13.5833 14.6633 13.4894 14.865 13.4267C15.0667 13.3639 15.2644 13.3467 15.4583 13.375L18.3333 13.9583C18.5278 14.0139 18.6875 14.1147 18.8125 14.2608C18.9375 14.4069 19 14.57 19 14.75V18.125C19 18.375 18.9167 18.5833 18.75 18.75C18.5833 18.9167 18.375 19 18.125 19Z" fill="#F7F7F8" />
                                 </svg>
                                 <span class="ongoing-call-text">Ongoing Call...</span>
                             </div>
-                        </div>
+                        </div>-->
 
                     </div>
                 </div>
@@ -1224,66 +1242,39 @@
             </div>
 
         </div>
-        <div class="main-content-area">
+        <div class="main-content-area" style="padding-left: 0px;">
             <div class="main-content-container" style="font-family:Arial, sans-serif; max-width:1002px; margin:auto;">
-
-               
-                
-                <div style="background:#fff; padding:15px; border-radius:8px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
-                    <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
-                        <i class="fa-solid fa-clipboard-list" style="margin-right:6px; color:#007bff;"></i>
-                        Disposition & Wrap-up
-                    </h6>
-
-                    <div style="display:flex; flex-wrap:wrap; gap:15px; align-items:flex-end;">
-                        <div style="display:flex; flex-direction:column;">
-                            <label for="disposition" style="font-size:13px; margin-bottom:3px; font-weight:500; color:#444;">Disposition</label>
-                            <select id="disposition" onchange="updateSubDisposition()"
-                                    style="padding:5px 8px; font-size:13px; border:1px solid #ccc; border-radius:4px; min-width:150px;">
-                                <option value="">-- Select Disposition --</option>
-                                <option value="1">Call Back</option>
-                                <option value="2">Disconnect</option>
-                                <option value="3">Busy</option>
-                            </select>
-                        </div>
-
-                        <div style="display:flex; flex-direction:column;">
-                            <label for="subDisposition" style="font-size:13px; margin-bottom:3px; font-weight:500; color:#444;">Sub Disposition</label>
-                            <select id="subDisposition"
-                                    style="padding:5px 8px; font-size:13px; border:1px solid #ccc; border-radius:4px; min-width:150px;">
-                                <option value="">-- Select Sub Disposition --</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <button onclick="submitDisposition()"
-                                    style="padding:6px 14px; font-size:13px; border:none; border-radius:4px; background:#007bff; color:#fff; cursor:pointer; font-weight:500; box-shadow:0 1px 3px rgba(0,0,0,0.2);">
-                                <i class="fa-solid fa-paper-plane" style="margin-right:5px;"></i> Submit
-                            </button>
-                        </div>
+                <!-- Navigation Tabs -->
+                <div class="nav-tabs">
+                    <div class="nav-tab active">
+                        <span class="nav-tab-text" onclick="openTab(event, 'tab1')">Customer Info</span>
+                    </div>
+                    <div class="nav-tab inactive">
+                        <span class="nav-tab-text" onclick="openTab(event, 'tab2')">History</span>
+                    </div>
+                    <div class="nav-tab inactive">
+                        <span class="nav-tab-text" onclick="openTab(event, 'tab3')">Call Outcome fields</span>
+                    </div>
+                    <div class="nav-tab inactive">
+                        <span class="nav-tab-text" onclick="openTab(event, 'tab4')">Manual Data</span>
+                    </div>
+                    <div class="nav-tab inactive">
+                        <span class="nav-tab-text" onclick="openTab(event, 'tab5')">Supervisor Data</span>
+                    </div>
+                    <div class="nav-tab inactive">
+                        <span class="nav-tab-text" onclick="openTab(event, 'tab6')">Email CRM</span>
                     </div>
                 </div>
 
-               
-
-            </div>
-        </div>
-
-
-        <!--<div class="main-content-area">
-        <div class="main-content-container">
-            <div class="top-navigation" style="font-family:Arial, sans-serif;">
-
-
-                <div class="nav-tabs" style="margin-bottom:15px;">
-
-                    <div style="background:#fff; padding:15px; border-radius:8px;margin-top:100px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
-                        <h6 style="top:100px; font-size:16px; font-weight:600; color:#333;">
+                <!-- Tab 1 Content -->
+                <div id="tab1" class="tab-content" style="display:block;">
+                    <div style="background:#fff; padding:15px; border-radius:8px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                        <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
                             <i class="fa-solid fa-clipboard-list" style="margin-right:6px; color:#007bff;"></i>
                             Disposition & Wrap-up
                         </h6>
 
-                        <div style="display:flex; flex-wrap:wrap; gap:15px; align-items:center;">
+                        <div style="display:flex; flex-wrap:wrap; gap:15px; align-items:flex-end;">
                             <div style="display:flex; flex-direction:column;">
                                 <label for="disposition" style="font-size:13px; margin-bottom:3px; font-weight:500; color:#444;">Disposition</label>
                                 <select id="disposition" onchange="updateSubDisposition()"
@@ -1302,7 +1293,8 @@
                                     <option value="">-- Select Sub Disposition --</option>
                                 </select>
                             </div>
-                            <div style="margin-top:18px;">
+
+                            <div>
                                 <button onclick="submitDisposition()"
                                         style="padding:6px 14px; font-size:13px; border:none; border-radius:4px; background:#007bff; color:#fff; cursor:pointer; font-weight:500; box-shadow:0 1px 3px rgba(0,0,0,0.2);">
                                     <i class="fa-solid fa-paper-plane" style="margin-right:5px;"></i> Submit
@@ -1311,26 +1303,68 @@
                         </div>
                     </div>
                 </div>
-                <div style="background:#fff;display:none; padding:15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1); margin-top:336px;">
-                    <h6 style="margin-bottom:10px; font-size:15px; font-weight:600; color:#333;">
-                        <i class="fa-solid fa-paperclip" style="margin-right:6px; color:#28a745;"></i>
-                        Attached Data
-                    </h6>
-                    <div id="attachedData" style="font-size:13px; color:#222;"></div>
+
+                <!-- Tab 2 Content -->
+                <div id="tab2" class="tab-content" style="display:none;">
+                    <div style="background:#fff; padding:15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                        <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
+                            <i class="fa-solid fa-user" style="margin-right:6px; color:#007bff;"></i>
+                            Customer Info
+                        </h6>
+                        <p style="font-size:14px; color:#555;">Show customer details here…</p>
+                    </div>
                 </div>
 
-            </div>
+                <!-- Tab 3 Content -->
+                <div id="tab3" class="tab-content" style="display:none;">
+                    <div style="background:#fff; padding:15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                        <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
+                            <i class="fa-solid fa-note-sticky" style="margin-right:6px; color:#007bff;"></i>
+                            Call Outcome fields
+                        </h6>
+                        <textarea style="width:100%; height:100px; padding:8px; font-size:13px; border:1px solid #ccc; border-radius:4px;"></textarea>
+                    </div>
+                </div>
 
+                <!-- Tab 4 Content -->
+                <div id="tab4" class="tab-content" style="display:none;">
+                    <div style="background:#fff; padding:15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                        <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
+                            <i class="fa-solid fa-file" style="margin-right:6px; color:#007bff;"></i>
+                            Manual Data
+                        </h6>
+                        <p style="font-size:14px; color:#555;">Enter manual data here…</p>
+                    </div>
+                </div>
 
-            <div>
+                <!-- Tab 5 Content -->
+                <div id="tab5" class="tab-content" style="display:none;">
+                    <div style="background:#fff; padding:15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                        <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
+                            <i class="fa-solid fa-user-tie" style="margin-right:6px; color:#007bff;"></i>
+                            Supervisor Data
+                        </h6>
+                        <p style="font-size:14px; color:#555;">Supervisor data goes here…</p>
+                    </div>
+                </div>
 
-                <iframe style="width:1001px;height:700px" src="http://192.168.0.93:8088/Infopages/Electrolux_Web_CRM_Info/Info_OUT.aspx"></iframe>
-
+                <!-- Tab 6 Content -->
+                <div id="tab6" class="tab-content" style="display:none;">
+                    <div style="background:#fff; padding:15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                        <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
+                            <i class="fa-solid fa-envelope" style="margin-right:6px; color:#007bff;"></i>
+                            Email CRM
+                        </h6>
+                        <p style="font-size:14px; color:#555;">Email-related CRM functions…</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>-->
+
+
+
     </div>
-   
+
 
 
 
@@ -1343,6 +1377,17 @@
     <script src="../js/signalr.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.genesys.com/webrtc-sdk.js"></script>
+    <script>
+        function openTab(evt, tabId) {
+       
+            document.querySelectorAll(".tab-content").forEach(el => el.style.display = "none");
+            document.querySelectorAll(".nav-tab").forEach(el => el.classList.remove("active"));
+            document.querySelectorAll(".nav-tab").forEach(el => el.classList.add("inactive"));
+            document.getElementById(tabId).style.display = "block";
+            evt.currentTarget.parentElement.classList.add("active");
+            evt.currentTarget.parentElement.classList.remove("inactive");
+        }
+    </script>
 
     <script>
         let timerInterval = null;
@@ -1366,7 +1411,7 @@
                 seconds = 0;
             }
             seconds = 0;
-            document.getElementById("callTimer").innerText = "00:00";
+            document.getElementById("callTimer").innerText = "00:00:00";
         }
 
         function formatTime(sec) {
@@ -1399,7 +1444,7 @@
             dd.style.display = (dd.style.display === "none" || dd.style.display === "") ? "block" : "none";
         }
 
-      
+
         document.addEventListener("DOMContentLoaded", function () {
             const urlParams = new URLSearchParams(window.location.search);
             const agentId = urlParams.get('empCode');
@@ -1507,7 +1552,7 @@
 
                     $("#dialGroup").attr("style", "display: none !important;");
                     $("#hold").attr("style", "display: flex !important");
-                    
+
                     $("#confo").attr("style", "display: flex !important");
                     $("#merge").attr("style", "display: flex !important");
                     $("#party").attr("style", "display: flex !important");
@@ -1528,7 +1573,7 @@
                 }
 
 
-                 if (msg.includes("wraping")) {
+                if (msg.includes("wraping")) {
                     $("#dialGroup").css("display", "flex");
                     $("#hold").attr("style", "display: none !important;");
                     $("#unhold").attr("style", "display: none !important;");
@@ -1567,6 +1612,7 @@
                 if (
                     msg.includes("talking") ||
                     msg.includes("wraping") ||
+                    msg.includes("dialing") ||
                     msg.includes("waiting") ||
                     msg.includes("established") ||
                     msg.includes("outbound call established") ||
@@ -1593,6 +1639,14 @@
                 }
 
             });
+            connection.on("ReceiveAttachedDataUserEvent", function (data) {
+                console.log("AttachedDataUserevent:", data);
+                document.getElementById("batchId").innerText = data.Batch_id || "-";
+                document.getElementById("mode").innerText = data.InteractionSubtype || "-";
+                document.getElementById("mycode").innerText = data.TMasterID || "-";
+                document.getElementById("eventType").innerText = data.GSW_USER_EVENT || "-";
+                document.getElementById("campaignName").innerText = data.GSW_CAMPAIGN_NAME || "-";
+            });
 
             connection.on("ReceiveAttachedData", function (data) {
                 console.log(" Attached Data received:", data);
@@ -1610,13 +1664,13 @@
                 //}
 
                 if (data && typeof data === "object") {
-             
+
                     document.getElementById("campaignName").textContent = data.RTargetObjectSelected || "-";
-                   
+
                     document.getElementById("mode").textContent = data.RStrategyName || "-";
                     document.getElementById("objectId").textContent = data.RTargetAgentSelected || "-";
 
-         
+
                 }
             });
 
@@ -1639,6 +1693,8 @@
 
         async function updateSatus() {
             const urlParams = new URLSearchParams(window.location.search);
+
+            console.log(urlParams);
             const agentId = urlParams.get('empCode');
 
             if (!agentId) {
@@ -1677,6 +1733,18 @@
                                 icon: 'success',
                                 title: 'Success',
                                 text: errorText,
+                            });
+                        }
+                        else if (errorText === "Agent successfully logged out") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: errorText,
+                                confirmButtonText: 'Continue'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.href = "/Pages/login.html";
+                                }
                             });
                         }
                         else {
@@ -1741,7 +1809,7 @@
 
         function sendBreak(selectElement) {
             const reasonCode = selectElement;
-           
+
             if (!reasonCode) {
                 Swal.fire({
                     icon: 'warning',
@@ -1749,13 +1817,13 @@
                     text: 'Please select a valid break reason from the dropdown.',
                     confirmButtonText: 'OK'
                 });
-                
+
                 return;
             }
 
             callAPI('/api/Genesys/break', 'POST', { reasonCode });
             setTimeout(() => {
-                
+
             }, 300);
         }
 

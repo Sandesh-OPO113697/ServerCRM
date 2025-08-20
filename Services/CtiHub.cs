@@ -23,5 +23,10 @@ namespace ServerCRM.Services
         {
             await Clients.All.SendAsync("ReceiveAttachedData", message);
         }
+        public async Task SendStatusAttachDataUservent(Dictionary<string, string> attachedData)
+        {
+            await Clients.All.SendAsync("ReceiveAttachedDataUserEvent", attachedData);
+        }
+
     }
 }

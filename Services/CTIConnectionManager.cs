@@ -626,6 +626,23 @@ namespace ServerCRM.Services
 
                             }
                         }
+
+
+                        Dictionary<string, string> attachedDataUserevent = new Dictionary<string, string>();
+                        for (int i = 0; i < eventUserEvent.UserData.Count; i++)
+                        {
+                            var key = eventUserEvent.UserData.Keys[i]?.ToString();
+                            var value = eventUserEvent.UserData[i]?.ToString();
+                            if (!string.IsNullOrEmpty(key))
+                            {
+                                attachedDataUserevent[key] = value;
+                            }
+                        }
+
+                  
+                         _hubContext.Clients.Group(session.AgentId)
+                            .SendAsync("ReceiveAttachedDataUserEvent", attachedDataUserevent);
+
                         break;
                     default:
                         break;
@@ -1291,7 +1308,7 @@ namespace ServerCRM.Services
                             agentSessions.TryRemove(agentId, out _);
                             await Broadcast("AgentLoggedOut", agentId);
 
-                            return $"Agent {agentId} successfully logged out.";
+                            return $"Agent successfully logged out";
                         }
                     }
                     
@@ -1374,10 +1391,12 @@ namespace ServerCRM.Services
             if (!agentConnections.ContainsKey(agentId))
                 return " Agent not logged in.";
 
-            var tServer = agentConnections[agentId];
-            AgentSession session = GetAgentSession(agentId);
+         
             try
             {
+                AgentSession session = GetAgentSession(agentId);
+                var tServer = agentConnections[agentId];
+               
                 if (session.CampaignMode == "Preview" && session.CampaignName != null)
                 {
                     KeyValueCollection kvp = new KeyValueCollection();
@@ -1401,7 +1420,7 @@ namespace ServerCRM.Services
 
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 return " Agent not logged in.";
             }

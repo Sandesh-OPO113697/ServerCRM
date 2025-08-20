@@ -17,6 +17,22 @@
   },
   {
     "ContainingType": "ServerCRM.Controllers.GenesysController",
+    "Method": "UserlogInCheckcredentials",
+    "RelativePath": "api/Genesys/checkUser",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ServerCRM.Models.CheckCredentials",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ServerCRM.Controllers.GenesysController",
     "Method": "Conference",
     "RelativePath": "api/Genesys/conference",
     "HttpMethod": "POST",
