@@ -1650,19 +1650,7 @@
 
             connection.on("ReceiveAttachedData", function (data) {
                 console.log(" Attached Data received:", data);
-                //const container = document.getElementById("attachedData");
-                //container.innerHTML = "";
-
-                //if (data && typeof data === "object") {
-                //    for (const key in data) {
-                //        if (data.hasOwnProperty(key)) {
-                //            const row = document.createElement("div");
-                //            row.innerHTML = `<strong>${key}:</strong> ${data[key]}`;
-                //            container.appendChild(row);
-                //        }
-                //    }
-                //}
-
+              
                 if (data && typeof data === "object") {
 
                     document.getElementById("campaignName").textContent = data.RTargetObjectSelected || "-";

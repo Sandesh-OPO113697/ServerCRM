@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "E+PcxykoLnSzxqkLDetzl+3ywdniQu07weDK7nnENwc=",
+  "Hash": "tp/HgIyAyxwb3nACCRl2ugZg/DIpuui5MY5VdkjcDbo=",
   "Source": "ServerCRM",
   "BasePath": "_content/ServerCRM",
   "Mode": "Default",
@@ -1396,8 +1396,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "jkc4fs1duq",
-      "Integrity": "o8erxQxN7S9Q4js6cLLmhJC0Nx8t8u99Y20X3aZVMuQ=",
+      "Fingerprint": "ih71zghtvw",
+      "Integrity": "Jm+oLGv6SxM6GIEZGPXQh77/OJItgI9AV9NaKio0Wdo=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Pages\\CRM.html"
@@ -1438,8 +1438,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "auhmleceec",
-      "Integrity": "0nCJ5V9mhax0eWW14WP9zsbotMRDHw16maEa/p1PXXQ=",
+      "Fingerprint": "0fu50cyf43",
+      "Integrity": "PLlZ0p6i2j9MRqXFECOMTUCTCdPMb9MfSalchsn3p2w=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Pages\\LogIn.html"
@@ -6644,7 +6644,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "83079"
+          "Value": "82505"
         },
         {
           "Name": "Content-Type",
@@ -6652,11 +6652,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"o8erxQxN7S9Q4js6cLLmhJC0Nx8t8u99Y20X3aZVMuQ=\""
+          "Value": "\"Jm+oLGv6SxM6GIEZGPXQh77/OJItgI9AV9NaKio0Wdo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 20 Aug 2025 08:49:16 GMT"
+          "Value": "Fri, 22 Aug 2025 06:56:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6666,12 +6666,12 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-o8erxQxN7S9Q4js6cLLmhJC0Nx8t8u99Y20X3aZVMuQ="
+          "Value": "sha256-Jm+oLGv6SxM6GIEZGPXQh77/OJItgI9AV9NaKio0Wdo="
         }
       ]
     },
     {
-      "Route": "Pages/CRM.jkc4fs1duq.html",
+      "Route": "Pages/CRM.ih71zghtvw.html",
       "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\CRM.html",
       "Selectors": [],
       "ResponseHeaders": [
@@ -6681,7 +6681,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "83079"
+          "Value": "82505"
         },
         {
           "Name": "Content-Type",
@@ -6689,11 +6689,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"o8erxQxN7S9Q4js6cLLmhJC0Nx8t8u99Y20X3aZVMuQ=\""
+          "Value": "\"Jm+oLGv6SxM6GIEZGPXQh77/OJItgI9AV9NaKio0Wdo=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 20 Aug 2025 08:49:16 GMT"
+          "Value": "Fri, 22 Aug 2025 06:56:40 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6703,7 +6703,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "jkc4fs1duq"
+          "Value": "ih71zghtvw"
         },
         {
           "Name": "label",
@@ -6711,7 +6711,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-o8erxQxN7S9Q4js6cLLmhJC0Nx8t8u99Y20X3aZVMuQ="
+          "Value": "sha256-Jm+oLGv6SxM6GIEZGPXQh77/OJItgI9AV9NaKio0Wdo="
         }
       ]
     },
@@ -6798,7 +6798,7 @@
       ]
     },
     {
-      "Route": "Pages/LogIn.auhmleceec.html",
+      "Route": "Pages/LogIn.0fu50cyf43.html",
       "AssetFile": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\wwwroot\\Pages\\LogIn.html",
       "Selectors": [],
       "ResponseHeaders": [
@@ -6808,7 +6808,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "13445"
+          "Value": "14134"
         },
         {
           "Name": "Content-Type",
@@ -6816,11 +6816,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"0nCJ5V9mhax0eWW14WP9zsbotMRDHw16maEa/p1PXXQ=\""
+          "Value": "\"PLlZ0p6i2j9MRqXFECOMTUCTCdPMb9MfSalchsn3p2w=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 20 Aug 2025 08:49:48 GMT"
+          "Value": "Fri, 22 Aug 2025 11:49:17 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6830,7 +6830,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "auhmleceec"
+          "Value": "0fu50cyf43"
         },
         {
           "Name": "label",
@@ -6838,7 +6838,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-0nCJ5V9mhax0eWW14WP9zsbotMRDHw16maEa/p1PXXQ="
+          "Value": "sha256-PLlZ0p6i2j9MRqXFECOMTUCTCdPMb9MfSalchsn3p2w="
         }
       ]
     },
@@ -6853,7 +6853,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "13445"
+          "Value": "14134"
         },
         {
           "Name": "Content-Type",
@@ -6861,11 +6861,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"0nCJ5V9mhax0eWW14WP9zsbotMRDHw16maEa/p1PXXQ=\""
+          "Value": "\"PLlZ0p6i2j9MRqXFECOMTUCTCdPMb9MfSalchsn3p2w=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 20 Aug 2025 08:49:48 GMT"
+          "Value": "Fri, 22 Aug 2025 11:49:17 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6875,7 +6875,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-0nCJ5V9mhax0eWW14WP9zsbotMRDHw16maEa/p1PXXQ="
+          "Value": "sha256-PLlZ0p6i2j9MRqXFECOMTUCTCdPMb9MfSalchsn3p2w="
         }
       ]
     },
@@ -6984,7 +6984,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 20 Aug 2025 11:36:26 GMT"
+          "Value": "Fri, 22 Aug 2025 13:09:52 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -7021,7 +7021,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 20 Aug 2025 11:36:26 GMT"
+          "Value": "Fri, 22 Aug 2025 13:09:52 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -7066,7 +7066,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 20 Aug 2025 11:36:26 GMT"
+          "Value": "Fri, 22 Aug 2025 13:09:52 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -7111,7 +7111,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Wed, 20 Aug 2025 11:36:26 GMT"
+          "Value": "Fri, 22 Aug 2025 13:09:52 GMT"
         },
         {
           "Name": "Cache-Control",

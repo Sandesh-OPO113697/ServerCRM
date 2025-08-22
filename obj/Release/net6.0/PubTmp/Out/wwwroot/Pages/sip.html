@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Softphone</title>
+    <script src="../js/jssip.min.js"></script>
+</head>
+<body>
+    <h2>Web Softphone</h2>
+    <input type="text" id="phoneNumber" placeholder="Enter Number (e.g., 4780123456789)" />
+    <button onclick="makeCall()">Call</button>
+    <audio id="remoteAudio" autoplay></audio>
+
+    <script>
+        const socket = new JsSIP.WebSocketInterface('ws://192.168.0.25:5062'); 
+        const configuration = {
+            sockets: [socket],
+            uri: 'sip:102226@192.168.0.25',
+            password: '102226',
+            display_name: '102226'
+        };
+
+        const ua = new JsSIP.UA(configuration);
+        ua.start();
+
+        function makeCall() {
+            const number = document.getElementById('phoneNumber').value;
+            const session = ua.call(`sip:${number}@192.168.0.25`, {
+                mediaConstraints: { audio: true, video: false },
+                rtcOfferConstraints: { offerToReceiveAudio: 1, offerToReceiveVideo: 0 },
+                pcConfig: {
+                    iceServers: [{ urls: ['stun:stun.l.google.com:19302'] }]
+                }
+            });
+
+            session.on('peerconnection', function (e) {
+                e.peerconnection.addEventListener('track', function (event) {
+                    document.getElementById('remoteAudio').srcObject = event.streams[0];
+                });
+            });
+        }
+    </script>
+</body>
+</html>

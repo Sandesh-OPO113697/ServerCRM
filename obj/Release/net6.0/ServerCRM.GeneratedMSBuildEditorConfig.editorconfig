@@ -24,6 +24,14 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ1RJXGRpYWxlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/VisualStudio_2022/ServerCRM/ServerCRM/Views/FreeSwitch/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRnJlZVN3aXRjaFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/VisualStudio_2022/ServerCRM/ServerCRM/Views/FreeSwitch/MakeCall.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRnJlZVN3aXRjaFxNYWtlQ2FsbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/VisualStudio_2022/ServerCRM/ServerCRM/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

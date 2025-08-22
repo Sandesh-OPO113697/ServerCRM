@@ -1,0 +1,158 @@
+﻿@{
+    ViewData["Title"] = "FreeSWITCH Call Control";
+    // Pass login and dn from controller
+    var loginCode = ViewBag.LoginCode as string ?? "";
+    var dn = ViewBag.DN as string ?? "";
+}
+
+<h2>FreeSWITCH Call Control</h2>
+
+<div>
+    <strong>Agent:</strong> @loginCode &nbsp; <strong>CallerID (DN):</strong> @dn
+</div>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-info mt-2">@ViewBag.Message</div>
+}
+
+<div class="card mb-3 p-3">
+    <h4>Make a Call</h4>
+    <form id="makeCallForm" asp-action="MakeCall" method="post">
+        <div class="form-group mb-2">
+            <input type="text" name="phoneNumber" class="form-control" placeholder="Phone Number" required />
+        </div>
+        <button type="submit" class="btn btn-primary mt-1">Call</button>
+    </form>
+</div>
+
+<!-- Active Calls -->
+<div class="card mb-3 p-3">
+    <h4>Active Calls</h4>
+    <table class="table table-bordered" id="activeCallsTable">
+        <thead>
+            <tr>
+                <th>UUID</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<!-- Conference Controls -->
+<div class="card mb-3 p-3">
+    <h4>Conference</h4>
+    <input type="text" id="conferenceName" class="form-control mb-2" placeholder="Conference Name" />
+    <input type="text" id="conferenceNumber" class="form-control mb-2" placeholder="Number to add" />
+    <button class="btn btn-success mt-1" onclick="addNumberToConference()">Add Number</button>
+</div>
+
+<!-- Call Events -->
+<div class="card p-3" style="background-color:#f0f0f0;">
+    <h4>Call Events</h4>
+    <div id="currentEvent" style="background-color:#fff; padding:10px; border-radius:4px; font-weight:bold;">
+        Waiting for call events...
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.9/signalr.min.js"></script>
+
+
+<script>
+    const loginCode = "@loginCode";
+    const dn = "@dn";
+
+    let activeCalls = {};
+    let lastKnownStatus = {}; // keep previous statuses per uuid
+
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/callEventsHub?userId=" + encodeURIComponent(loginCode))
+        .withAutomaticReconnect()
+        .build();
+
+    connection.on("OnFsEvent", function(eventObj) {
+        console.log("FS Event:", eventObj);
+
+        let uuid = eventObj.uuid;
+        let status = eventObj.status;
+
+        if (status === "Unknown") {
+            console.log("Skipping placeholder FS event");
+            return;
+        }
+
+        document.getElementById("currentEvent").textContent = status;
+        addOrUpdateCallRow(uuid, status);
+    });
+
+    connection.start()
+        .then(() => console.log("SignalR connected for user:", loginCode))
+        .catch(err => console.error("SignalR connection error:", err));
+
+    function addOrUpdateCallRow(uuid, status) {
+        let tbody = document.querySelector("#activeCallsTable tbody");
+        let existingRow = document.getElementById("row-" + uuid);
+
+        if (existingRow) {
+            // Update status if row already exists
+            let td = document.getElementById("status-" + uuid);
+            if (td) td.textContent = status;
+        } else {
+            // Create new row
+            let row = document.createElement("tr");
+            row.id = "row-" + uuid;
+            row.innerHTML = `
+                <td>${uuid}</td>
+                <td id="status-${uuid}">${status}</td>
+                <td>
+                    <button class="btn btn-sm btn-warning" onclick="holdCall('${uuid}')">Hold</button>
+                    <button class="btn btn-sm btn-info" onclick="unholdCall('${uuid}')">Unhold</button>
+                    <button class="btn btn-sm btn-danger" onclick="hangupCall('${uuid}')">Hangup</button>
+                </td>`;
+            tbody.appendChild(row);
+        }
+    }
+
+    async function holdCall(uuid) {
+        await sendPostJson("/FreeSwitch/HoldCall", { uuid: uuid });
+    }
+
+    async function unholdCall(uuid) {
+
+        console.log("uuid" + uuid);
+        await sendPostJson("/FreeSwitch/UnholdCall", { uuid: uuid });
+    }
+
+    async function hangupCall(uuid) {
+        await sendPostJson("/FreeSwitch/HangupCall", { uuid: uuid });
+        // Remove row after hangup
+        let row = document.getElementById("row-" + uuid);
+        if (row) row.remove();
+    }
+
+    async function addNumberToConference() {
+        let confName = document.getElementById("conferenceName").value;
+        let number = document.getElementById("conferenceNumber").value;
+        if (!confName || !number) {
+            alert("Conference name and number required");
+            return;
+        }
+        await sendPostJson("/FreeSwitch/AddNumberToConference", { conferenceName: confName, phoneNumber: number });
+    }
+
+    async function sendPostJson(url, dataObj) {
+        try {
+            let resp = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(dataObj)
+            });
+            if (!resp.ok) console.error("Error:", await resp.text());
+        } catch (err) {
+            console.error("Network error:", err);
+        }
+    }
+</script>
+
