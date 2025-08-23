@@ -16,7 +16,7 @@ namespace ServerCRM.FreeSwitchSer
         private readonly string _fsHost;
         private readonly int _fsPort;
         private readonly string _fsPass;
-
+        private readonly ConcurrentDictionary<string, string> _agentStatuses = new();
         public FreeSwitchManager(IHubContext<CallEventsHub> hub, IConfiguration config)
         {
             _hub = hub;
@@ -185,7 +185,18 @@ namespace ServerCRM.FreeSwitchSer
                 Console.WriteLine($"Failed to unhold call {callUuid}. Response: {response}");
             }
         }
+        public void SetAgentStatus(string userId, string status)
+        {
+           
+            if (status != "Ready" && status != "NotReady" && status != "Break")
+            {
+                Console.WriteLine($"Invalid status for user {userId}: {status}");
+                return;
+            }
 
+            _agentStatuses.AddOrUpdate(userId, status, (key, existingVal) => status);
+            Console.WriteLine($"Agent {userId} status changed to: {status}");
+        }
 
         public async Task<bool> HangupCallAsync(string callUuid)
         {
@@ -228,7 +239,24 @@ namespace ServerCRM.FreeSwitchSer
                 return false;
             }
         }
+        
+        public async Task<bool> MergeToConferenceAsync(string userId, string callUuid, string conferenceName)
+        {
+            var client = await GetOrCreateConnectionAsync(userId);
+            
+            var response = await client.SendCommandAsync($"api uuid_bridge {callUuid} &conference({conferenceName})");
 
+            if (response != null && response.Contains("+OK"))
+            {
+                Console.WriteLine($"Successfully merged call {callUuid} into conference {conferenceName}.");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine($"Failed to merge call {callUuid} to conference {conferenceName}. Response: {response}");
+                return false;
+            }
+        }
         public async Task CreateConferenceWithNumberAsync(string userId, string conferenceName, string phoneNumber, string callerId, string gateway)
         {
             var client = await GetOrCreateConnectionAsync(userId);

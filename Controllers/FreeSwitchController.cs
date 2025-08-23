@@ -107,8 +107,43 @@ namespace ServerCRM.Controllers
             await _fsManager.RemoveFromConferenceAsync(userId, dto.ConferenceName, dto.CallUuid);
             return Ok();
         }
+      
+      
+        [HttpPost]
+        public async Task<IActionResult> MergeToConference([FromBody] MergeConfDto dto)
+        {
+            string userId = HttpContext.Session.GetString("login_code") ?? "";
+            if (string.IsNullOrEmpty(userId)) return BadRequest("No session user");
 
+            if (string.IsNullOrEmpty(dto.CallUuid) || string.IsNullOrEmpty(dto.ConferenceName))
+            {
+                return BadRequest("Call UUID and Conference Name are required.");
+            }
+
+            bool success = await _fsManager.MergeToConferenceAsync(userId, dto.CallUuid, dto.ConferenceName);
+            if (success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("Failed to merge call to conference.");
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> SetAgentStatus([FromBody] AgentStatusDto dto)
+        {
+            string userId = HttpContext.Session.GetString("login_code") ?? "";
+            if (string.IsNullOrEmpty(userId)) return BadRequest("No session user");
+
+            _fsManager.SetAgentStatus(userId, dto.Status);
+            return Ok();
+        }
+
+        public class AgentStatusDto { public string Status { get; set; } = ""; }
         public class AddConfDto { public string ConferenceName { get; set; } = ""; public string PhoneNumber { get; set; } = ""; }
         public class RemoveConfDto { public string ConferenceName { get; set; } = ""; public string CallUuid { get; set; } = ""; }
+        public class MergeConfDto { public string CallUuid { get; set; } = ""; public string ConferenceName { get; set; } = ""; }
+
     }
 }
