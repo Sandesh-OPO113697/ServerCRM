@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using ServerCRM.Models;
+using ServerCRM.Models.Freeswitch;
 
 namespace ServerCRM.Controllers
 {

@@ -1,4 +1,4 @@
-﻿namespace ServerCRM.Models
+﻿namespace ServerCRM.Models.Freeswitch
 {
     public class CRMSettings
     {

@@ -18,7 +18,7 @@
 
 <div class="card mb-3 p-3">
     <h4>Make a Call</h4>
-    <form id="makeCallForm" asp-action="MakeCall" method="post">
+    <form id="makeCallForm" asp-action="onCall" method="post">
         <div class="form-group mb-2">
             <input type="text" name="phoneNumber" class="form-control" placeholder="Phone Number" required />
         </div>
@@ -26,7 +26,6 @@
     </form>
 </div>
 
-<!-- Active Calls -->
 <div class="card mb-3 p-3">
     <h4>Active Calls</h4>
     <table class="table table-bordered" id="activeCallsTable">
@@ -41,7 +40,6 @@
     </table>
 </div>
 
-<!-- Conference Controls -->
 <div class="card mb-3 p-3">
     <h4>Conference</h4>
     <input type="text" id="conferenceName" class="form-control mb-2" placeholder="Conference Name" />
@@ -49,7 +47,6 @@
     <button class="btn btn-success mt-1" onclick="addNumberToConference()">Add Number</button>
 </div>
 
-<!-- Call Events -->
 <div class="card p-3" style="background-color:#f0f0f0;">
     <h4>Call Events</h4>
     <div id="currentEvent" style="background-color:#fff; padding:10px; border-radius:4px; font-weight:bold;">
@@ -59,13 +56,11 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.9/signalr.min.js"></script>
 
-
 <script>
     const loginCode = "@loginCode";
     const dn = "@dn";
 
     let activeCalls = {};
-    let lastKnownStatus = {}; // keep previous statuses per uuid
 
     const connection = new signalR.HubConnectionBuilder()
         .withUrl("/callEventsHub?userId=" + encodeURIComponent(loginCode))
@@ -78,38 +73,41 @@
         let uuid = eventObj.uuid;
         let status = eventObj.status;
 
-        if (status === "Unknown") {
-            console.log("Skipping placeholder FS event");
+        if (!uuid || status === "Unknown") {
+            console.log("Skipping invalid FS event");
             return;
         }
 
-        document.getElementById("currentEvent").textContent = status;
-        addOrUpdateCallRow(uuid, status);
+        document.getElementById("currentEvent").textContent = `UUID: ${uuid} - Status: ${status}`;
+
+        if (status === "Disconnected") {
+            delete activeCalls[uuid];
+        } else {
+            activeCalls[uuid] = eventObj;
+        }
+
+        renderActiveCallsTable();
     });
 
     connection.start()
         .then(() => console.log("SignalR connected for user:", loginCode))
         .catch(err => console.error("SignalR connection error:", err));
 
-    function addOrUpdateCallRow(uuid, status) {
+    function renderActiveCallsTable() {
         let tbody = document.querySelector("#activeCallsTable tbody");
-        let existingRow = document.getElementById("row-" + uuid);
+        tbody.innerHTML = '';
 
-        if (existingRow) {
-            // Update status if row already exists
-            let td = document.getElementById("status-" + uuid);
-            if (td) td.textContent = status;
-        } else {
-            // Create new row
+        for (const uuid in activeCalls) {
+            const call = activeCalls[uuid];
             let row = document.createElement("tr");
-            row.id = "row-" + uuid;
+            row.id = `row-${call.uuid}`;
             row.innerHTML = `
-                <td>${uuid}</td>
-                <td id="status-${uuid}">${status}</td>
+                <td>${call.uuid}</td>
+                <td>${call.status}</td>
                 <td>
-                    <button class="btn btn-sm btn-warning" onclick="holdCall('${uuid}')">Hold</button>
-                    <button class="btn btn-sm btn-info" onclick="unholdCall('${uuid}')">Unhold</button>
-                    <button class="btn btn-sm btn-danger" onclick="hangupCall('${uuid}')">Hangup</button>
+                    <button class="btn btn-sm btn-warning" onclick="holdCall('${call.uuid}')" ${call.status !== 'Talking' ? 'disabled' : ''}>Hold</button>
+                    <button class="btn btn-sm btn-info" onclick="unholdCall('${call.uuid}')" ${call.status !== 'On Hold' ? 'disabled' : ''}>Unhold</button>
+                    <button class="btn btn-sm btn-danger" onclick="hangupCall('${call.uuid}')" ${call.status === 'Disconnected' ? 'disabled' : ''}>Hangup</button>
                 </td>`;
             tbody.appendChild(row);
         }
@@ -120,16 +118,14 @@
     }
 
     async function unholdCall(uuid) {
-
-        console.log("uuid" + uuid);
         await sendPostJson("/FreeSwitch/UnholdCall", { uuid: uuid });
     }
 
     async function hangupCall(uuid) {
-        await sendPostJson("/FreeSwitch/HangupCall", { uuid: uuid });
-        // Remove row after hangup
-        let row = document.getElementById("row-" + uuid);
-        if (row) row.remove();
+        let resp = await sendPostJson("/FreeSwitch/HangupCall", { uuid: uuid });
+        if (!resp.ok) {
+            alert("Failed to hang up call. It may have already ended.");
+        }
     }
 
     async function addNumberToConference() {
@@ -149,10 +145,14 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(dataObj)
             });
-            if (!resp.ok) console.error("Error:", await resp.text());
+            if (!resp.ok) {
+                const errorText = await resp.text();
+                console.error("Error from server:", errorText);
+            }
+            return resp;
         } catch (err) {
             console.error("Network error:", err);
+            return { ok: false };
         }
     }
 </script>
-

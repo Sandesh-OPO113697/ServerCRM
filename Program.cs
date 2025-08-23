@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.SignalR;
 using ServerCRM.FreeSwitchSer;
 using ServerCRM.FreeSwitchService;
-using ServerCRM.Models;
+using ServerCRM.Models.Freeswitch;
 using ServerCRM.Services;
 
 var builder = WebApplication.CreateBuilder(args);

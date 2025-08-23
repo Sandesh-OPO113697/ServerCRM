@@ -1,17 +1,18 @@
-﻿
-using Microsoft.AspNetCore.SignalR;
-using ServerCRM.FreeSwitchService;
-using ServerCRM.Models;
+﻿using Microsoft.AspNetCore.SignalR;
 using ServerCRM.Utils;
+using System.Collections.Concurrent;
 using System.Text.RegularExpressions;
+using ServerCRM.Models.Freeswitch;
+using System.Text;
+using ServerCRM.FreeSwitchService;
 
 namespace ServerCRM.FreeSwitchSer
 {
     public class FreeSwitchManager
     {
         private readonly IHubContext<CallEventsHub> _hub;
-        private readonly Dictionary<string, ESLClient> _userConnections = new();
-        private readonly object _lock = new();
+        private readonly ConcurrentDictionary<string, ESLClient> _userConnections = new();
+        private readonly ConcurrentDictionary<string, FsCallEvent> _activeCalls = new();
         private readonly string _fsHost;
         private readonly int _fsPort;
         private readonly string _fsPass;
@@ -24,110 +25,222 @@ namespace ServerCRM.FreeSwitchSer
             _fsPass = "ClueCon";
         }
 
-        private FsCallEvent ParseFsEvent(string frame)
+        public void ProcessFreeSwitchEvent(string frame)
         {
-            var ev = new FsCallEvent { Raw = frame };
-
-
-            var uuidMatch = Regex.Match(frame, @"Channel-Call-UUID:\s*(\S+)", RegexOptions.IgnoreCase);
-            if (uuidMatch.Success) ev.Uuid = uuidMatch.Groups[1].Value;
-            if (frame.Contains("CHANNEL_CREATE", StringComparison.OrdinalIgnoreCase)) ev.Status = "Dialing";
-            else if (frame.Contains("CHANNEL_PROGRESS", StringComparison.OrdinalIgnoreCase)) ev.Status = "Ringing";
-            else if (frame.Contains("CHANNEL_ANSWER", StringComparison.OrdinalIgnoreCase)) ev.Status = "Talking";
-            else if (frame.Contains("CHANNEL_BRIDGE", StringComparison.OrdinalIgnoreCase)) ev.Status = "Bridged";
-            else if (frame.Contains("CHANNEL_HOLD", StringComparison.OrdinalIgnoreCase)) ev.Status = "On Hold";
-            else if (frame.Contains("CHANNEL_UNHOLD", StringComparison.OrdinalIgnoreCase)) ev.Status = "Resumed";
-            else if (frame.Contains("CHANNEL_HANGUP", StringComparison.OrdinalIgnoreCase)) ev.Status = "Disconnected";
-
-            return ev;
-        }
-
-        public async Task<ESLClient> GetOrCreateConnectionAsync(string userId, CancellationToken ct = default)
-        {
-            if (string.IsNullOrEmpty(userId)) userId = Guid.NewGuid().ToString();
-
-            lock (_lock)
+            var eventHeaders = new Dictionary<string, string>();
+            using (var reader = new StringReader(frame))
             {
-                if (_userConnections.ContainsKey(userId))
-                    return _userConnections[userId];
+                string? line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    var parts = line.Split(new[] { ':' }, 2);
+                    if (parts.Length == 2)
+                    {
+                        eventHeaders[parts[0].Trim()] = parts[1].Trim();
+                    }
+                }
             }
 
-            var client = new ESLClient(_fsHost, _fsPort, _fsPass);
+            var eventName = eventHeaders.GetValueOrDefault("Event-Name", "UNKNOWN");
+            var callUuid = eventHeaders.GetValueOrDefault("Channel-Call-UUID", string.Empty);
 
-            client.OnEventReceived += async (frame) =>
+            if (string.IsNullOrEmpty(callUuid))
             {
-                var ev = ParseFsEvent(frame);
+                Console.WriteLine($"Skipping event with no UUID: {eventName}");
+                return;
+            }
 
-              
-                var message = new
-                {
-                    Uuid = ev.Uuid,
-                    Status = ev.Status,
-                    RawEvent = ev.Raw
-                };
-
-               
-                await _hub.Clients.Group(userId).SendAsync("OnFsEvent", message);
+            var currentEvent = new FsCallEvent
+            {
+                EventName = eventName,
+                Uuid = callUuid,
+                ChannelState = eventHeaders.GetValueOrDefault("Channel-State", "CS_NONE"),
+                CallDirection = eventHeaders.GetValueOrDefault("Call-Direction", "unknown"),
+                HangupCause = eventHeaders.GetValueOrDefault("Hangup-Cause", string.Empty),
+                Raw = frame
             };
 
-            await client.ConnectAsync(ct);
-            await client.StartEventListenerAsync(ct);
-
-            lock (_lock)
+            switch (currentEvent.EventName)
             {
-                _userConnections[userId] = client;
+                case "CHANNEL_CREATE":
+                case "CHANNEL_OUTGOING":
+                    currentEvent.Status = "Dialing";
+                    break;
+                case "CHANNEL_PROGRESS":
+                    currentEvent.Status = "Ringing";
+                    break;
+                case "CHANNEL_ANSWER":
+                    currentEvent.Status = "Talking";
+                    break;
+                case "CHANNEL_BRIDGE":
+                    currentEvent.Status = "Bridged";
+                    break;
+                case "CHANNEL_HOLD":
+                    currentEvent.Status = "On Hold";
+                    break;
+                case "CHANNEL_UNHOLD":
+                    currentEvent.Status = "Resumed";
+                    break;
+                case "CHANNEL_HANGUP":
+                case "CHANNEL_HANGUP_COMPLETE":
+                    currentEvent.Status = "Disconnected";
+                    _activeCalls.TryRemove(currentEvent.Uuid, out _);
+                    break;
+                default:
+              
+                    var channelState = currentEvent.ChannelState.ToUpper();
+                    if (channelState.Contains("ACTIVE"))
+                    {
+                        currentEvent.Status = "Talking";
+                    }
+                    else if (channelState.Contains("HANGUP"))
+                    {
+                        currentEvent.Status = "Disconnected";
+                    }
+                    else if (channelState.Contains("RINGING"))
+                    {
+                        currentEvent.Status = "Ringing";
+                    }
+                    else
+                    {
+                       
+                        if (_activeCalls.TryGetValue(currentEvent.Uuid, out var existingEvent))
+                        {
+                            currentEvent.Status = existingEvent.Status;
+                        }
+                    }
+                    break;
             }
 
-            return client;
+            if (currentEvent.Status != "Disconnected")
+            {
+                _activeCalls.AddOrUpdate(currentEvent.Uuid, currentEvent, (key, existingVal) => currentEvent);
+            }
 
+            _hub.Clients.All.SendAsync("OnFsEvent", currentEvent);
         }
 
-        public async Task<string?> MakeCallAsync(string userId, string gateway, string callerId, string phoneNumber, CancellationToken ct = default)
+        public async Task<ESLClient> GetOrCreateConnectionAsync(string userId)
         {
-            var client = await GetOrCreateConnectionAsync(userId, ct);
+            if (_userConnections.TryGetValue(userId, out var existingClient) && existingClient.IsConnected)
+            {
+                return existingClient;
+            }
 
-            string originateCmd =
-                $"api originate {{origination_caller_id_name={callerId},origination_caller_id_number={callerId}}}" +
-                $"sofia/gateway/{gateway}/{phoneNumber} &bridge(user/{callerId}@{_fsHost})\n\n";
+            var newClient = new ESLClient(_fsHost, _fsPort, _fsPass);
+            await newClient.ConnectAsync();
 
-            var result = await client.SendCommandAsync(originateCmd, ct);
+            newClient.OnEventReceived += ProcessFreeSwitchEvent;
 
+            await newClient.StartEventListenerAsync();
+
+            _userConnections.AddOrUpdate(userId, newClient, (key, existingVal) => newClient);
+            return newClient;
+        }
+
+        public async Task<string?> MakeCallAsync(string userId, string gateway, string callerId, string phoneNumber)
+        {
+            var client = await GetOrCreateConnectionAsync(userId);
+            string originateCmd = $"api originate {{origination_caller_id_name={callerId},origination_caller_id_number={callerId}}}sofia/gateway/{gateway}/{phoneNumber} &bridge(user/{callerId}@{_fsHost})\n\n";
+
+            var result = await client.SendCommandAsync(originateCmd);
             var match = Regex.Match(result ?? "", @"Channel-Call-UUID:\s*(\S+)", RegexOptions.IgnoreCase);
-            if (match.Success) return match.Groups[1].Value;
+
+            if (match.Success)
+            {
+                var newUuid = match.Groups[1].Value;
+                _activeCalls[newUuid] = new FsCallEvent { Uuid = newUuid, Status = "Dialing", Raw = result };
+                return newUuid;
+            }
 
             return null;
         }
 
-        public async Task HoldCallAsync(string userId, string callUuid, CancellationToken ct = default)
+        public async Task HoldCallAsync(string userId, string callUuid)
         {
-            var client = await GetOrCreateConnectionAsync(userId, ct);
-            await client.SendCommandAsync($"uuid_hold {callUuid} on", ct);
+            var client = await GetOrCreateConnectionAsync(userId);
+            var response = await client.SendCommandAsync($"api uuid_hold {callUuid} on");
+
+            if (!string.IsNullOrEmpty(response) && response.Contains("+OK"))
+            {
+                Console.WriteLine($"Call {callUuid} successfully put on hold.");
+            }
+            else
+            {
+                Console.WriteLine($"Failed to put call {callUuid} on hold. Response: {response}");
+            }
         }
 
-        public async Task UnholdCallAsync(string userId, string callUuid, CancellationToken ct = default)
+        public async Task UnholdCallAsync(string userId, string callUuid)
         {
-            var client = await GetOrCreateConnectionAsync(userId, ct);
-            await client.SendCommandAsync($"uuid_hold {callUuid} off", ct);
+            var client = await GetOrCreateConnectionAsync(userId);
+            var response = await client.SendCommandAsync($"api uuid_hold {callUuid} off");
+
+            if (!string.IsNullOrEmpty(response) && response.Contains("+OK"))
+            {
+                Console.WriteLine($"Call {callUuid} successfully taken off hold.");
+            }
+            else
+            {
+                Console.WriteLine($"Failed to unhold call {callUuid}. Response: {response}");
+            }
         }
 
-        public async Task HangupCallAsync(string userId, string callUuid, CancellationToken ct = default)
+
+        public async Task<bool> HangupCallAsync(string callUuid)
         {
-            var client = await GetOrCreateConnectionAsync(userId, ct);
-            await client.SendCommandAsync($"uuid_kill {callUuid}", ct);
+            if (string.IsNullOrWhiteSpace(callUuid))
+            {
+                Console.WriteLine("Hangup request failed: Provided call UUID is null or empty.");
+                return false;
+            }
+
+            if (!_activeCalls.ContainsKey(callUuid))
+            {
+                Console.WriteLine($"Hangup failed: Call with UUID {callUuid} is no longer active or was never active.");
+                return false;
+            }
+
+            try
+            {
+                Console.WriteLine($"Attempting to hang up call with UUID: {callUuid}");
+
+              
+                var client = new ESLClient(_fsHost, _fsPort, _fsPass);
+                await client.ConnectAsync();
+                var response = await client.SendCommandAsync($"api uuid_kill {callUuid} NORMAL_CLEARING");
+
+
+                if (response != null && response.Contains("+OK"))
+                {
+                    Console.WriteLine($"Successfully sent hangup command for UUID {callUuid}.");
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine($"Hangup failed for UUID {callUuid}. Response from FreeSWITCH: {response}");
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while trying to hang up call {callUuid}: {ex.Message}");
+                return false;
+            }
         }
 
-        public async Task CreateConferenceWithNumberAsync(string userId, string conferenceName, string phoneNumber, string callerId, string gateway, CancellationToken ct = default)
+        public async Task CreateConferenceWithNumberAsync(string userId, string conferenceName, string phoneNumber, string callerId, string gateway)
         {
-            var client = await GetOrCreateConnectionAsync(userId, ct);
+            var client = await GetOrCreateConnectionAsync(userId);
             string fullNumber = phoneNumber.StartsWith("7530") ? phoneNumber : "7530" + phoneNumber;
             string cmd = $"api originate {{origination_caller_id_name={callerId},origination_caller_id_number={callerId}}}sofia/gateway/{gateway}/{fullNumber} &conference({conferenceName})";
-            await client.SendCommandAsync(cmd, ct);
+            await client.SendCommandAsync(cmd);
         }
 
-        public async Task RemoveFromConferenceAsync(string userId, string conferenceName, string callerUuid, CancellationToken ct = default)
+        public async Task RemoveFromConferenceAsync(string userId, string conferenceName, string callerUuid)
         {
-            var client = await GetOrCreateConnectionAsync(userId, ct);
-            await client.SendCommandAsync($"api conference {conferenceName} kick {callerUuid}", ct);
+            var client = await GetOrCreateConnectionAsync(userId);
+            await client.SendCommandAsync($"api conference {conferenceName} kick {callerUuid}");
         }
     }
 }

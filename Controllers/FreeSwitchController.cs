@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServerCRM.FreeSwitchSer;
 using ServerCRM.Models;
 using ServerCRM.Services;
@@ -10,7 +9,7 @@ namespace ServerCRM.Controllers
     {
         private readonly FreeSwitchManager _fsManager;
         private readonly ApiService _apiService;
-        private readonly string _gatewayUuid = "b7a78ca2-2234-48d2-9281-33f58dfb1e4d"; 
+        private readonly string _gatewayUuid = "b7a78ca2-2234-48d2-9281-33f58dfb1e4d";
 
         public FreeSwitchController(FreeSwitchManager fsManager, ApiService apiService)
         {
@@ -21,7 +20,6 @@ namespace ServerCRM.Controllers
         [HttpGet]
         public async Task<IActionResult> MakeCall(string empcode)
         {
-            
             var agent = await _apiService.GetAgentDetailsAsync(empcode);
             if (agent == null) return NotFound("Agent not found");
 
@@ -35,69 +33,78 @@ namespace ServerCRM.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> MakeCall(string phoneNumber, CancellationToken ct)
+        public async Task<IActionResult> onCall(string phoneNumber)
         {
             string userId = HttpContext.Session.GetString("login_code") ?? "";
             string callerId = HttpContext.Session.GetString("dn") ?? "";
             string Prefix = HttpContext.Session.GetString("Prefix") ?? "";
-            var uuid = await _fsManager.MakeCallAsync(userId, _gatewayUuid, callerId, Prefix+phoneNumber, ct);
+            var uuid = await _fsManager.MakeCallAsync(userId, _gatewayUuid, callerId, Prefix + phoneNumber);
 
             ViewBag.Message = string.IsNullOrEmpty(uuid) ? "Call initiated (waiting for UUID via events)..." : $"Call initiated (UUID: {uuid})";
             ViewBag.LoginCode = userId;
             ViewBag.DN = callerId;
 
-            return View();
+            return View("MakeCall");
         }
 
         [HttpPost]
-        public async Task<IActionResult> HoldCall([FromBody] CallRequestfreeswitch request, CancellationToken ct)
-        {
-            string userId = HttpContext.Session.GetString("login_code") ?? "";
-            
-
-            await _fsManager.HoldCallAsync(userId, request.Uuid, ct);
-            return Ok();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> UnholdCall([FromBody] CallRequestfreeswitch request, CancellationToken ct)
+        public async Task<IActionResult> HoldCall([FromBody] CallRequestfreeswitch request)
         {
             string userId = HttpContext.Session.GetString("login_code") ?? "";
             if (string.IsNullOrEmpty(userId)) return BadRequest("No session user");
 
-            await _fsManager.UnholdCallAsync(userId, request.Uuid, ct);
+            await _fsManager.HoldCallAsync(userId, request.Uuid);
             return Ok();
         }
 
         [HttpPost]
-        public async Task<IActionResult> HangupCall([FromBody] string callUuid, CancellationToken ct)
+        public async Task<IActionResult> UnholdCall([FromBody] CallRequestfreeswitch request)
         {
             string userId = HttpContext.Session.GetString("login_code") ?? "";
             if (string.IsNullOrEmpty(userId)) return BadRequest("No session user");
 
-            await _fsManager.HangupCallAsync(userId, callUuid, ct);
+            await _fsManager.UnholdCallAsync(userId, request.Uuid);
             return Ok();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddNumberToConference([FromBody] AddConfDto dto, CancellationToken ct)
+        public async Task<IActionResult> HangupCall([FromBody] CallRequestfreeswitch request)
+        {
+            if (string.IsNullOrEmpty(request.Uuid))
+            {
+                return BadRequest("No UUID provided.");
+            }
+
+            bool success = await _fsManager.HangupCallAsync(request.Uuid);
+            if (success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("Failed to send hangup command. It may have already ended.");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddNumberToConference([FromBody] AddConfDto dto)
         {
             string userId = HttpContext.Session.GetString("login_code") ?? "";
             string callerId = HttpContext.Session.GetString("dn") ?? "";
 
             if (string.IsNullOrEmpty(userId)) return BadRequest("No session user");
 
-            await _fsManager.CreateConferenceWithNumberAsync(userId, dto.ConferenceName, dto.PhoneNumber, callerId, _gatewayUuid, ct);
+            await _fsManager.CreateConferenceWithNumberAsync(userId, dto.ConferenceName, dto.PhoneNumber, callerId, _gatewayUuid);
             return Ok();
         }
 
         [HttpPost]
-        public async Task<IActionResult> RemoveFromConference([FromBody] RemoveConfDto dto, CancellationToken ct)
+        public async Task<IActionResult> RemoveFromConference([FromBody] RemoveConfDto dto)
         {
             string userId = HttpContext.Session.GetString("login_code") ?? "";
             if (string.IsNullOrEmpty(userId)) return BadRequest("No session user");
 
-            await _fsManager.RemoveFromConferenceAsync(userId, dto.ConferenceName, dto.CallUuid, ct);
+            await _fsManager.RemoveFromConferenceAsync(userId, dto.ConferenceName, dto.CallUuid);
             return Ok();
         }
 
