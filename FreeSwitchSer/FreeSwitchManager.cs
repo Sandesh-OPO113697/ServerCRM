@@ -144,13 +144,36 @@ namespace ServerCRM.FreeSwitchSer
             string originateCmd = $"api originate {{origination_caller_id_name={callerId},origination_caller_id_number={callerId}}}sofia/gateway/{gateway}/{phoneNumber} &bridge(user/{callerId}@{_fsHost})\n\n";
 
             var result = await client.SendCommandAsync(originateCmd);
-            var match = Regex.Match(result ?? "", @"Channel-Call-UUID:\s*(\S+)", RegexOptions.IgnoreCase);
+            //var match = Regex.Match(result ?? "", @"Channel-Call-UUID:\s*(\S+)", RegexOptions.IgnoreCase);
 
+            //if (match.Success)
+            //{
+            //    var newUuid = match.Groups[1].Value;
+            //    _activeCalls[newUuid] = new FsCallEvent { Uuid = newUuid, Status = "Dialing", Raw = result };
+            //    return newUuid;
+            //}
+
+            //return null;
+
+            var match = Regex.Match(result ?? "", @"Channel-Call-UUID:\s*(\S+)", RegexOptions.IgnoreCase);
             if (match.Success)
             {
-                var newUuid = match.Groups[1].Value;
-                _activeCalls[newUuid] = new FsCallEvent { Uuid = newUuid, Status = "Dialing", Raw = result };
-                return newUuid;
+                var aLegUuid = match.Groups[1].Value;
+                _activeCalls[aLegUuid] = new FsCallEvent { Uuid = aLegUuid, Status = "Dialing", Raw = result };
+
+             
+                for (int i = 0; i < 50; i++) 
+                {
+                    var softphoneLeg = _activeCalls.Values.FirstOrDefault(c =>
+                        c.DestinationNumber == callerId && c.Status != "Disconnected");
+
+                    if (softphoneLeg != null)
+                    {
+                        return softphoneLeg.Uuid; 
+                    }
+
+                    await Task.Delay(100);
+                }
             }
 
             return null;

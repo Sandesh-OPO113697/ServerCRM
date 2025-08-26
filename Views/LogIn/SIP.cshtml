@@ -1,0 +1,276 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Web Softphone</title>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jssip/3.10.0/jssip.min.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .phone {
+      width: 320px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      padding: 20px;
+      text-align: center;
+    }
+    .phone h2 {
+      margin-bottom: 15px;
+      color: #333;
+    }
+    input {
+      width: 90%;
+      padding: 8px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      width: 45%;
+      margin: 5px;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #0078d7;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: #005a9e;
+    }
+    #statusMessage {
+      margin-top: 15px;
+      font-weight: bold;
+      color: #0078d7;
+    }
+    .call-buttons {
+      margin-top: 10px;
+    }
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <h2>Web Softphone</h2>
+
+    <input type="text" id="txtUsername" placeholder="Username"><br>
+    <input type="password" id="txtPassword" placeholder="Password"><br>
+    <input type="text" id="txtSIPServer" placeholder="SIP Server (IP)" value="172.18.16.173:5066"><br>
+    <input type="text" id="txtTargetNumber" placeholder="Target Number"><br>
+
+    <button id="btnRegister">Register</button>
+
+    <div class="call-buttons">
+      <button id="btnCall">Call</button>
+      <button id="btnHangup">Hangup</button><br>
+      <button id="btnAnswer">Answer</button>
+      <button id="btnReject">Reject</button>
+    </div>
+
+    <div id="statusMessage">Not connected</div>
+  </div>
+
+  <audio id="remoteAudio" autoplay></audio>
+  <audio id="localAudio" autoplay muted></audio>
+    <script src="~/js/jssip.min.js"></script>
+  <script>
+  $(function () {
+    const $username = $('#txtUsername');
+    const $password = $('#txtPassword');
+    const $sipServer = $('#txtSIPServer');
+    const $target = $('#txtTargetNumber');
+    const $status = $('#statusMessage');
+
+    const remoteAudio = document.getElementById('remoteAudio');
+    const localAudio = document.getElementById('localAudio');
+
+    let userAgent = null;
+    let session = null;
+    let localStream = null;
+    const PREFIX = '7530'; // adjust as per trunk prefix
+
+    function logStatus(msg, data) {
+      console.log("[Softphone] " + msg, data || "");
+      $status.text(msg);
+    }
+
+    // Register
+    $('#btnRegister').click(async function () {
+      const username = $username.val().trim();
+      const password = $password.val().trim();
+      const sipServer = $sipServer.val().trim();
+
+      console.log("👉 Register clicked", { username, sipServer });
+
+      if (!username || !password || !sipServer) {
+        logStatus("Enter Username, Password, and SIP Server");
+        return;
+      }
+
+      try {
+        console.log("🎤 Requesting mic access...");
+        localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        localAudio.srcObject = localStream;
+        console.log("✅ Mic access granted", localStream);
+
+              const wsUri = "ws://" + sipServer  + "/ws"
+        console.log("🔌 WebSocket connecting:", wsUri);
+
+        const socket = new JsSIP.WebSocketInterface(wsUri);
+        const configuration = {
+          sockets: [socket],
+          uri: "sip:" + username + "@@" + sipServer,  // FIXED double '@@'
+          password: password
+        };
+
+        console.log("📜 UA configuration", configuration);
+
+        userAgent = new JsSIP.UA(configuration);
+
+        // UA Events
+        userAgent.on('connected', () => logStatus("Connected to SIP server"));
+        userAgent.on('disconnected', () => logStatus("Disconnected from SIP server"));
+        userAgent.on('registered', () => logStatus("Registered as " + username));
+        userAgent.on('unregistered', () => logStatus("Unregistered"));
+        userAgent.on('registrationFailed', e => logStatus("Registration failed", e));
+
+        // Session Events
+        userAgent.on('newRTCSession', e => {
+          session = e.session;
+          console.log("📞 New RTC Session", session);
+
+          if (session.direction === 'incoming') {
+            logStatus("Incoming call from " + session.remote_identity.uri.toString());
+
+            session.on('peerconnection', e => {
+              console.log("🔗 Peer connection event", e);
+              const pc = e.peerconnection;
+              pc.ontrack = ev => {
+                console.log("🎧 Remote track received", ev.streams);
+                if (ev.streams && ev.streams[0]) {
+                  remoteAudio.srcObject = ev.streams[0];
+                }
+              };
+            });
+
+            session.on('ended', () => logStatus("Call ended"));
+            session.on('failed', e => logStatus("Call failed", e));
+            session.on('confirmed', () => logStatus("Call answered"));
+          }
+        });
+
+        console.log("🚀 Starting UA...");
+        userAgent.start();
+      } catch (err) {
+        logStatus("Mic access failed", err);
+        console.error("❌ Mic / Register Error:", err.stack || err);
+      }
+    });
+
+    // Make Call
+    $('#btnCall').click(function () {
+     
+      if (!userAgent) {
+        logStatus("Register first");
+        return;
+      }
+
+      const target = $target.val().trim();
+      const sipServer = $sipServer.val().trim();
+      console.log("📲 Dial request", { target, sipServer });
+
+      if (!target) {
+        logStatus("Enter target number");
+        return;
+      }
+
+
+      const targetUri = "sip:" + PREFIX + target + "@@" + sipServer;
+      console.log("☎️ Calling URI:", targetUri);
+
+      const eventHandlers = {
+        progress: () => logStatus("Calling..."),
+        failed: e => logStatus("Call failed", e),
+        ended: () => logStatus("Call ended"),
+        confirmed: () => logStatus("Call confirmed")
+      };
+
+      const options = {
+        eventHandlers: eventHandlers,
+        mediaConstraints: { audio: true, video: false }
+      };
+
+      try {
+        session = userAgent.call(targetUri, options);
+        console.log("📞 Outgoing session", session);
+
+        if (localStream) {
+          localStream.getTracks().forEach(track => {
+            console.log("🎤 Adding local track", track);
+            session.connection.addTrack(track, localStream);
+          });
+        }
+      } catch (err) {
+        console.error("❌ Call Error:", err.stack || err);
+        logStatus("Call setup failed", err);
+      }
+    });
+
+    // Hangup
+    $('#btnHangup').click(function () {
+      console.log("👉 Hangup clicked");
+      if (session) {
+        session.terminate();
+        logStatus("Call terminated");
+      } else {
+        console.warn("⚠️ No active session to hangup");
+      }
+    });
+
+    // Answer
+    $('#btnAnswer').click(function () {
+      console.log("👉 Answer clicked");
+      if (session && session.direction === 'incoming') {
+        session.answer({
+          mediaConstraints: { audio: true, video: false }
+        });
+        logStatus("Call answered");
+      } else {
+        console.warn("⚠️ No incoming call to answer");
+      }
+    });
+
+    // Reject
+    $('#btnReject').click(function () {
+      console.log("👉 Reject clicked");
+      if (session && session.direction === 'incoming') {
+        session.terminate();
+        logStatus("Call rejected");
+      } else {
+        console.warn("⚠️ No incoming call to reject");
+      }
+    });
+  });
+</script>
+</body>
+</html>

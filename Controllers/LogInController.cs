@@ -20,7 +20,12 @@ namespace ServerCRM.Controllers
         public IActionResult GetTypeOfCRM()
         {
             int type = _crmSettings.TypeOfCRM;
-            return Ok(type);  // returns just the int value
+            return Ok(type);  
+        }
+
+        public IActionResult SIP()
+        {
+            return View();
         }
     }
 }
