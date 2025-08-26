@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Genesyslab.InteropServices;
+using Microsoft.AspNetCore.Mvc;
 using ServerCRM.FreeSwitchSer;
 using ServerCRM.Models;
+using ServerCRM.Models.Freeswitch;
 using ServerCRM.Services;
 
 namespace ServerCRM.Controllers
@@ -17,6 +19,14 @@ namespace ServerCRM.Controllers
             _apiService = apiService;
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> Status()
+        {
+            string userId = HttpContext.Session.GetString("login_code") ?? "";
+            await _fsManager.GetFreeSwitchStatusAsync(userId);
+            return Json(new { status = true });
+        }
         [HttpGet]
         public async Task<IActionResult> MakeCall(string empcode)
         {
@@ -139,11 +149,6 @@ namespace ServerCRM.Controllers
             _fsManager.SetAgentStatus(userId, dto.Status);
             return Ok();
         }
-
-        public class AgentStatusDto { public string Status { get; set; } = ""; }
-        public class AddConfDto { public string ConferenceName { get; set; } = ""; public string PhoneNumber { get; set; } = ""; }
-        public class RemoveConfDto { public string ConferenceName { get; set; } = ""; public string CallUuid { get; set; } = ""; }
-        public class MergeConfDto { public string CallUuid { get; set; } = ""; public string ConferenceName { get; set; } = ""; }
 
     }
 }

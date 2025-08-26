@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using ServerCRM.Models.Freeswitch;
 using System.Text;
 using ServerCRM.FreeSwitchService;
+using Genesyslab.InteropServices;
 
 namespace ServerCRM.FreeSwitchSer
 {
@@ -24,6 +25,7 @@ namespace ServerCRM.FreeSwitchSer
             _fsPort = 8021;
             _fsPass = "ClueCon";
         }
+       
 
         public void ProcessFreeSwitchEvent(string frame)
         {
@@ -43,6 +45,8 @@ namespace ServerCRM.FreeSwitchSer
 
             var eventName = eventHeaders.GetValueOrDefault("Event-Name", "UNKNOWN");
             var callUuid = eventHeaders.GetValueOrDefault("Channel-Call-UUID", string.Empty);
+            if (string.IsNullOrEmpty(callUuid))
+                callUuid = eventHeaders.GetValueOrDefault("Unique-ID", string.Empty);
 
             if (string.IsNullOrEmpty(callUuid))
             {
@@ -144,16 +148,7 @@ namespace ServerCRM.FreeSwitchSer
             string originateCmd = $"api originate {{origination_caller_id_name={callerId},origination_caller_id_number={callerId}}}sofia/gateway/{gateway}/{phoneNumber} &bridge(user/{callerId}@{_fsHost})\n\n";
 
             var result = await client.SendCommandAsync(originateCmd);
-            //var match = Regex.Match(result ?? "", @"Channel-Call-UUID:\s*(\S+)", RegexOptions.IgnoreCase);
-
-            //if (match.Success)
-            //{
-            //    var newUuid = match.Groups[1].Value;
-            //    _activeCalls[newUuid] = new FsCallEvent { Uuid = newUuid, Status = "Dialing", Raw = result };
-            //    return newUuid;
-            //}
-
-            //return null;
+           
 
             var match = Regex.Match(result ?? "", @"Channel-Call-UUID:\s*(\S+)", RegexOptions.IgnoreCase);
             if (match.Success)
@@ -292,6 +287,13 @@ namespace ServerCRM.FreeSwitchSer
         {
             var client = await GetOrCreateConnectionAsync(userId);
             await client.SendCommandAsync($"api conference {conferenceName} kick {callerUuid}");
+        }
+        public async Task GetFreeSwitchStatusAsync(string userID)
+        {
+            var client = await GetOrCreateConnectionAsync(userID);
+
+            await client.SendCommandAsync("status");
+
         }
     }
 }

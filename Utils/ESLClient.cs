@@ -48,8 +48,11 @@ namespace ServerCRM.Utils
 
         public async Task StartEventListenerAsync()
         {
+
             if (!IsConnected) await ConnectAsync();
+
             await SendRawAsync("events plain ALL\n\n");
+
 
             _ = Task.Run(async () =>
             {
@@ -77,7 +80,7 @@ namespace ServerCRM.Utils
                                 frame = current.Substring(0, idx);
                                 _recvBuffer.Remove(0, idx + 2);
                             }
-                           
+
                             try { OnEventReceived?.Invoke(frame); } catch (Exception ex) { Console.WriteLine($"Error in event handler: {ex.Message}"); }
                         }
                     }
@@ -89,6 +92,8 @@ namespace ServerCRM.Utils
                 }
             });
         }
+
+
 
         public async Task<string> SendCommandAsync(string cmd)
         {

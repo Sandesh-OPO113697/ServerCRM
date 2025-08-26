@@ -27,5 +27,19 @@ namespace ServerCRM.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public IActionResult GetSipConfig()
+        {
+        
+            var response = new
+            {
+                USERNAME = "22",
+                PASSWORD = "22",
+                SIPSERVER = "172.18.16.173:5066"
+            };
+
+            return Ok(response);
+        }
     }
 }

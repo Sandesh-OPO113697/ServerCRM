@@ -1,7 +1,5 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "FreeSWITCH Call Control";
-    // Pass login and dn from controller
     var loginCode = ViewBag.LoginCode as string ?? "";
     var dn = ViewBag.DN as string ?? "";
 }
@@ -18,17 +16,14 @@
             color: rgba(255, 255, 255, 0.75);
             margin-right: 1rem;
         }
-
         .icon-btn {
             font-size: 1.5rem;
             color: white;
             padding: 0.5rem;
         }
-
-            .icon-btn:hover {
-                color: #ccc;
-            }
-
+        .icon-btn:hover {
+            color: #ccc;
+        }
         .status-bar {
             padding: 10px;
             background-color: #e9ecef;
@@ -48,6 +43,7 @@
                 <strong>Agent:</strong> @loginCode &nbsp;
                 <strong>CallerID:</strong> @dn
             </div>
+            <button id="btnAnswer">Answer</button>
             <div class="d-flex ms-auto align-items-center">
                 <form id="makeCallForm" asp-action="onCall" method="post" class="d-flex me-2">
                     <input type="text" name="phoneNumber" class="form-control form-control-sm me-2" placeholder="Phone Number" required />
@@ -69,7 +65,7 @@
 
     <div class="status-bar d-flex justify-content-center align-items-center mb-3">
         <strong>Status:</strong>
-        <button class="btn btn-success btn-sm ms-2" onclick="setAgentStatus('Ready')">
+        <button class="btn btn-success btn-sm ms-2" onclick="setAgentStatus('Ready')">`
             <i class="fas fa-check-circle"></i> Ready
         </button>
         <button class="btn btn-warning btn-sm ms-2" onclick="setAgentStatus('NotReady')">
@@ -108,29 +104,30 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.9/signalr.min.js"></script>
+  
+    <audio id="localAudio" autoplay muted ></audio>
+    <audio id="remoteAudio" autoplay></audio>
+
+    <script src="~/js/signalr.min.js"></script>
+    <script src="~/js/jssip.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
     <script>
         const loginCode = "@loginCode";
         const dn = "@dn";
-
         let activeCalls = {};
-
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/callEventsHub?userId=" + encodeURIComponent(loginCode))
             .withAutomaticReconnect()
             .build();
 
-        connection.on("OnFsEvent", function(eventObj) {
+        connection.on("OnFsEvent", function (eventObj) {
             console.log("FS Event:", eventObj);
 
             let uuid = eventObj.uuid;
             let status = eventObj.status;
 
-            if (!uuid || status === "Unknown") {
-                console.log("Skipping invalid FS event");
-                return;
-            }
+            if (!uuid || status === "Unknown") return;
 
             document.getElementById("currentEvent").textContent = `UUID: ${uuid} - Status: ${status}`;
 
@@ -144,8 +141,8 @@
         });
 
         connection.start()
-            .then(() => console.log("SignalR connected for user:", loginCode))
-            .catch(err => console.error("SignalR connection error:", err));
+            .then(() => console.log(" SignalR connected for user:", loginCode))
+            .catch(err => console.error(" SignalR connection error:", err));
 
         function renderActiveCallsTable() {
             let tbody = document.querySelector("#activeCallsTable tbody");
@@ -179,58 +176,6 @@
             }
         }
 
-        async function holdCall(uuid) {
-            await sendPostJson("/FreeSwitch/HoldCall", { uuid: uuid });
-        }
-
-        async function unholdCall(uuid) {
-            await sendPostJson("/FreeSwitch/UnholdCall", { uuid: uuid });
-        }
-
-        async function hangupCall(uuid) {
-            let resp = await sendPostJson("/FreeSwitch/HangupCall", { uuid: uuid });
-            if (!resp.ok) {
-                alert("Failed to hang up call. It may have already ended.");
-            }
-        }
-
-        async function addNumberToConference() {
-            let confName = document.getElementById("conferenceName").value;
-            let number = document.getElementById("conferenceNumber").value;
-            if (!confName || !number) {
-                alert("Conference name and number required");
-                return;
-            }
-            await sendPostJson("/FreeSwitch/AddNumberToConference", { conferenceName: confName, phoneNumber: number });
-        }
-
-        async function mergeToConference(uuid) {
-            const conferenceName = prompt("Enter the name of the conference to join:");
-            if (!conferenceName) {
-                alert("Conference name is required to merge.");
-                return;
-            }
-            await sendPostJson("/FreeSwitch/MergeToConference", { callUuid: uuid, conferenceName: conferenceName });
-        }
-
-        async function removeFromConference(uuid) {
-            const conferenceName = prompt("Enter the name of the conference to remove from:");
-            if (!conferenceName) {
-                alert("Conference name is required to remove.");
-                return;
-            }
-            await sendPostJson("/FreeSwitch/RemoveFromConference", { conferenceName: conferenceName, callUuid: uuid });
-        }
-
-        async function setAgentStatus(status) {
-            let resp = await sendPostJson("/FreeSwitch/SetAgentStatus", { status: status });
-            if (resp.ok) {
-                alert(`Status changed to ${status}.`);
-            } else {
-                alert("Failed to change status.");
-            }
-        }
-
         async function sendPostJson(url, dataObj) {
             try {
                 let resp = await fetch(url, {
@@ -238,16 +183,145 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(dataObj)
                 });
-                if (!resp.ok) {
-                    const errorText = await resp.text();
-                    console.error("Error from server:", errorText);
-                }
                 return resp;
             } catch (err) {
                 console.error("Network error:", err);
                 return { ok: false };
             }
         }
+
+        async function holdCall(uuid) { await sendPostJson("/FreeSwitch/HoldCall", { uuid }); }
+        async function unholdCall(uuid) { await sendPostJson("/FreeSwitch/UnholdCall", { uuid }); }
+        async function hangupCall(uuid) { await sendPostJson("/FreeSwitch/HangupCall", { uuid }); }
+        async function addNumberToConference() {
+            let confName = document.getElementById("conferenceName").value;
+            let number = document.getElementById("conferenceNumber").value;
+            if (!confName || !number) { alert("Conference name and number required"); return; }
+            await sendPostJson("/FreeSwitch/AddNumberToConference", { conferenceName: confName, phoneNumber: number });
+        }
+        async function mergeToConference(uuid) {
+            const conferenceName = prompt("Enter the name of the conference to join:");
+            if (!conferenceName) return;
+            await sendPostJson("/FreeSwitch/MergeToConference", { callUuid: uuid, conferenceName });
+        }
+        async function removeFromConference(uuid) {
+            const conferenceName = prompt("Enter the name of the conference to remove from:");
+            if (!conferenceName) return;
+            await sendPostJson("/FreeSwitch/RemoveFromConference", { conferenceName, callUuid: uuid });
+        }
+        async function setAgentStatus(status) {
+            let resp = await sendPostJson("/FreeSwitch/SetAgentStatus", { status });
+            if (resp.ok) alert(`Status changed to ${status}.`);
+        }
+
+      
+        let userAgent = null;
+        let session = null;
+
+        async function initSoftphone(config) {
+
+            console.log(JSON.stringify(config));
+
+            if (userAgent) {
+                console.log("JsSIP already initialized, skipping.");
+                return;
+            }
+
+                     try {
+                                          
+                            let localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                            const localAudio = document.getElementById('localAudio');
+                            localAudio.srcObject = localStream;
+                          
+                            let wsUri = "ws://" + config.sipserver + "/ws";
+                            const socket = new JsSIP.WebSocketInterface(wsUri);
+                            const configuration = {
+                                sockets: [socket],
+                                uri: "sip:" + config.username + "@@" + config.sipserver,  
+                                password: config.password,
+                            };
+                       
+                            userAgent = new JsSIP.UA(configuration);
+                            userAgent.on('connected', () => console.log("Connected to SIP server"));
+                            userAgent.on('disconnected', () => console.log("Disconnected from SIP server"));
+                            userAgent.on('registered', () => console.log("Registered as", config.username));
+                            userAgent.on('unregistered', () => console.log("Unregistered"));
+                            userAgent.on('registrationFailed', e => console.error("Registration failed", e));
+
+                         
+                            userAgent.on('newRTCSession', e => {
+                                session = e.session;
+
+                                          $('#btnAnswer').click(function () {
+                                            console.log("👉 Answer clicked");
+                                            if (session && session.direction === 'incoming') {
+                                              session.answer({
+                                                mediaConstraints: { audio: true, video: false }
+                                              });
+                                            
+                                            } else {
+                                              console.warn(" No incoming call to answer");
+                                            }
+                                          });
+
+                                if (session.direction === 'incoming') {
+                                    document.getElementById("currentEvent").textContent ="Incoming call from " + session.remote_identity.uri.toString();
+                                    session.on('peerconnection', e => {
+                                        const pc = e.peerconnection;
+                                        pc.ontrack = ev => {
+                                         
+                                            if (ev.streams && ev.streams[0]) {
+                                                document.getElementById("remoteAudio").srcObject = ev.streams[0];
+                                            }
+                                        };
+                                    });
+
+                                    session.on('ended', () => console.log(" Call ended"));
+                                    session.on('failed', e => console.error(" Call failed", e));
+                                    session.on('confirmed', () => console.log(" Call answered"));
+                                }
+  
+                                if (session.direction === 'outgoing') {
+                                    if (localStream) {
+                                        localStream.getTracks().forEach(track => {
+                                            session.connection.addTrack(track, localStream);
+                                        });
+                                    }
+                                }
+                            });
+                            userAgent.start();
+
+                            refreshFsStatus();
+                                  
+
+
+
+
+            } catch (err) {
+                console.error("Softphone init failed", err);
+            }
+        }
+        
+        $(document).ready(function () {
+            const sipConfig = JSON.parse(sessionStorage.getItem("sipConfig"));
+
+            if (sipConfig) {
+                console.log("Reusing SIP config from sessionStorage");
+                initSoftphone(sipConfig);
+            } else {
+                $.get("/LogIn/GetSipConfig", function (res) {
+                    console.log("Loaded SIP config:", res);
+                    sessionStorage.setItem("sipConfig", JSON.stringify(res));
+                    initSoftphone(res);
+                }).fail(err => console.error("Failed to fetch SIP config", err));
+            }
+        });
+
+          async function refreshFsStatus() {
+                                    const response = await fetch('/FreeSwitch/Status');
+                                    const data = await response.json();
+
+                                }
     </script>
 </body>
 </html>
