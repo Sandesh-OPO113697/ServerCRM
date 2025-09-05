@@ -4,885 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <style>
-
-
-
-        .tab-btn {
-            padding: 6px 12px;
-            font-size: 14px;
-            border: 1px solid #ddd;
-            border-radius: 4px 4px 0 0;
-            background: #f9f9f9;
-            cursor: pointer;
-        }
-
-            .tab-btn.active {
-                background: #fff;
-                border-bottom: 1px solid #fff;
-                font-weight: 600;
-            }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            font-size: 14px;
-            color: #000;
-            background-color: #f9fbfc;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header {
-            background-color: white;
-            border-bottom: 1px solid #ffffff;
-            box-shadow: 20px 20px 50px 0px rgba(25,61,131,0.05);
-            height: 72px;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            backdrop-filter: blur(6px);
-        }
-
-        .header-content {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            width: 100%;
-        }
-
-        .hamburger-menu {
-            width: 34px;
-            height: 34px;
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 8.73px;
-        }
-
-        .logo-icon {
-            width: 31.429px;
-            height: 31.429px;
-        }
-
-        .logo-text {
-            width: 83.841px;
-            height: 23.523px;
-        }
-
-        .header-right {
-            flex: 1;
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .user-call-section {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .user-profile-timer {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 3px 6px;
-            border-radius: 44.5px;
-            border: 1px solid #dcedff;
-            box-shadow: 20px 20px 50px 0px rgba(25,61,131,0.05);
-        }
-
-        .user-avatar {
-            width: 47px;
-            height: 47px;
-            background-color: #06c270;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 500;
-            font-size: 14.672px;
-        }
-
-        .user-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .user-name {
-            color: #59616c;
-            font-size: 12px;
-            font-weight: 500;
-            line-height: 17.191px;
-        }
-
-        .call-timer {
-            color: black;
-            font-size: 24px;
-            font-weight: 500;
-            line-height: 28px;
-            letter-spacing: -0.48px;
-        }
-
-        .call-controls {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            padding: 3px 10px;
-            border-radius: 44.5px;
-            border: 1px solid #dcedff;
-            box-shadow: 20px 20px 50px 0px rgba(25,61,131,0.05);
-        }
-
-        .control-group {
-            display: flex;
-            align-items: center;
-            gap: 8.956px;
-        }
-
-        .control-btn {
-            width: 38px;
-            height: 38px;
-            background-color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .control-separator {
-            width: 0;
-            height: 44px;
-            border-left: 1px solid #F3F8FF;
-        }
-
-        .pause-bars {
-            display: flex;
-            gap: 1.636px;
-        }
-
-        .pause-bar {
-            width: 4.09px;
-            height: 14.996px;
-            background-color: #ff7752;
-            border-radius: 0.818px;
-        }
-
-        .main-content {
-            display: flex;
-            flex: 1;
-        }
-
-        .left-sidebar {
-            width: 68px;
-            background-color: #f9fbfc;
-            border-right: 1px solid #eaeced;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            padding: 24px 20px;
-        }
-
-        .sidebar-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .sidebar-icon {
-            width: 31px;
-            height: 31px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-            .sidebar-icon.active {
-                background-color: white;
-                border: 1px solid white;
-                box-shadow: 20px 20px 50px 0px rgba(25,61,131,0.05);
-            }
-
-            .sidebar-icon.inactive {
-                background-color: #d4e0e7;
-            }
-
-        .sidebar-placeholder {
-            width: 8px;
-            height: 8px;
-            background-color: #7993a5;
-            border-radius: 2px;
-        }
-
-        .agent-profile-section {
-            width: 342px;
-            background-color: white;
-            border-right: 1px solid #e9eceb;
-            padding: 16px;
-        }
-
-        .profile-content {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        .user-profile {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .profile-avatar {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background-color: #aa9c75;
-            background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face');
-            background-size: cover;
-            background-position: center;
-        }
-
-        .profile-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .profile-name {
-            color: #101828;
-            font-size: 16px;
-            font-weight: 500;
-            line-height: 20px;
-        }
-
-        .profile-role {
-            color: #667085;
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 20px;
-        }
-
-        .profile-email {
-            color: #667085;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 20px;
-        }
-
-        .action-buttons {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .action-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-        }
-
-        .action-btn-icon {
-            width: 41px;
-            height: 41px;
-            background-color: #fbfbfb;
-            border: 1px solid #e7e8e9;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .action-btn-label {
-            color: #667085;
-            font-size: 12px;
-            font-weight: 400;
-            line-height: 20px;
-            text-align: center;
-        }
-
-        .divider {
-            width: 100%;
-            height: 0;
-            border-bottom: 1px solid #E7E8E9;
-        }
-
-        .dialer-section {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .section-title {
-            color: #101828;
-            font-size: 16px;
-            font-weight: 500;
-            line-height: 20px;
-        }
-
-        .dialer-content {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .form-section {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .form-label {
-            color: #101828;
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 20px;
-        }
-
-        .receiving-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .add-recipients {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #548ff7;
-            cursor: pointer;
-        }
-
-        .add-recipients-text {
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .recipient-card {
-            background-color: #f7f8f9;
-            border-radius: 6px;
-            padding: 12px;
-        }
-
-        .recipient-content {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .recipient-avatar {
-            width: 40px;
-            height: 40px;
-            background-color: #06c270;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 9.833px;
-            font-weight: 500;
-        }
-
-        .recipient-info {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-        }
-
-        .recipient-name {
-            color: #191d23;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .recipient-phone {
-            color: #64748b;
-            font-size: 12px;
-            font-weight: 400;
-        }
-
-        .ongoing-call-btn {
-            background-color: #548ff7;
-            border-radius: 10px;
-            border: 1px solid white;
-            box-shadow: 0px 1px 2px 0px rgba(37,62,167,0.48), 0px 0px 0px 1px #375dfb;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .ongoing-call-content {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .ongoing-call-text {
-            color: white;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .ai-transcript {
-            background-color: #f7f8f9;
-            border: 1px solid #e7e8e9;
-            border-radius: 6px;
-            padding: 12px;
-        }
-
-        .transcript-content {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .transcript-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .transcript-title {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .transcript-title-text {
-            color: #101828;
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        .waveform-container {
-            background-color: white;
-            border-radius: 12px;
-            border: 1px solid #dde5ed;
-            height: 78px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px;
-        }
-
-        .waveform {
-            display: flex;
-            align-items: center;
-            gap: 7.69px;
-            height: 100%;
-            width: 100%;
-        }
-
-        .waveform-bar {
-            width: 2px;
-            background: linear-gradient(to bottom, #548FF7, #22BEA4);
-            border-radius: 9999px;
-        }
-
-        .tabs {
-            display: flex;
-        }
-
-        .tab {
-            flex: 1;
-            text-align: center;
-            padding-bottom: 5px;
-            cursor: pointer;
-        }
-
-            .tab.active {
-                border-bottom: 1px solid #548ff7;
-            }
-
-            .tab.inactive {
-                border-bottom: 1px solid #dde5ed;
-            }
-
-        .tab-text.active {
-            color: #548ff7;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .tab-text.inactive {
-            color: #191d23;
-            font-size: 14px;
-            font-weight: 400;
-        }
-
-        .transcript-text {
-            color: #191d23;
-            font-size: 13.671px;
-            line-height: 20.506px;
-        }
-
-        .transcript-list {
-            list-style: disc;
-            margin-left: 20.506px;
-            margin-top: 8px;
-        }
-
-            .transcript-list li {
-                font-weight: 500;
-                margin-bottom: 4px;
-            }
-
-        .speaker {
-            color: #548ff7;
-        }
-
-        .main-content-area {
-            flex: 1;
-            background-color: #f9fbfc;
-            padding: 20px;
-        }
-
-        .main-content-container {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .top-navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 42px;
-        }
-
-        .nav-tabs {
-            display: flex;
-            align-items: center;
-            gap: 0;
-        }
-
-        .nav-tab {
-            padding: 10px 16px;
-            border-radius: 6px;
-            box-shadow: 0px 2px 4px 0px rgba(99,99,99,0.1);
-            cursor: pointer;
-        }
-
-            .nav-tab.active {
-                background-color: white;
-                color: #18181b;
-            }
-
-            .nav-tab.inactive {
-                color: #41414b;
-            }
-
-        .nav-tab-text {
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .knowledge-portal {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 10px 5px;
-            border-radius: 6px;
-            box-shadow: 0px 2px 4px 0px rgba(99,99,99,0.1);
-        }
-
-        .knowledge-content {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .knowledge-text {
-            color: #191d23;
-            font-size: 14px;
-            font-weight: 400;
-        }
-
-        .knowledge-btn {
-            width: 41px;
-            height: 41px;
-            background-color: white;
-            border: 1px solid #e7e8e9;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .section-container {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .section-header-bar {
-            background-color: #eef3f6;
-            border: 1px solid #ebebeb;
-            border-top-left-radius: 6px;
-            border-top-right-radius: 6px;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 16px;
-        }
-
-        .section-header-title {
-            color: #191d23;
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        .section-content {
-            background-color: white;
-            border: 1px solid #ebebeb;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .account-section {
-            padding: 0 16px;
-        }
-
-        .account-title {
-            color: #191d23;
-            font-size: 16px;
-            font-weight: 500;
-            margin-bottom: 12px;
-        }
-
-        .account-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
-
-        .account-item {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .account-label {
-            color: #667085;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 20px;
-        }
-
-        .account-value {
-            color: #191d23;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .content-divider {
-            width: 100%;
-            height: 0;
-            border-bottom: 1px solid #E9ECEB;
-        }
-
-        .table-container {
-            background-color: white;
-            border: 1px solid #eaecf0;
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;
-        }
-
-        .table-header {
-            background-color: #f7f8f9;
-            border-bottom: 1px solid #eaecf0;
-            height: 44px;
-            display: flex;
-        }
-
-        .table-header-cell {
-            flex: 1;
-            padding: 12px 24px;
-            display: flex;
-            align-items: center;
-        }
-
-        .table-header-content {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .table-header-text {
-            color: #18181b;
-            font-size: 12px;
-            font-weight: 500;
-            line-height: 18px;
-        }
-
-        .table-row {
-            border-bottom: 1px solid #eaecf0;
-            height: 72px;
-            display: flex;
-        }
-
-            .table-row.even {
-                background-color: #f6f9fb;
-            }
-
-            .table-row.odd {
-                background-color: white;
-            }
-
-        .table-cell {
-            flex: 1;
-            padding: 16px 24px;
-            display: flex;
-            align-items: center;
-        }
-
-        .table-cell-text {
-            color: #18181b;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 20px;
-        }
-
-        .status-badge {
-            background-color: #ecfdf3;
-            padding: 2px 8px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #12B76A;
-            border-radius: 50%;
-        }
-
-        .status-text {
-            color: #027a48;
-            font-size: 12px;
-            font-weight: 500;
-            line-height: 18px;
-        }
-
-        .pagination {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 24px;
-        }
-
-        .pagination-btn {
-            background-color: white;
-            border: 1px solid #d0d5dd;
-            border-radius: 8px;
-            box-shadow: 0px 1px 2px 0px rgba(16,24,40,0.05);
-            padding: 8px 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-
-        .pagination-btn-text {
-            color: #344054;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .pagination-numbers {
-            display: flex;
-            align-items: center;
-            gap: 2px;
-        }
-
-        .pagination-number {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-            .pagination-number.active {
-                background-color: #eff7ff;
-                color: #2473ec;
-            }
-
-            .pagination-number.inactive {
-                color: #667085;
-            }
-
-        .pagination-number-text {
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .floating-expand {
-            position: fixed;
-            bottom: 30px;
-            right: -15px;
-            width: 29px;
-            height: 29px;
-            background-color: white;
-            border: 1px solid #e7e8e9;
-            border-radius: 50%;
-            box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-    </style>
+    <link href="../css/Common/Dialer.css" rel="stylesheet" />
 </head>
 <body>
-    
+
     <header class="header">
         <div class="header-content">
-         
+
             <div class="hamburger-menu">
                 <svg class="w-full h-full" fill="none" viewBox="0 0 34 34">
                     <path d="M28 23.6065C28 24.3914 27.3637 25.0278 26.5787 25.0278H10.9447C10.1597 25.0278 9.52338 24.3914 9.52338 23.6065V23.6065C9.52338 22.8215 10.1597 22.1852 10.9447 22.1852H26.5787C27.3637 22.1852 28 22.8215 28 23.6065V23.6065ZM28 16.5001C28 17.285 27.3637 17.9214 26.5787 17.9214H15.2085C14.4235 17.9214 13.7872 17.285 13.7872 16.5001V16.5001C13.7872 15.7151 14.4235 15.0788 15.2085 15.0788H26.5787C27.3637 15.0788 28 15.7151 28 16.5001V16.5001ZM26.5787 7.97241C27.3637 7.97241 28 8.60874 28 9.39369V9.39369C28 10.1786 27.3637 10.815 26.5787 10.815H10.9447C10.1597 10.815 9.52338 10.1786 9.52338 9.39369V9.39369C9.52338 8.60874 10.1597 7.97241 10.9447 7.97241H26.5787ZM3.41829 22.6038C2.86507 22.0505 2.86444 21.1538 3.4169 20.5998L7.50517 16.5001L3.4169 12.4004C2.86444 11.8464 2.86506 10.9496 3.41829 10.3964V10.3964C3.97207 9.84261 4.86992 9.84261 5.4237 10.3964L11.5274 16.5001L5.42369 22.6038C4.86992 23.1576 3.97207 23.1575 3.41829 22.6038V22.6038Z" fill="rgba(255,255,255,0.79)" />
                 </svg>
             </div>
 
-           
+
             <div class="logo-section">
                 <div class="logo-icon">
                     <img style=" width: 49px;" src="../img/Logo 1 Connect.png" />
@@ -892,7 +27,7 @@
                 </div>
             </div>
 
-          
+
             <div class="header-right">
                 <div class="user-call-section">
 
@@ -914,20 +49,20 @@
                                 </svg>
                             </div>
                             <div title="Disconnect" class="control-btn">
-                                <svg viewBox="0 0 32 32" onclick="callAPI('/api/Genesys/disconnect')">
+                                <svg viewBox="0 0 32 32" onclick="callAPI('disconnect')">
                                     <path d="M30.0015 19.8085C30.4202 20.2082 30.4355 20.8716 30.0357 21.2903L28.4775 22.9222C28.1237 23.2927 27.5538 23.3532 27.1302 23.0651L23.2326 20.4148C22.8521 20.1561 22.6849 19.6795 22.8203 19.2397L23.3541 17.5059C20.4434 16.3443 17.1626 16.4201 14.3086 17.7148L14.9218 19.4221C15.0774 19.8551 14.9323 20.339 14.5642 20.6149L10.7931 23.4423C10.3831 23.7496 9.8111 23.7155 9.44059 23.3617L7.80867 21.8034C7.39002 21.4037 7.37471 20.7403 7.77446 20.3216L9.22205 18.8056C14.4187 13.3634 23.0432 13.1642 28.4855 18.3609L30.0015 19.8085Z" fill="#FF2C02" />
                                 </svg>
                             </div>
 
                             <div class="control-btn" id="Hold" style="display: none !important;">
-                                <div class="pause-bars" onclick="callAPI('/api/Genesys/hold')">
+                                <div class="pause-bars" onclick="callAPI('hold')">
                                     <div class="pause-bar"></div>
                                     <div class="pause-bar"></div>
                                 </div>
                             </div>
 
                             <div title="Un-Hold" class="control-btn" id="unhold" style="display: none !important;">
-                                <svg width="19.548" height="19.548" fill="none" viewBox="0 0 20 20" onclick="callAPI('/api/Genesys/unhold')">
+                                <svg width="19.548" height="19.548" fill="none" viewBox="0 0 20 20" onclick="callAPI('unhold')">
                                     <path d="M16.8332 8.48601C17.8463 9.04294 17.8463 10.4986 16.8332 11.0556L7.05951 16.4284C6.08242 16.9655 4.88712 16.2585 4.88712 15.1436V4.39804C4.88712 3.28303 6.08242 2.57612 7.05951 3.11324L16.8332 8.48601Z" fill="url(#paint0_linear_1_3733)" />
                                     <defs>
                                         <linearGradient id="paint0_linear_1_3733" x1="15.0747" y1="8.66146" x2="4.59348" y2="11.6127" gradientUnits="userSpaceOnUse">
@@ -949,7 +84,7 @@
 
 
                             <div title="Merge" class="control-btn" id="merge" style="display: none !important;">
-                                <svg width="20" height="12" fill="none" viewBox="0 0 20 12" onclick="callAPI('/api/Genesys/merge')">
+                                <svg width="20" height="12" fill="none" viewBox="0 0 20 12" onclick="callAPI('merge')">
                                     <path d="M18.3246 6.75117H12.1521C11.0912 6.75117 10.0303 6.46184 9.06586 5.97961C8.10141 5.49738 7.32984 4.72582 6.65473 3.85781C5.78672 2.70047 4.34004 1.92891 2.79691 1.92891H0.964453C0.385781 1.92891 0 1.54313 0 0.964453C0 0.385781 0.385781 0 0.964453 0H2.79691C4.91871 0 6.94406 1.0609 8.19785 2.79691C8.58363 3.37559 9.1623 3.95426 9.83742 4.24359C10.5125 4.62937 11.2841 4.72582 11.9592 4.72582H18.3246C18.9033 4.72582 19.2891 5.1116 19.2891 5.69027C19.2891 6.26895 18.9033 6.75117 18.3246 6.75117Z" fill="#7A7CA6" />
                                     <path d="M2.89336 11.5734H0.964453C0.385781 11.5734 0 11.1876 0 10.609C0 10.0303 0.385781 9.64452 0.964453 9.64452H2.89336C3.66492 9.64452 4.43648 9.45163 5.01516 9.16229C5.69027 8.77651 6.26895 8.29428 6.65473 7.71561C7.2334 6.8476 8.10141 6.17249 9.06586 5.59382C10.0303 5.11159 11.0912 4.82225 12.1521 4.82225H17.3602C17.9388 4.82225 18.3246 5.20803 18.3246 5.78671C18.3246 6.36538 17.9388 6.75116 17.3602 6.75116H12.0557C11.2841 6.75116 10.5125 6.94405 9.93387 7.23339C9.25875 7.61917 8.68008 8.10139 8.2943 8.68007C7.71563 9.54807 6.84762 10.2232 5.88316 10.8019C4.91871 11.2841 3.85781 11.5734 2.89336 11.5734Z" fill="#7A7CA6" />
                                     <path d="M15.4313 9.64446C15.1419 9.64446 14.949 9.54802 14.7561 9.35513C14.3704 8.96935 14.3704 8.39067 14.7561 8.00489L16.9744 5.78665L14.7561 3.56841C14.3704 3.18263 14.3704 2.60396 14.7561 2.21817C15.1419 1.83239 15.7206 1.83239 16.1064 2.21817L18.9997 5.11153C19.3855 5.49732 19.3855 6.07599 18.9997 6.46177L16.1064 9.35513C15.9135 9.54802 15.7206 9.64446 15.4313 9.64446Z" fill="#7A7CA6" />
@@ -957,7 +92,7 @@
                             </div>
 
                             <div class="control-btn" id="party" style="display: none !important;">
-                                <div title="Remove Conference" onclick="callAPI('/api/Genesys/party')">
+                                <div title="Remove Conference" onclick="callAPI('party')">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="#FF3B30">
                                         <circle cx="12" cy="12" r="10" />
                                         <line x1="15" y1="9" x2="9" y2="15" stroke="#fff" stroke-width="2" stroke-linecap="round" />
@@ -966,7 +101,7 @@
                                 </div>
                             </div>
                             <div class="control-btn">
-                                <div title="Logout" onclick="callAPI('/api/Genesys/LogOut')">
+                                <div title="Logout" onclick="callAPI('LogOut'">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="19" viewBox="0 0 24 24" fill="none" stroke="#FF3B30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                                         <polyline points="16 17 21 12 16 7" />
@@ -986,11 +121,11 @@
         </div>
     </header>
 
-   
+
     <div class="main-content">
 
 
-      
+
         <div class="agent-profile-section">
             <div class="profile-content">
 
@@ -1006,8 +141,8 @@
 
 
                     <div class="action-buttons">
-                        <div class="action-btn">
-                            <div class="action-btn-icon">
+                        <div class="action-btn"  id="btnAnswer">
+                            <div class="action-btn-icon" >
                                 <svg width="21" height="21" fill="none" viewBox="0 0 21 21">
                                     <path d="M8.925 2.1C8.23923 2.1 7.65583 2.53827 7.43962 3.15H5.775C4.90515 3.15 4.2 3.85515 4.2 4.725V17.325C4.2 18.1948 4.90515 18.9 5.775 18.9H15.225C16.0948 18.9 16.8 18.1948 16.8 17.325V4.725C16.8 3.85515 16.0948 3.15 15.225 3.15H13.5603C13.3441 2.53827 12.7608 2.1 12.075 2.1H8.925ZM8.4 3.675C8.4 3.38505 8.63505 3.15 8.925 3.15H12.075C12.3649 3.15 12.6 3.38505 12.6 3.675C12.6 3.96495 12.3649 4.2 12.075 4.2H8.925C8.63505 4.2 8.4 3.96495 8.4 3.675ZM13.4963 10.3462L9.82123 14.0213C9.6162 14.2262 9.2838 14.2262 9.07877 14.0213L7.50377 12.4463C7.29874 12.2412 7.29874 11.9088 7.50377 11.7037C7.7088 11.4988 8.0412 11.4988 8.24623 11.7037L9.45 12.9075L12.7537 9.60377C12.9588 9.39874 13.2912 9.39874 13.4963 9.60377C13.7012 9.8088 13.7012 10.1412 13.4963 10.3462Z" fill="#7993A5" />
                                 </svg>
@@ -1016,7 +151,7 @@
                         </div>
 
                         <div class="action-btn" id="getnext">
-                            <div class="action-btn-icon" onclick="callAPI('/api/Genesys/GetNext')">
+                            <div class="action-btn-icon" onclick="callAPI('GetNext')">
                                 <svg width="21" height="21" fill="none" viewBox="0 0 21 21">
                                     <path d="M16.8262 13.3525L14.6038 13.0987C14.07 13.0375 13.545 13.2212 13.1688 13.5975L11.5588 15.2075C9.0825 13.9475 7.0525 11.9262 5.7925 9.44125L7.41125 7.8225C7.7875 7.44625 7.97125 6.92125 7.91 6.3875L7.65625 4.1825C7.55125 3.29875 6.8075 2.63375 5.915 2.63375H4.40125C3.4125 2.63375 2.59 3.45625 2.65125 4.445C3.115 11.9175 9.09125 17.885 16.555 18.3487C17.5438 18.41 18.3662 17.5875 18.3662 16.5987V15.085C18.375 14.2012 17.71 13.4575 16.8262 13.3525Z" fill="#7993A5" />
                                 </svg>
@@ -1070,7 +205,7 @@
                         </div>
 
                         <div class="action-btn">
-                            <div class="action-btn-icon" onclick="callAPI('/api/Genesys/ready')">
+                            <div class="action-btn-icon" onclick="callAPI('ready')">
                                 <svg width="21" height="21" fill="none" viewBox="0 0 21 21">
                                     <circle cx="10.5" cy="10.5" r="9" stroke="#7993A5" stroke-width="1.5" fill="none" />
                                     <path d="M7.5 10.5L9.5 12.5L13.5 8.5" stroke="#7993A5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -1110,12 +245,12 @@
 
 
                     <div class="dialer-content">
-                     
+
 
                         <div class="form-section">
                             <div class="receiving-header">
                                 <div class="form-label">Mobile Number</div>
-                           
+
                             </div>
 
                             <div class="recipient-card">
@@ -1130,7 +265,8 @@
                             </div>
                         </div>
 
-                       
+
+
                     </div>
                 </div>
 
@@ -1149,7 +285,7 @@
                         </div>
 
                         <div style="display: flex; flex-direction: column; gap: 18px;">
-                          
+                            <!-- Recording -->
                             <div class="waveform-container">
                                 <div class="waveform">
                                     <div class="waveform-bar" style="height: 35px;"></div>
@@ -1185,6 +321,7 @@
                                 </div>
                             </div>
 
+                            <!-- Tabs -->
                             <div class="tabs">
                                 <div class="tab active">
                                     <span class="tab-text active">Summary</span>
@@ -1197,7 +334,7 @@
                                 </div>
                             </div>
 
-                         
+                            <!-- Transcript Content -->
                             <div class="transcript-text">
                                 <p style="font-weight: 500; margin-bottom: 8px;">The dialogue features two primary speakers:</p>
                                 <ul class="transcript-list">
@@ -1220,7 +357,7 @@
         </div>
         <div class="main-content-area" style="padding-left: 0px;">
             <div class="main-content-container" style="font-family:Arial, sans-serif; max-width:1002px; margin:auto;">
-             
+
                 <div class="nav-tabs">
                     <div class="nav-tab active">
                         <span class="nav-tab-text" onclick="openTab(event, 'tab1')">Customer Info</span>
@@ -1242,7 +379,7 @@
                     </div>
                 </div>
 
-             
+
                 <div id="tab1" class="tab-content" style="display:block;">
                     <div style="background:#fff; padding:15px; border-radius:8px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
                         <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
@@ -1280,7 +417,7 @@
                     </div>
                 </div>
 
-         
+
                 <div id="tab2" class="tab-content" style="display:none;">
                     <div style="background:#fff; padding:15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
                         <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
@@ -1291,7 +428,7 @@
                     </div>
                 </div>
 
-               
+
                 <div id="tab3" class="tab-content" style="display:none;">
                     <div style="background:#fff; padding:15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
                         <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
@@ -1302,7 +439,7 @@
                     </div>
                 </div>
 
-            
+
                 <div id="tab4" class="tab-content" style="display:none;">
                     <div style="background:#fff; padding:15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
                         <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
@@ -1313,7 +450,7 @@
                     </div>
                 </div>
 
-         
+
                 <div id="tab5" class="tab-content" style="display:none;">
                     <div style="background:#fff; padding:15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
                         <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
@@ -1324,7 +461,7 @@
                     </div>
                 </div>
 
-              
+
                 <div id="tab6" class="tab-content" style="display:none;">
                     <div style="background:#fff; padding:15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
                         <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
@@ -1343,6 +480,9 @@
 
 
 
+    <audio id="localAudio" autoplay muted></audio>
+    <audio id="remoteAudio" autoplay></audio>
+
 
 
 
@@ -1353,7 +493,462 @@
     <script src="../js/signalr.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.genesys.com/webrtc-sdk.js"></script>
-    <script src="../js/Genesys/Genesys.js"></script>
+  
+        <script src="../js/jssip.min.js"></script>
+        <script>
+
+            function openTab(evt, tabId) {
+                document.querySelectorAll(".tab-content").forEach(el => el.style.display = "none");
+                document.querySelectorAll(".nav-tab").forEach(el => {
+                    el.classList.remove("active");
+                    el.classList.add("inactive");
+                });
+                document.getElementById(tabId).style.display = "block";
+                evt.currentTarget.parentElement.classList.add("active");
+                evt.currentTarget.parentElement.classList.remove("inactive");
+            }
+
+            let timerInterval = null;
+            let seconds = 0;
+            let CRM_Status = null;
+
+            function startTimer() {
+                stopTimer();
+                seconds = 0;
+                //console.log("Starting call timer...");
+                timerInterval = setInterval(() => {
+                    seconds++;
+                    document.getElementById("callTimer").innerText = formatTime(seconds);
+                }, 1000);
+            }
+
+            function stopTimer() {
+                if (timerInterval) clearInterval(timerInterval);
+                timerInterval = null;
+                seconds = 0;
+                document.getElementById("callTimer").innerText = "00:00:00";
+                //console.log("Stopping call timer...");
+            }
+
+            function formatTime(sec) {
+                const hours = Math.floor(sec / 3600).toString().padStart(2, '0');
+                const minutes = Math.floor((sec % 3600) / 60).toString().padStart(2, '0');
+                const seconds = (sec % 60).toString().padStart(2, '0');
+                return `${hours}:${minutes}:${seconds}`;
+            }
+
+
+            function toggleAccordion() {
+                const content = document.getElementById("dialer-details");
+                const arrow = document.getElementById("arrowIcon");
+                if (content.style.maxHeight && content.style.maxHeight !== "0px") {
+                    content.style.maxHeight = "0";
+                    arrow.style.transform = "rotate(0deg)";
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    arrow.style.transform = "rotate(180deg)";
+                }
+            }
+
+            function toggleBreakDropdown() {
+                const dd = document.getElementById("breakDropdown");
+                dd.style.display = (dd.style.display === "block") ? "none" : "block";
+            }
+
+            function toggleScheduleDropdown() {
+                const dd = document.getElementById("scheduleDropdown");
+                dd.style.display = (dd.style.display === "none" || dd.style.display === "") ? "block" : "none";
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                const agentId = urlParams.get('empCode');
+                CRM_Status = urlParams.get('crmstatus');
+                if (!agentId) {
+                    console.error("Agent ID (empCode) is missing in the URL.");
+                    return;
+                }
+
+                const connection = new signalR.HubConnectionBuilder()
+                    .withUrl("/callEventsHub")
+                    .withAutomaticReconnect()
+                    .configureLogging(signalR.LogLevel.Information)
+                    .build();
+
+                connection.onreconnecting(error => {
+                    console.warn("SignalR reconnecting...", error);
+                    const statusElem = document.getElementById("status");
+                    if (statusElem) statusElem.innerText = "Reconnecting...";
+                });
+
+                connection.onreconnected(() => {
+                    connection.invoke("JoinGroup", agentId)
+                        .then(() => console.log("Rejoined group after reconnect"))
+                        .catch(err => console.error("Error rejoining group:", err));
+                });
+
+
+
+                connection.on("UserName", data => {
+                    if (!data.userName) return;
+                    const parts = data.userName.split(".");
+                    const initials = parts.map(p => p.charAt(0).toUpperCase()).join("");
+                    const email = data.userName + "@1point1.in";
+                    document.getElementById("username").innerText = data.userName;
+                    document.querySelectorAll(".user-avatar, .profile-avatar").forEach(el => el.innerText = initials);
+                    document.querySelectorAll(".profile-email").forEach(el => el.innerText = email);
+                });
+
+                connection.onclose(error => {
+                    console.error("SignalR connection closed permanently:", error);
+                    const statusElem = document.getElementById("status");
+                    if (statusElem) statusElem.innerText = "Disconnected. Please refresh the page.";
+                });
+                let lastFsStatus = ""; 
+
+                connection.on("OnFsEvent", message => {
+                    const statusElem = document.getElementById("status");
+                    if (!statusElem) return;
+
+                    let currentStatus = message.status ? message.status.trim() : "";
+
+                    if (currentStatus === "") {
+                        currentStatus = lastFsStatus;
+                    } else {
+                        lastFsStatus = currentStatus;
+                    }
+
+                    statusElem.innerText = currentStatus;
+                    let msg = currentStatus.toLowerCase();
+
+                    console.log("SignalR FreeSWITCH status:", msg);
+
+                  
+                    ["#dialGroup", "#Hold", "#unhold", "#confo", "#merge", "#party"].forEach(sel => $(sel).hide());
+                    ["#break", "#getnext"].forEach(sel =>
+                        $(sel).addClass("disabled").css({ "pointer-events": "none", "opacity": 0.5 })
+                    );
+
+                  
+                    if (msg.includes("waiting")) {
+                        $("#break").removeClass("disabled").css({ "pointer-events": "auto", "opacity": 1 });
+                        $("#dialGroup").css("display", "flex");
+                        $("#getnext").removeClass("disabled").css({ "pointer-events": "auto", "opacity": 1 });
+                    }
+
+                   
+                    if (msg.includes("talking")) {
+                        $("#Hold, #confo, #merge, #party").attr("style", "display: flex !important");
+                        $("#dialGroup, #getnext").attr("style", "display: none !important");
+                    }
+
+                 
+                    if (msg.includes("hold")) {
+                        $("#unhold").attr("style", "display: flex !important");
+                    }
+
+                 
+                    if (msg.includes("wraping")) {
+                        $("#dialGroup").css("display", "flex");
+                        ["#hold", "#unhold", "#confo", "#merge", "#party"].forEach(sel =>
+                            $(sel).attr("style", "display: none !important")
+                        );
+                        $("#break").removeClass("disabled").css({ "pointer-events": "auto", "opacity": 1 });
+                        $("#getnext").addClass("disabled").css({ "pointer-events": "none", "opacity": 0.5 });
+                    }
+
+                  
+                    if (
+                        ["talking", "wraping", "dialing", "waiting", "established", "outbound call established", "inbound call established", "break"].some(s => msg.includes(s))
+                    ) {
+                        startTimer();
+                    } else if (
+                        ["call ended", "disconnected", "hangup", "idle"].some(s => msg.includes(s))
+                    ) {
+                        stopTimer();
+                    }
+                });
+
+
+                async function startConnection() {
+                    try {
+                        await connection.start();
+                        console.log("SignalR connected");
+                        await connection.invoke("JoinGroup", agentId);
+                    } catch (err) {
+                        console.error("SignalR connection error:", err);
+                        setTimeout(startConnection, 5000);
+                    }
+                }
+                startConnection();
+                updateStatus();
+            });
+
+            async function updateStatus() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const agentId = urlParams.get('empCode');
+                if (!agentId) return;
+                try {
+                    await fetch('/api/FreeswitchDialer/SetAgentStatus', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ Status: agentId })
+                    });
+                } catch (err) {
+                    console.error("Failed to get agent status:", agentId);
+                }
+            }
+            
+
+            function callAPI(action, method = 'POST', data = {}) {
+
+                let controller = (CRM_Status === 1) ? 'Genesys' : 'FreeswitchDialer';
+
+                console.log("CRM_Status" + CRM_Status);
+                console.log("controller" + controller);
+                let url = `/api/${controller}/${action}`;
+
+                fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                    .then(async res => {
+                        if (!res.ok) {
+                            const errorText = await res.text();
+                            if (errorText === "Agent ready for next call." || errorText === "Agent successfully logged out") {
+                                Swal.fire({ icon: 'success', title: 'Success', text: errorText })
+                                    .then(result => {
+                                        if (errorText.includes("logged out") && result.isConfirmed)
+                                            location.href = "/Pages/login.html";
+                                    });
+                            } else throw new Error(errorText || "API call failed");
+                        } else {
+                            console.log("✅ API call successful.");
+                        }
+                    })
+                    .catch(err => Swal.fire({ icon: 'warning', title: 'Oops...', text: err.message || "Something went wrong!" }));
+            }
+            function makeCall() {
+                const phone = document.getElementById("phoneInput").value.trim();
+                if (!phone) { alert("Please enter a number"); return; }
+                if (!/^\d{10}$/.test(phone)) { alert("Phone number must be exactly 10 digits."); return; }
+
+                callAPI("makecall", "POST", { phone });
+            }
+
+            function openConferencePrompt() {
+
+                Swal.fire({
+                    title: 'Enter conference number',
+                    input: 'text',
+                    inputPlaceholder: 'e.g. 7058053821',
+                    showCancelButton: true,
+                    confirmButtonText: 'Join',
+                    inputValidator: value => {
+                        if (!value) return 'You must enter a number!';
+                        if (!/^\d{10}$/.test(value)) return 'Phone number must be exactly 10 digits.';
+                        return null;
+                    }
+                }).then(result => {
+                    if (result.isConfirmed) callAPI('conference', 'POST', { Phone: result.value });
+                });
+            }
+            function disconnectCall() {
+                callAPI("disconnect");
+            }
+            function holdCall() {
+                callAPI("hold");
+            }
+            function unholdCall() {
+                callAPI("unhold");
+
+            }
+
+            function mergeCall() {
+                callAPI("merge");
+            }
+
+            function partyCall() {
+                callAPI("party");
+            }
+
+            function logOut() {
+                callAPI("LogOut");
+            }
+
+
+            function sendBreak(reasonCode) {
+                if (!reasonCode) return Swal.fire({ icon: 'warning', title: 'No break reason selected', text: 'Please select a valid reason.' });
+                callAPI("break", "POST", { reasonCode });
+            }
+            function sendTransfer(route) {
+                if (!route) return Swal.fire({ icon: 'warning', title: 'No transfer route selected', text: 'Please select a valid route.' });
+                callAPI("transfer", "POST", { route });
+                setTimeout(() => selectElement.selectedIndex = 0, 300);
+            }
+
+
+
+            const subDispositions = {
+                1: [{ id: 101, name: "Not Available" }, { id: 102, name: "Client Requested" }, { id: 103, name: "Wrong Time" }],
+                2: [{ id: 201, name: "Customer Hung Up" }, { id: 202, name: "Agent Hung Up" }, { id: 203, name: "Network Issue" }],
+                3: [{ id: 301, name: "Customer Busy" }, { id: 302, name: "On Another Call" }, { id: 303, name: "Will Call Later" }]
+            };
+            function submitDispositionAPI(dispoId, subDispoId) {
+                if (!dispoId || !subDispoId) return alert("Please select both disposition and sub-disposition.");
+                callAPI("submit", "POST", { dispositionId: dispoId, subDispositionId: subDispoId });
+            }
+
+            function updateSubDisposition() {
+                const dispoId = document.getElementById("disposition").value;
+                const subDispoSelect = document.getElementById("subDisposition");
+                subDispoSelect.innerHTML = '<option value="">-- Select Sub Disposition --</option>';
+                if (subDispositions[dispoId]) subDispositions[dispoId].forEach(sub => {
+                    const option = document.createElement("option");
+                    option.value = sub.id;
+                    option.textContent = sub.name;
+                    subDispoSelect.appendChild(option);
+                });
+            }
+
+            async function submitDisposition() {
+                const dispoId = parseInt(document.getElementById("disposition").value);
+                const subDispoId = parseInt(document.getElementById("subDisposition").value);
+                if (!dispoId || !subDispoId) return alert("Please select both disposition and sub-disposition.");
+                try {
+                    const response = await fetch('/api/Genesys/submit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ dispositionId: dispoId, subDispositionId: subDispoId })
+                    });
+                    if (response.ok) {
+                        const result = await response.json();
+                        Swal.fire({ icon: 'success', title: 'Success', text: result.message });
+                    } else Swal.fire({ icon: 'error', title: 'Error', text: 'Failed to submit disposition.' });
+                } catch (error) {
+                    Swal.fire({ icon: 'error', title: 'Exception', text: error?.message || 'An unexpected error occurred.' });
+                }
+            }
+
+            let userAgent = null;
+            let session = null;
+
+            async function initSoftphone(config) {
+
+                console.log(JSON.stringify(config));
+
+                if (userAgent) {
+                    console.log("JsSIP already initialized, skipping.");
+                    return;
+                }
+
+                try {
+
+                    let localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    const localAudio = document.getElementById('localAudio');
+                    localAudio.srcObject = localStream;
+
+                    let wsUri = "ws://" + config.sipserver + "/ws";
+                    const socket = new JsSIP.WebSocketInterface(wsUri);
+                    const configuration = {
+                        sockets: [socket],
+                        uri: "sip:" + config.username + "@" + config.sipserver,
+                        password: config.password,
+                    };
+
+                    userAgent = new JsSIP.UA(configuration);
+                    userAgent.on('connected', () => console.log("Connected to SIP server"));
+                    userAgent.on('disconnected', () => console.log("Disconnected from SIP server"));
+                    userAgent.on('registered', () => console.log("Registered as", config.username));
+                    userAgent.on('unregistered', () => console.log("Unregistered"));
+                    userAgent.on('registrationFailed', e => console.error("Registration failed", e));
+
+
+                    userAgent.on('newRTCSession', e => {
+                        session = e.session;
+
+                        $('#btnAnswer').click(function () {
+                            if (session && session.direction === 'incoming') {
+                                session.answer({
+                                    mediaConstraints: { audio: true, video: false }
+                                });
+
+                                const statusElem = document.getElementById("status");
+                                if (!statusElem) return;
+
+                                let currentStatus2 = "Incoming call";
+                                statusElem.innerText = currentStatus2;
+                               
+                            } else {
+                                console.warn("No incoming call to answer");
+                            }
+                        });
+
+                        if (session.direction === 'incoming') {
+                           // document.getElementById("currentEvent").textContent = "Incoming call from " + session.remote_identity.uri.toString();
+                            session.on('peerconnection', e => {
+                                const pc = e.peerconnection;
+                                pc.ontrack = ev => {
+
+                                    if (ev.streams && ev.streams[0]) {
+                                        document.getElementById("remoteAudio").srcObject = ev.streams[0];
+                                    }
+                                };
+                            });
+
+                            session.on('ended', () => console.log(" Call ended"));
+                            session.on('failed', e => console.error(" Call failed", e));
+                            session.on('confirmed', () => console.log(" Call answered"));
+                        }
+
+                        if (session.direction === 'outgoing') {
+                            if (localStream) {
+                                localStream.getTracks().forEach(track => {
+                                    session.connection.addTrack(track, localStream);
+                                });
+                            }
+                        }
+                    });
+                    userAgent.start();
+
+                    refreshFsStatus();
+
+                } catch (err) {
+                    console.error("Softphone init failed", err);
+                }
+            }
+
+            $(document).ready(function () {
+                const sipConfig = JSON.parse(sessionStorage.getItem("sipConfig"));
+
+                if (sipConfig) {
+                    console.log("Reusing SIP config from sessionStorage");
+                    initSoftphone(sipConfig);
+                } else {
+                    $.get("/LogIn/GetSipConfig", function (res) {
+                        console.log("Loaded SIP config:", res);
+                        sessionStorage.setItem("sipConfig", JSON.stringify(res));
+                        initSoftphone(res);
+                    }).fail(err => console.error("Failed to fetch SIP config", err));
+                }
+            });
+
+            async function refreshFsStatus() {
+                try {
+                    const response = await fetch('/api/FreeswitchDialer/Status');
+                    if (!response.ok) throw new Error("Failed to fetch status");
+                    const data = await response.json();
+                    console.log("Agent status:", data);
+                    
+                } catch (err) {
+                    console.error("Error refreshing status:", err);
+                }
+            }
+
+        </script>
+
+
 
 </body>
 </html>

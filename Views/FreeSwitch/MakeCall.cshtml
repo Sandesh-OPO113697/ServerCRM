@@ -13,22 +13,29 @@
     <title>@ViewData["Title"]</title>
     <style>
         .navbar-text {
-            color: rgba(255, 255, 255, 0.75);
+            color: rgba(255,255,255,0.75);
             margin-right: 1rem;
         }
-        .icon-btn {
-            font-size: 1.5rem;
-            color: white;
-            padding: 0.5rem;
-        }
-        .icon-btn:hover {
-            color: #ccc;
-        }
+
         .status-bar {
             padding: 10px;
             background-color: #e9ecef;
             border-bottom: 1px solid #dee2e6;
             font-size: 1.1rem;
+        }
+
+        .call-actions {
+            margin-top: 20px;
+        }
+
+        .call-status {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .icon-btn {
+            font-size: 1.5rem;
+            margin-right: 5px;
         }
     </style>
 </head>
@@ -36,74 +43,48 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-headset me-2"></i> FreeSWITCH Call Control
-            </a>
+            <a class="navbar-brand" href="#"><i class="fas fa-headset me-2"></i> FreeSWITCH Call Control</a>
             <div class="navbar-text">
                 <strong>Agent:</strong> @loginCode &nbsp;
                 <strong>CallerID:</strong> @dn
             </div>
-            <button id="btnAnswer">Answer</button>
-            <div class="d-flex ms-auto align-items-center">
-                <form id="makeCallForm" asp-action="onCall" method="post" class="d-flex me-2">
-                    <input type="text" name="phoneNumber" class="form-control form-control-sm me-2" placeholder="Phone Number" required />
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-phone"></i>
-                    </button>
-                </form>
-
-                <div class="d-flex me-2">
-                    <input type="text" id="conferenceName" class="form-control form-control-sm me-2" placeholder="Conference Name" />
-                    <input type="text" id="conferenceNumber" class="form-control form-control-sm me-2" placeholder="Number to add" />
-                    <button class="btn btn-success" onclick="addNumberToConference()">
-                        <i class="fas fa-user-plus"></i>
-                    </button>
-                </div>
-            </div>
         </div>
     </nav>
 
-    <div class="status-bar d-flex justify-content-center align-items-center mb-3">
-        <strong>Status:</strong>
-        <button class="btn btn-success btn-sm ms-2" onclick="setAgentStatus('Ready')">`
-            <i class="fas fa-check-circle"></i> Ready
-        </button>
-        <button class="btn btn-warning btn-sm ms-2" onclick="setAgentStatus('NotReady')">
-            <i class="fas fa-exclamation-circle"></i> Not Ready
-        </button>
-        <button class="btn btn-danger btn-sm ms-2" onclick="setAgentStatus('Break')">
-            <i class="fas fa-mug-hot"></i> Break
-        </button>
-    </div>
-
-    @if (ViewBag.Message != null)
-    {
-        <div class="alert alert-info mt-2">@ViewBag.Message</div>
-    }
-
-    <div class="container">
-        <div class="card mb-3 p-3">
-            <h4>Active Calls</h4>
-            <table class="table table-bordered" id="activeCallsTable">
-                <thead>
-                    <tr>
-                        <th>UUID</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+    <div class="container mt-3">
+        <div class="status-bar d-flex align-items-center">
+            <strong>Status:</strong>
+            <button class="btn btn-success btn-sm ms-2" onclick="setAgentStatus('Ready')">
+                <i class="fas fa-check-circle"></i> Ready
+            </button>
+            <button class="btn btn-warning btn-sm ms-2" onclick="setAgentStatus('NotReady')">
+                <i class="fas fa-exclamation-circle"></i> Not Ready
+            </button>
+            <button class="btn btn-danger btn-sm ms-2" onclick="setAgentStatus('Break')">
+                <i class="fas fa-mug-hot"></i> Break
+            </button>
         </div>
 
-        <div class="card p-3" style="background-color:#f0f0f0;">
-            <h4>Call Events</h4>
-            <div id="currentEvent" style="background-color:#fff; padding:10px; border-radius:4px; font-weight:bold;">
-                Waiting for call events...
-            </div>
+        <div class="call-actions mt-3">
+            <span class="call-status" id="callStatus">No active call</span>
+            <button class="btn btn-warning btn-sm" id="btnHold"  title="Hold">
+                <i class="fas fa-pause"></i> Hold
+            </button>
+            <button class="btn btn-info btn-sm" id="btnUnhold"  title="Unhold">
+                <i class="fas fa-play"></i> Unhold
+            </button>
+            <button class="btn btn-danger btn-sm" id="btnHangup"  title="Hangup">
+                <i class="fas fa-times"></i> Hangup
+            </button>
+        </div>
+
+        <div class="mt-3">
+            <form id="makeCallForm" asp-action="onCall" method="post" class="d-flex">
+                <input type="text" name="phoneNumber" class="form-control form-control-sm me-2" placeholder="Phone Number" required />
+                <button type="submit" class="btn btn-primary"><i class="fas fa-phone"></i> Call</button>
+            </form>
         </div>
     </div>
-
   
     <audio id="localAudio" autoplay muted ></audio>
     <audio id="remoteAudio" autoplay></audio>
@@ -113,86 +94,52 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
     <script>
-        const loginCode = "@loginCode";
-        const dn = "@dn";
-        let activeCalls = {};
+            const loginCode = "@loginCode";
+               let currentCallStatus = "";
+        let previousCallStatus = "";
+
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/callEventsHub?userId=" + encodeURIComponent(loginCode))
             .withAutomaticReconnect()
             .build();
 
-        connection.on("OnFsEvent", function (eventObj) {
+                   connection.on("OnFsEvent", function (eventObj) {
             console.log("FS Event:", eventObj);
 
-            let uuid = eventObj.uuid;
-            let status = eventObj.status;
-
-            if (!uuid || status === "Unknown") return;
-
-            document.getElementById("currentEvent").textContent = `UUID: ${uuid} - Status: ${status}`;
-
-            if (status === "Disconnected") {
-                delete activeCalls[uuid];
-            } else {
-                activeCalls[uuid] = eventObj;
+            if (eventObj.status && eventObj.status !== "") {
+                previousCallStatus = currentCallStatus;
+                currentCallStatus = eventObj.status;
             }
 
-            renderActiveCallsTable();
+            const displayStatus = currentCallStatus !== "" ? currentCallStatus : previousCallStatus;
+
+            document.getElementById("callStatus").textContent = `Call Status: ${displayStatus}`;
         });
 
         connection.start()
-            .then(() => console.log(" SignalR connected for user:", loginCode))
-            .catch(err => console.error(" SignalR connection error:", err));
+            .then(() => console.log("SignalR connected"))
+            .catch(err => console.error(err.toString()));
 
-        function renderActiveCallsTable() {
-            let tbody = document.querySelector("#activeCallsTable tbody");
-            tbody.innerHTML = '';
-
-            for (const uuid in activeCalls) {
-                const call = activeCalls[uuid];
-                let row = document.createElement("tr");
-                row.id = `row-${call.uuid}`;
-                row.innerHTML = `
-                    <td>${call.uuid}</td>
-                    <td>${call.status}</td>
-                    <td>
-                        <button class="btn btn-sm btn-warning" onclick="holdCall('${call.uuid}')" ${call.status !== 'Talking' ? 'disabled' : ''} title="Hold">
-                            <i class="fas fa-pause"></i>
-                        </button>
-                        <button class="btn btn-sm btn-info" onclick="unholdCall('${call.uuid}')" ${call.status !== 'On Hold' ? 'disabled' : ''} title="Unhold">
-                            <i class="fas fa-play"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger" onclick="hangupCall('${call.uuid}')" ${call.status === 'Disconnected' ? 'disabled' : ''} title="Hangup">
-                            <i class="fas fa-times"></i>
-                        </button>
-                        <button class="btn btn-sm btn-secondary" onclick="mergeToConference('${call.uuid}')" ${call.status !== 'Talking' ? 'disabled' : ''} title="Merge to Conference">
-                            <i class="fas fa-users-cog"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger" onclick="removeFromConference('${call.uuid}')" title="Remove from Conference">
-                            <i class="fas fa-user-minus"></i>
-                        </button>
-                    </td>`;
-                tbody.appendChild(row);
-            }
-        }
-
-        async function sendPostJson(url, dataObj) {
+        async function sendPostJson(url) {
             try {
-                let resp = await fetch(url, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(dataObj)
-                });
-                return resp;
+                const resp = await fetch(url, { method: "POST" });
+                if (!resp.ok) throw new Error("Request failed");
+                return true;
             } catch (err) {
-                console.error("Network error:", err);
-                return { ok: false };
+                console.error(err);
+                return false;
             }
         }
+                document.getElementById("btnHold").addEventListener("click", async () => {
+            await sendPostJson("/FreeSwitch/HoldCall");
+        });
+        document.getElementById("btnUnhold").addEventListener("click", async () => {
+            await sendPostJson("/FreeSwitch/UnholdCall");
+        });
+        document.getElementById("btnHangup").addEventListener("click", async () => {
+            await sendPostJson("/FreeSwitch/HangupCall");
+        });
 
-        async function holdCall(uuid) { await sendPostJson("/FreeSwitch/HoldCall", { uuid }); }
-        async function unholdCall(uuid) { await sendPostJson("/FreeSwitch/UnholdCall", { uuid }); }
-        async function hangupCall(uuid) { await sendPostJson("/FreeSwitch/HangupCall", { uuid }); }
         async function addNumberToConference() {
             let confName = document.getElementById("conferenceName").value;
             let number = document.getElementById("conferenceNumber").value;
@@ -209,9 +156,15 @@
             if (!conferenceName) return;
             await sendPostJson("/FreeSwitch/RemoveFromConference", { conferenceName, callUuid: uuid });
         }
-        async function setAgentStatus(status) {
-            let resp = await sendPostJson("/FreeSwitch/SetAgentStatus", { status });
-            if (resp.ok) alert(`Status changed to ${status}.`);
+           async function setAgentStatus(status) {
+            try {
+                await fetch("/FreeSwitch/SetAgentStatus", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ status })
+                });
+                alert(`Status changed to ${status}`);
+            } catch (err) { console.error(err); }
         }
 
       
@@ -253,7 +206,7 @@
                                 session = e.session;
 
                                           $('#btnAnswer').click(function () {
-                                            console.log("👉 Answer clicked");
+                                          
                                             if (session && session.direction === 'incoming') {
                                               session.answer({
                                                 mediaConstraints: { audio: true, video: false }

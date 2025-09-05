@@ -9,6 +9,7 @@
         public string CallDirection { get; set; } = "unknown";
         public string DestinationNumber { get; set; } = "unknown";
         public string HangupCause { get; set; } = string.Empty;
+        public string CallerId { get; set; } = string.Empty;
         public string Raw { get; set; } = string.Empty;
     }
 }

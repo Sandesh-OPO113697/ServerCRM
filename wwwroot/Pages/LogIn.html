@@ -390,14 +390,14 @@
 </html>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script>
+<!--<script>
     async function submitLogin() {
         const empCode = document.getElementById("empCode").value.trim();
         const password = document.getElementById("password").value.trim();
 
         let crmstatus = 0;
 
-        // Get CRM type from API
+
         const crmResponse = await fetch("/TypeOfCRM");
         if (!crmResponse.ok) {
             throw new Error("Failed to fetch TypeOfCRM");
@@ -405,7 +405,7 @@
         crmstatus = await crmResponse.json();
         console.log("CRM Status:", crmstatus);
 
-        // Check empty fields
+
         if (!empCode || !password) {
             Swal.fire({
                 icon: 'warning',
@@ -415,7 +415,6 @@
             return;
         }
 
-        // Call Genesys login API
         const loginResponse = await fetch('/api/Genesys/checkUser', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -460,7 +459,41 @@
                 }
             }
             else if (crmstatus === 2) {
-                window.location.href = "/FreeSwitch/MakeCall?empcode=" + empCode;
+                try {
+                    const dialerResponse = await fetch('/api/FreeswitchDialer/dialer', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ empCode: empCode })
+                    });
+
+                    if (dialerResponse.ok) {
+                        const result = await dialerResponse.json();
+
+                        console.log(JSON.stringify(result));
+                        await Swal.fire({
+                            icon: 'success',
+                            title: 'Login Successful',
+                            text: result.message || 'Welcome!',
+                            confirmButtonText: 'Continue'
+                        });
+                        location.href = "/Pages/FreeSwitch.html?empCode=" + document.getElementById("empCode").value.trim() + "&crmstatus=" + crmstatus;
+                        /*window.location.href = "/FreeSwitch/MakeCall?empcode=" + empCode;*/
+                    } else {
+                        const error = await dialerResponse.text();
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Login Failed',
+                            text: error.message || 'Invalid credentials'
+                        });
+                    }
+                } catch (err) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Unable to connect to server. Please try again.'
+                    });
+                }
+
 
 
             }
@@ -475,5 +508,159 @@
     }
 
     // Ensure the function is global
+    window.submitLogin = submitLogin;
+</script>-->
+
+
+<script>
+    async function submitLogin() {
+        const empCode = document.getElementById("empCode").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        let crmstatus = 0;
+
+        // --- Get CRM type ---
+        try {
+            const crmResponse = await fetch("/TypeOfCRM");
+            if (!crmResponse.ok) throw new Error("Failed to fetch TypeOfCRM");
+            crmstatus = parseInt(await crmResponse.json());
+            console.log("CRM Status:", crmstatus);
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Unable to fetch CRM type. Please try again.'
+            });
+            return;
+        }
+
+        // --- Validate inputs ---
+        if (!empCode || !password) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Missing Fields',
+                text: 'Please enter both OPO ID and Password'
+            });
+            return;
+        }
+
+        // --- Check login credentials ---
+        let loginResponse;
+        try {
+            loginResponse = await fetch('/api/Genesys/checkUser', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ empCode, password })
+            });
+        } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Unable to connect to server. Please try again.'
+            });
+            return;
+        }
+
+        if (!loginResponse.ok) {
+            const error = await loginResponse.text();
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: error || 'Invalid credentials'
+            });
+            return;
+        }
+
+        // --- Genesys CRM ---
+        if (crmstatus === 1) {
+            try {
+                const dialerResponse = await fetch('/api/Genesys/dialer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ empCode })
+                });
+
+                if (!dialerResponse.ok) {
+                    const error = await dialerResponse.text();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Login Failed',
+                        text: error || 'Invalid credentials'
+                    });
+                    return;
+                }
+
+                const result = await dialerResponse.json();
+                console.log("Genesys Result:", result);
+
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Login Successful',
+                    text: result.message || 'Welcome!',
+                    confirmButtonText: 'Continue'
+                });
+
+                location.href = `/Pages/CRM.html?empCode=${encodeURIComponent(result.logincode)}`;
+
+            } catch (err) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Unable to connect to Genesys server. Please try again.'
+                });
+            }
+        }
+
+        // --- FreeSwitch CRM ---
+        else if (crmstatus === 2) {
+            try {
+                const dialerResponse = await fetch('/api/FreeswitchDialer/dialer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ empCode })
+                });
+
+                if (!dialerResponse.ok) {
+                    const error = await dialerResponse.text();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Login Failed',
+                        text: error || 'Invalid credentials'
+                    });
+                    return;
+                }
+
+                const result = await dialerResponse.json();
+                console.log("FreeSwitch Result:", result);
+
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Login Successful',
+                    text: result.message || 'Welcome!',
+                    confirmButtonText: 'Continue'
+                });
+
+                location.href = `/Pages/FreeSwitch.html?empCode=${encodeURIComponent(empCode)}&crmstatus=${crmstatus}`;
+
+            } catch (err) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Unable to connect to FreeSwitch server. Please try again.'
+                });
+            }
+        }
+
+        // --- Unknown CRM type ---
+        else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Unknown CRM type. Please contact support.'
+            });
+        }
+    }
+
+    // Make sure function is available globally
     window.submitLogin = submitLogin;
 </script>

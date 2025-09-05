@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ServerCRM.FreeSwitchSer;
 using ServerCRM.Models;
 using ServerCRM.Models.Freeswitch;
+using ServerCRM.Models.LogIn;
 using ServerCRM.Services;
 
 namespace ServerCRM.Controllers
@@ -19,6 +20,25 @@ namespace ServerCRM.Controllers
             _apiService = apiService;
         }
 
+        [HttpPost("dialer")]
+        public async Task<IActionResult> Dialer([FromBody] LoginRequest request)
+        {
+            CL_AgentDet agent = await _apiService.GetAgentDetailsAsync(request.empCode);
+            if (agent == null)
+                return NotFound("Agent not found");
+
+            HttpContext.Session.SetString("login_code", agent.login_code.ToString());
+            HttpContext.Session.SetString("dn", agent.dn ?? "");
+            HttpContext.Session.SetString("Prefix", agent.Prefix ?? "");
+
+            string error;
+          await _fsManager.GetOrCreateConnectionAsync("22");
+
+           
+
+            return Ok(new { message = "Agent logged in successfully", logincode = agent.login_code });
+
+        }
 
         [HttpGet]
         public async Task<IActionResult> Status()
@@ -28,9 +48,9 @@ namespace ServerCRM.Controllers
             return Json(new { status = true });
         }
         [HttpGet]
-        public async Task<IActionResult> MakeCall(string empcode)
+        public async Task<IActionResult> MakeCall([FromBody] LoginRequest res)
         {
-            var agent = await _apiService.GetAgentDetailsAsync(empcode);
+            var agent = await _apiService.GetAgentDetailsAsync(res.empCode);
             if (agent == null) return NotFound("Agent not found");
 
             HttpContext.Session.SetString("login_code", agent.login_code.ToString());
@@ -45,7 +65,7 @@ namespace ServerCRM.Controllers
         [HttpPost]
         public async Task<IActionResult> onCall(string phoneNumber)
         {
-            string userId = HttpContext.Session.GetString("login_code") ?? "";
+            string userId = HttpContext.Session.GetString("dn") ?? "";
             string callerId = HttpContext.Session.GetString("dn") ?? "";
             string Prefix = HttpContext.Session.GetString("Prefix") ?? "";
             var uuid = await _fsManager.MakeCallAsync(userId, _gatewayUuid, callerId, Prefix + phoneNumber);
@@ -58,48 +78,39 @@ namespace ServerCRM.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> HoldCall([FromBody] CallRequestfreeswitch request)
+        public async Task<IActionResult> HoldCall()
         {
-            string userId = HttpContext.Session.GetString("login_code") ?? "";
-            if (string.IsNullOrEmpty(userId)) return BadRequest("No session user");
+            string loginCode = HttpContext.Session.GetString("dn") ?? "";
+            if (string.IsNullOrEmpty(loginCode)) return BadRequest("No session user");
 
-            await _fsManager.HoldCallAsync(userId, request.Uuid);
+            await _fsManager.HoldCallAsync(loginCode);
             return Ok();
         }
 
         [HttpPost]
-        public async Task<IActionResult> UnholdCall([FromBody] CallRequestfreeswitch request)
+        public async Task<IActionResult> UnholdCall()
         {
-            string userId = HttpContext.Session.GetString("login_code") ?? "";
-            if (string.IsNullOrEmpty(userId)) return BadRequest("No session user");
+            string loginCode = HttpContext.Session.GetString("dn") ?? "";
+            if (string.IsNullOrEmpty(loginCode)) return BadRequest("No session user");
 
-            await _fsManager.UnholdCallAsync(userId, request.Uuid);
+            await _fsManager.UnholdCallAsync(loginCode);
             return Ok();
         }
 
         [HttpPost]
-        public async Task<IActionResult> HangupCall([FromBody] CallRequestfreeswitch request)
+        public async Task<IActionResult> HangupCall()
         {
-            if (string.IsNullOrEmpty(request.Uuid))
-            {
-                return BadRequest("No UUID provided.");
-            }
+            string loginCode = HttpContext.Session.GetString("dn") ?? "";
+            if (string.IsNullOrEmpty(loginCode)) return BadRequest("No session user");
 
-            bool success = await _fsManager.HangupCallAsync(request.Uuid);
-            if (success)
-            {
-                return Ok();
-            }
-            else
-            {
-                return BadRequest("Failed to send hangup command. It may have already ended.");
-            }
+            await _fsManager.HangupCallAsync(loginCode);
+            return Ok();
         }
 
         [HttpPost]
         public async Task<IActionResult> AddNumberToConference([FromBody] AddConfDto dto)
         {
-            string userId = HttpContext.Session.GetString("login_code") ?? "";
+            string userId = HttpContext.Session.GetString("dn") ?? "";
             string callerId = HttpContext.Session.GetString("dn") ?? "";
 
             if (string.IsNullOrEmpty(userId)) return BadRequest("No session user");
@@ -111,10 +122,10 @@ namespace ServerCRM.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveFromConference([FromBody] RemoveConfDto dto)
         {
-            string userId = HttpContext.Session.GetString("login_code") ?? "";
+            string userId = HttpContext.Session.GetString("dn") ?? "";
             if (string.IsNullOrEmpty(userId)) return BadRequest("No session user");
 
-            await _fsManager.RemoveFromConferenceAsync(userId, dto.ConferenceName, dto.CallUuid);
+            //await _fsManager.RemoveFromConferenceAsync(userId, dto.ConferenceName, dto.CallUuid);
             return Ok();
         }
       
@@ -122,7 +133,7 @@ namespace ServerCRM.Controllers
         [HttpPost]
         public async Task<IActionResult> MergeToConference([FromBody] MergeConfDto dto)
         {
-            string userId = HttpContext.Session.GetString("login_code") ?? "";
+            string userId = HttpContext.Session.GetString("dn") ?? "";
             if (string.IsNullOrEmpty(userId)) return BadRequest("No session user");
 
             if (string.IsNullOrEmpty(dto.CallUuid) || string.IsNullOrEmpty(dto.ConferenceName))
@@ -130,7 +141,7 @@ namespace ServerCRM.Controllers
                 return BadRequest("Call UUID and Conference Name are required.");
             }
 
-            bool success = await _fsManager.MergeToConferenceAsync(userId, dto.CallUuid, dto.ConferenceName);
+            bool success = await _fsManager.MergeToConferenceAsync(userId);
             if (success)
             {
                 return Ok();
@@ -143,10 +154,12 @@ namespace ServerCRM.Controllers
         [HttpPost]
         public async Task<IActionResult> SetAgentStatus([FromBody] AgentStatusDto dto)
         {
-            string userId = HttpContext.Session.GetString("login_code") ?? "";
+            CL_AgentDet agent = await _apiService.GetAgentDetailsAsync(dto.Status);
+            string userId = HttpContext.Session.GetString("dn") ?? "";
             if (string.IsNullOrEmpty(userId)) return BadRequest("No session user");
-
+            
             _fsManager.SetAgentStatus(userId, dto.Status);
+            _fsManager.SetuserName(dto.Status);
             return Ok();
         }
 

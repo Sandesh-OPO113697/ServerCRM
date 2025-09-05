@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\ServerCRM.csproj": {}
+    "D:\\OneDialer\\ServerCRM\\ServerCRM.csproj": {}
   },
   "projects": {
-    "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\ServerCRM.csproj": {
+    "D:\\OneDialer\\ServerCRM\\ServerCRM.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\ServerCRM.csproj",
+        "projectUniqueName": "D:\\OneDialer\\ServerCRM\\ServerCRM.csproj",
         "projectName": "ServerCRM",
-        "projectPath": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\ServerCRM.csproj",
+        "projectPath": "D:\\OneDialer\\ServerCRM\\ServerCRM.csproj",
         "packagesPath": "C:\\Users\\OPO113697\\.nuget\\packages\\",
-        "outputPath": "D:\\VisualStudio_2022\\ServerCRM\\ServerCRM\\obj\\",
+        "outputPath": "D:\\OneDialer\\ServerCRM\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
