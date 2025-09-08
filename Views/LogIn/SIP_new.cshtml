@@ -1,0 +1,201 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Web Softphone</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jssip/3.10.0/jssip.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+body { font-family: Arial; background: #f5f7fa; display: flex; justify-content: center; align-items: center; height: 100vh; }
+.phone { width: 380px; background: #fff; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); padding: 20px; text-align: center; }
+.phone h2 { margin-bottom: 15px; color: #333; }
+input { width: 90%; padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-radius: 8px; }
+button { width: 45%; margin: 5px; padding: 10px; border: none; border-radius: 8px; background: #0078d7; color: white; font-weight: bold; cursor: pointer; transition: 0.2s; }
+button:hover { background: #005a9e; }
+#statusMessage { margin-top: 15px; font-weight: bold; color: #0078d7; }
+.call-buttons { margin-top: 10px; }
+audio { display: none; }
+</style>
+</head>
+<body>
+<div class="phone">
+    <h2>Web Softphone</h2>
+    <input type="text" id="txtUsername" placeholder="Username"><br>
+    <input type="password" id="txtPassword" placeholder="Password"><br>
+    <input type="text" id="txtSIPServer" placeholder="SIP Server (IP:Port)" value="172.18.16.173:5066"><br>
+    <input type="text" id="txtTargetNumber" placeholder="Target Number"><br>
+
+    <button id="btnRegister">Register</button>
+
+    <div class="call-buttons">
+      <button id="btnCall">Call</button>
+      <button id="btnHangup">Hangup</button><br>
+      <button id="btnAnswer">Answer</button>
+      <button id="btnReject">Reject</button><br>
+      <button id="btnHold">Hold</button>
+      <button id="btnUnhold">Unhold</button><br>
+      <button id="btnNewCall">New Call</button>
+      <button id="btnMerge">Merge Conf</button><br>
+      <button id="btnRemoveConf">Remove Conf</button>
+    </div>
+
+    <div id="statusMessage">Not connected</div>
+</div>
+
+<audio id="remoteAudio1" autoplay></audio>
+<audio id="remoteAudio2" autoplay></audio>
+<audio id="localAudio" autoplay muted></audio>
+<audio id="ringtone" src="https://actions.google.com/sounds/v1/alarms/medium_bell_ringing_near.ogg" loop></audio>
+    <script src="~/js/jssip.min.js"></script>
+<script>
+$(function () {
+    const $username = $('#txtUsername');
+    const $password = $('#txtPassword');
+    const $sipServer = $('#txtSIPServer');
+    const $target = $('#txtTargetNumber');
+    const $status = $('#statusMessage');
+
+    const remoteAudio1 = document.getElementById('remoteAudio1');
+    const remoteAudio2 = document.getElementById('remoteAudio2');
+    const localAudio = document.getElementById('localAudio');
+    const ringtone = document.getElementById('ringtone');
+
+    let userAgent = null;
+    let firstCall = null;
+    let secondCall = null;
+    let localStream = null;
+    const PREFIX = "7530"; // Adjust your prefix if needed
+
+    function logStatus(msg, data) {
+        console.log("[Softphone] " + msg, data || "");
+        $status.text(msg);
+    }
+    function stopRingtone() {
+        ringtone.pause(); ringtone.currentTime = 0;
+    }
+    document.body.addEventListener("click", () => {
+        ringtone.play().then(() => ringtone.pause());
+    }, { once: true });
+
+    // Register
+    $('#btnRegister').click(async function () {
+        const username = $username.val().trim();
+        const password = $password.val().trim();
+        const sipServer = $sipServer.val().trim();
+        if (!username || !password || !sipServer) {
+            logStatus("Enter Username, Password, and SIP Server"); return;
+        }
+        try {
+            localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            localAudio.srcObject = localStream;
+
+            const wsUri = "ws://" + sipServer + "/ws";
+            const socket = new JsSIP.WebSocketInterface(wsUri);
+            const configuration = {
+                sockets: [socket],
+                uri: "sip:" + username + "@@" + sipServer,
+                password: password,
+                session_timers: false
+            };
+
+            userAgent = new JsSIP.UA(configuration);
+
+            userAgent.on('registered', () => logStatus("Registered as " + username));
+            userAgent.on('registrationFailed', e => logStatus("Registration failed", e));
+
+            userAgent.on('newRTCSession', e => {
+                const session = e.session;
+                if (session.direction === 'incoming') {
+                    if (!firstCall) firstCall = session;
+                    else if (!secondCall) secondCall = session;
+
+                    logStatus("Incoming call from " + session.remote_identity.uri.toString());
+                    ringtone.play().catch(err => console.log("Ringtone blocked", err));
+
+                    session.on('peerconnection', ev => {
+                        ev.peerconnection.ontrack = evt => {
+                            if (session === firstCall) remoteAudio1.srcObject = evt.streams[0];
+                            if (session === secondCall) remoteAudio2.srcObject = evt.streams[0];
+                        };
+                    });
+                    session.on('ended', () => { stopRingtone(); logStatus("Call ended"); if (session === firstCall) firstCall = null; if (session === secondCall) secondCall = null; });
+                    session.on('failed', () => { stopRingtone(); logStatus("Call failed"); });
+                    session.on('confirmed', () => { stopRingtone(); logStatus("Call answered"); });
+                }
+            });
+
+            userAgent.start();
+        } catch (err) {
+            logStatus("Mic access failed", err);
+        }
+    });
+
+    // Outgoing call
+    $('#btnCall').click(function () {
+        if (!userAgent) { logStatus("Register first"); return; }
+        if (firstCall) { logStatus("Already in a call"); return; }
+        const target = $target.val().trim();
+        if (!target) { logStatus("Enter target number"); return; }
+        const uri = "sip:" + PREFIX + target + "@@" + $sipServer.val().trim();
+
+        firstCall = userAgent.call(uri, { mediaConstraints: { audio: true, video: false }, pcConfig: { iceServers: [] } });
+        firstCall.on('peerconnection', e => { e.peerconnection.ontrack = ev => { remoteAudio1.srcObject = ev.streams[0]; }; });
+        logStatus("Calling " + target);
+    });
+
+    // Hangup
+    $('#btnHangup').click(function () {
+        if (secondCall) { secondCall.terminate(); secondCall = null; }
+        if (firstCall) { firstCall.terminate(); firstCall = null; }
+        logStatus("All calls terminated");
+    });
+
+    // Answer
+    $('#btnAnswer').click(function () {
+        if (firstCall && firstCall.isInProgress()) { firstCall.answer({ mediaConstraints: { audio: true, video: false } }); stopRingtone(); logStatus("First call answered"); }
+        else if (secondCall && secondCall.isInProgress()) { secondCall.answer({ mediaConstraints: { audio: true, video: false } }); stopRingtone(); logStatus("Second call answered"); }
+    });
+
+    // Reject
+    $('#btnReject').click(function () {
+        if (firstCall && firstCall.isInProgress()) { firstCall.terminate(); firstCall = null; stopRingtone(); logStatus("First call rejected"); }
+        else if (secondCall && secondCall.isInProgress()) { secondCall.terminate(); secondCall = null; stopRingtone(); logStatus("Second call rejected"); }
+    });
+
+    // Hold / Unhold
+    $('#btnHold').click(function () { if (firstCall) { firstCall.hold({ useUpdate: true }); logStatus("First call on hold"); } });
+    $('#btnUnhold').click(function () { if (firstCall) { firstCall.unhold({ useUpdate: true }); logStatus("First call resumed"); } });
+
+    // New Call
+    $('#btnNewCall').click(function () {
+        if (!firstCall) { logStatus("No active call to start new one"); return; }
+        const target = prompt("Enter number for new call:");
+        if (!target) return;
+        firstCall.hold({ useUpdate: true });
+        const uri = "sip:" + PREFIX + target + "@@" + $sipServer.val().trim();
+        secondCall = userAgent.call(uri, { mediaConstraints: { audio: true, video: false } });
+        secondCall.on('peerconnection', e => { e.peerconnection.ontrack = ev => { remoteAudio2.srcObject = ev.streams[0]; }; });
+        logStatus("Second call started");
+    });
+
+    // Merge Conference (simple: just unhold both)
+    $('#btnMerge').click(function () {
+        if (firstCall && secondCall) { firstCall.unhold({ useUpdate: true }); secondCall.unhold({ useUpdate: true }); logStatus("Calls merged"); }
+        else logStatus("Need 2 calls to merge");
+    });
+
+    // Remove Conference
+    $('#btnRemoveConf').click(function () {
+        if (secondCall) { secondCall.terminate(); secondCall = null; if (firstCall) firstCall.unhold({ useUpdate: true }); logStatus("Conference removed"); }
+        else logStatus("No conference to remove");
+    });
+});
+</script>
+</body>
+</html>

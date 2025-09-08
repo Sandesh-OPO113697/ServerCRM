@@ -28,6 +28,11 @@ namespace ServerCRM.Controllers
             return View();
         }
 
+        public IActionResult SIP_new()
+        {
+            return View();
+        }
+
         [HttpGet]
         public IActionResult GetSipConfig()
         {

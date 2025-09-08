@@ -11,5 +11,6 @@
         public string Status { get; set; } 
         public string conferenceName { get; set; }
         public string conferenceNumber { get; set; }
+        public List<string> ConferenceLegs { get; set; } = new List<string>();
     }
 }

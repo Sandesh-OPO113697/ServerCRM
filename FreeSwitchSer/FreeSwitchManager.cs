@@ -145,7 +145,7 @@ namespace ServerCRM.FreeSwitchSer
                         "CS_NEW" => AgentStatusMapper.StatusMap[1],
                         "CS_INIT" => AgentStatusMapper.StatusMap[1],
                         "CS_ROUTING" => AgentStatusMapper.StatusMap[2],
-                        "CS_SOFT_EXECUTE" => AgentStatusMapper.StatusMap[13],
+                        "CS_SOFT_EXECUTE" => AgentStatusMapper.StatusMap[3],
                         "CS_EXECUTE" => AgentStatusMapper.StatusMap[3],
                         "CS_HIBERNATE" or "CS_RESET" or "CS_DESTROY" => AgentStatusMapper.StatusMap[4],
                         "CS_HOLD" => AgentStatusMapper.StatusMap[10],
@@ -316,13 +316,9 @@ namespace ServerCRM.FreeSwitchSer
             if (string.IsNullOrEmpty(info?.Leg1Uuid) || string.IsNullOrEmpty(info.Leg2Uuid))
                 return false;
 
-            if (string.IsNullOrEmpty(info.conferenceName))
-                info.conferenceName = $"conf_{Guid.NewGuid()}";
+            await client.SendCommandAsync($"api uuid_bridge {info.Leg1Uuid} {info.Leg2Uuid}");
 
-            var responseLeg1 = await client.SendCommandAsync(
-                $"api uuid_transfer {info.Leg1Uuid} conference:{info.conferenceName} inline"
-            );
-          
+
             return true;
         }
 
@@ -332,6 +328,7 @@ namespace ServerCRM.FreeSwitchSer
             var info = await GetUserCallInfoAsync(userId);
             string cmd = $"api originate {{origination_caller_id_name={callerId},origination_caller_id_number={callerId}}}sofia/gateway/{gateway}/{phoneNumber} &conference({conferenceName})";
             var response = await client.SendCommandAsync(cmd);
+
             UpdateUserCallInfo(logincodedn, callerId, info?.Leg1Uuid, info?.Leg2Uuid, null, conferenceName, conferenceName, null, null);
 
             var match = Regex.Match(response ?? "", @"Channel-Call-UUID:\s*(\S+)", RegexOptions.IgnoreCase);
@@ -350,18 +347,10 @@ namespace ServerCRM.FreeSwitchSer
         {
             var info = await GetUserCallInfoAsync(userId);
             var client = await GetOrCreateConnectionAsync(userId);
-
-         
-               
-           
-            string targetUuid = !string.IsNullOrEmpty(info.Leg1Uuid) ? info.Leg1Uuid : info.Leg1Uuid;
+            string targetUuid = !string.IsNullOrEmpty(info.Leg2Uuid) ? info.Leg2Uuid : info.Leg2Uuid;
             if (string.IsNullOrEmpty(targetUuid))
                 return false;
-            var response = await client.SendCommandAsync($"api uuid_kill {info.Leg1Uuid} NORMAL_CLEARING");
-            //var response = await client.SendCommandAsync(
-            //    $"api conference {info.conferenceName} kick {targetUuid}"
-            //);
-
+            var response = await client.SendCommandAsync($"api uuid_kill {targetUuid}");
             return response?.Contains("+OK") ?? false;
         }
 

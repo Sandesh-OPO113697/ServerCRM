@@ -141,8 +141,8 @@
 
 
                     <div class="action-buttons">
-                        <div class="action-btn"  id="btnAnswer">
-                            <div class="action-btn-icon" >
+                        <div class="action-btn" id="btnAnswer">
+                            <div class="action-btn-icon">
                                 <svg width="21" height="21" fill="none" viewBox="0 0 21 21">
                                     <path d="M8.925 2.1C8.23923 2.1 7.65583 2.53827 7.43962 3.15H5.775C4.90515 3.15 4.2 3.85515 4.2 4.725V17.325C4.2 18.1948 4.90515 18.9 5.775 18.9H15.225C16.0948 18.9 16.8 18.1948 16.8 17.325V4.725C16.8 3.85515 16.0948 3.15 15.225 3.15H13.5603C13.3441 2.53827 12.7608 2.1 12.075 2.1H8.925ZM8.4 3.675C8.4 3.38505 8.63505 3.15 8.925 3.15H12.075C12.3649 3.15 12.6 3.38505 12.6 3.675C12.6 3.96495 12.3649 4.2 12.075 4.2H8.925C8.63505 4.2 8.4 3.96495 8.4 3.675ZM13.4963 10.3462L9.82123 14.0213C9.6162 14.2262 9.2838 14.2262 9.07877 14.0213L7.50377 12.4463C7.29874 12.2412 7.29874 11.9088 7.50377 11.7037C7.7088 11.4988 8.0412 11.4988 8.24623 11.7037L9.45 12.9075L12.7537 9.60377C12.9588 9.39874 13.2912 9.39874 13.4963 9.60377C13.7012 9.8088 13.7012 10.1412 13.4963 10.3462Z" fill="#7993A5" />
                                 </svg>
@@ -180,7 +180,6 @@
                                 <div onclick="sendBreak(26)" style="padding:8px 12px; cursor:pointer;">🧑‍💼 TL Feedback</div>
                             </div>
                         </div>
-
 
 
                         <div class="action-btn" style="position: relative; display:inline-block;">
@@ -285,7 +284,7 @@
                         </div>
 
                         <div style="display: flex; flex-direction: column; gap: 18px;">
-                            <!-- Recording -->
+
                             <div class="waveform-container">
                                 <div class="waveform">
                                     <div class="waveform-bar" style="height: 35px;"></div>
@@ -321,7 +320,7 @@
                                 </div>
                             </div>
 
-                            <!-- Tabs -->
+                       
                             <div class="tabs">
                                 <div class="tab active">
                                     <span class="tab-text active">Summary</span>
@@ -334,7 +333,7 @@
                                 </div>
                             </div>
 
-                            <!-- Transcript Content -->
+                            
                             <div class="transcript-text">
                                 <p style="font-weight: 500; margin-bottom: 8px;">The dialogue features two primary speakers:</p>
                                 <ul class="transcript-list">
@@ -355,158 +354,122 @@
             </div>
 
         </div>
-        <div class="main-content-area" style="padding-left: 0px;">
-            <div class="main-content-container" style="font-family:Arial, sans-serif; max-width:1002px; margin:auto;">
+        <div >
 
-                <div class="nav-tabs">
-                    <div class="nav-tab active">
-                        <span class="nav-tab-text" onclick="openTab(event, 'tab1')">Customer Info</span>
-                    </div>
-                    <div class="nav-tab inactive">
-                        <span class="nav-tab-text" onclick="openTab(event, 'tab2')">History</span>
-                    </div>
-                    <div class="nav-tab inactive">
-                        <span class="nav-tab-text" onclick="openTab(event, 'tab3')">Call Outcome fields</span>
-                    </div>
-                    <div class="nav-tab inactive">
-                        <span class="nav-tab-text" onclick="openTab(event, 'tab4')">Manual Data</span>
-                    </div>
-                    <div class="nav-tab inactive">
-                        <span class="nav-tab-text" onclick="openTab(event, 'tab5')">Supervisor Data</span>
-                    </div>
-                    <div class="nav-tab inactive">
-                        <span class="nav-tab-text" onclick="openTab(event, 'tab6')">Email CRM</span>
-                    </div>
+      
+          
+            <div style="padding: 20px;width:1114px;">
+                <div style="display: flex; border-bottom: 2px solid #ddd; margin-bottom: 15px;">
+                    <button id="defaultTab" class="tab-link" onclick="openTab(event, 'display')"
+                            style="flex:1; padding:12px; cursor:pointer; border:none; outline:none; background:#f1f1f1; font-size:15px;">
+                        Display Info
+                    </button>
+                    <button class="tab-link" onclick="openTab(event, 'capture')"
+                            style="flex:1; padding:12px; cursor:pointer; border:none; outline:none; background:#f1f1f1; font-size:15px;">
+                        Capture Info
+                    </button>
+                    <button class="tab-link" onclick="openTab(event, 'history')"
+                            style="flex:1; padding:12px; cursor:pointer; border:none; outline:none; background:#f1f1f1; font-size:15px;">
+                        History
+                    </button>
                 </div>
 
+                <div id="display" class="tab-content" style="display:none;">
+                    <form id="displayForm" style="display:grid; grid-template-columns:repeat(3,1fr); gap:15px;">
+                     
+                    </form>
+                </div>
 
-                <div id="tab1" class="tab-content" style="display:block;">
-                    <div style="background:#fff; padding:15px; border-radius:8px; margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
-                        <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
-                            <i class="fa-solid fa-clipboard-list" style="margin-right:6px; color:#007bff;"></i>
-                            Disposition & Wrap-up
-                        </h6>
-
-                        <div style="display:flex; flex-wrap:wrap; gap:15px; align-items:flex-end;">
-                            <div style="display:flex; flex-direction:column;">
-                                <label for="disposition" style="font-size:13px; margin-bottom:3px; font-weight:500; color:#444;">Disposition</label>
-                                <select id="disposition" onchange="updateSubDisposition()"
-                                        style="padding:5px 8px; font-size:13px; border:1px solid #ccc; border-radius:4px; min-width:150px;">
-                                    <option value="">-- Select Disposition --</option>
-                                    <option value="1">Call Back</option>
-                                    <option value="2">Disconnect</option>
-                                    <option value="3">Busy</option>
-                                </select>
-                            </div>
-
-                            <div style="display:flex; flex-direction:column;">
-                                <label for="subDisposition" style="font-size:13px; margin-bottom:3px; font-weight:500; color:#444;">Sub Disposition</label>
-                                <select id="subDisposition"
-                                        style="padding:5px 8px; font-size:13px; border:1px solid #ccc; border-radius:4px; min-width:150px;">
-                                    <option value="">-- Select Sub Disposition --</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <button onclick="submitDisposition()"
-                                        style="padding:6px 14px; font-size:13px; border:none; border-radius:4px; background:#007bff; color:#fff; cursor:pointer; font-weight:500; box-shadow:0 1px 3px rgba(0,0,0,0.2);">
-                                    <i class="fa-solid fa-paper-plane" style="margin-right:5px;"></i> Submit
-                                </button>
-                            </div>
+            
+                <div id="capture" class="tab-content" style="display:none;">
+                    <div style="display:grid; grid-template-columns: repeat(3,1fr); gap:15px;">
+                        <div>
+                            <label style="font-weight:bold;">Disposition</label>
+                            <select id="ddlDisposition" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:6px;">
+                                <option value="">-- Select --</option>
+                                <option value="Interested">Interested</option>
+                                <option value="Not Interested">Not Interested</option>
+                                <option value="Callback">Callback</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-weight:bold;">Sub Disposition</label>
+                            <select id="ddlSubDisposition" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:6px;"></select>
+                        </div>
+                        <div>
+                            <label style="font-weight:bold;">Callback</label>
+                            <input type="datetime-local" id="txtCallback" style="width:100%; padding:8px; border:1px solid #ccc; border-radius:6px;" />
+                        </div>
+                        <div style="grid-column: span 3;">
+                            <label style="font-weight:bold;">Remarks</label>
+                            <textarea id="txtRemarks" rows="3" style="width:100%; padding:10px; border:1px solid #ccc; border-radius:6px;"></textarea>
                         </div>
                     </div>
-                </div>
-
-
-                <div id="tab2" class="tab-content" style="display:none;">
-                    <div style="background:#fff; padding:15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
-                        <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
-                            <i class="fa-solid fa-user" style="margin-right:6px; color:#007bff;"></i>
-                            Customer Info
-                        </h6>
-                        <p style="font-size:14px; color:#555;">Show customer details here…</p>
+                    <div style="text-align:right; margin-top:15px;">
+                        <button id="btnSubmit" style="background:#28a745; color:white; padding:10px 25px; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">
+                            Submit
+                        </button>
                     </div>
                 </div>
 
-
-                <div id="tab3" class="tab-content" style="display:none;">
-                    <div style="background:#fff; padding:15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
-                        <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
-                            <i class="fa-solid fa-note-sticky" style="margin-right:6px; color:#007bff;"></i>
-                            Call Outcome fields
-                        </h6>
-                        <textarea style="width:100%; height:100px; padding:8px; font-size:13px; border:1px solid #ccc; border-radius:4px;"></textarea>
-                    </div>
-                </div>
-
-
-                <div id="tab4" class="tab-content" style="display:none;">
-                    <div style="background:#fff; padding:15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
-                        <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
-                            <i class="fa-solid fa-file" style="margin-right:6px; color:#007bff;"></i>
-                            Manual Data
-                        </h6>
-                        <p style="font-size:14px; color:#555;">Enter manual data here…</p>
-                    </div>
-                </div>
-
-
-                <div id="tab5" class="tab-content" style="display:none;">
-                    <div style="background:#fff; padding:15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
-                        <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
-                            <i class="fa-solid fa-user-tie" style="margin-right:6px; color:#007bff;"></i>
-                            Supervisor Data
-                        </h6>
-                        <p style="font-size:14px; color:#555;">Supervisor data goes here…</p>
-                    </div>
-                </div>
-
-
-                <div id="tab6" class="tab-content" style="display:none;">
-                    <div style="background:#fff; padding:15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
-                        <h6 style="font-size:16px; font-weight:600; color:#333; margin-bottom:15px;">
-                            <i class="fa-solid fa-envelope" style="margin-right:6px; color:#007bff;"></i>
-                            Email CRM
-                        </h6>
-                        <p style="font-size:14px; color:#555;">Email-related CRM functions…</p>
-                    </div>
+           
+                <div id="history" class="tab-content" style="display:none;">
+                    <table style="width:100%; border-collapse:collapse; margin-top:10px; border:1px solid #ccc;">
+                        <thead>
+                            <tr style="background:#f1f1f1; text-align:left;">
+                                <th style="padding:10px; border:1px solid #ccc;">Disposition</th>
+                                <th style="padding:10px; border:1px solid #ccc;">SubDisposition</th>
+                                <th style="padding:10px; border:1px solid #ccc;">Callback</th>
+                                <th style="padding:10px; border:1px solid #ccc;">Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyBody"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
+      
+        <audio id="localAudio" autoplay muted></audio>
+        <audio id="remoteAudio" autoplay></audio>
 
+        <audio id="ringtone"src="../Ringtone/ringin.wav" loop></audio>
+        <audio id="remoteAudio2" autoplay></audio>
 
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="../js/signalr.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.genesys.com/webrtc-sdk.js"></script>
 
-    </div>
-
-
-
-    <audio id="localAudio" autoplay muted></audio>
-    <audio id="remoteAudio" autoplay></audio>
-
-
-
-
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="../js/signalr.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.genesys.com/webrtc-sdk.js"></script>
-  
         <script src="../js/jssip.min.js"></script>
         <script>
 
-            function openTab(evt, tabId) {
-                document.querySelectorAll(".tab-content").forEach(el => el.style.display = "none");
-                document.querySelectorAll(".nav-tab").forEach(el => {
-                    el.classList.remove("active");
-                    el.classList.add("inactive");
-                });
-                document.getElementById(tabId).style.display = "block";
-                evt.currentTarget.parentElement.classList.add("active");
-                evt.currentTarget.parentElement.classList.remove("inactive");
+            function openTab(evt, tabName) {
+                var i, tabcontent, tablinks;
+
+            
+                tabcontent = document.getElementsByClassName("tab-content");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+
+           
+                tablinks = document.getElementsByClassName("tab-link");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].style.backgroundColor = "#f1f1f1";
+                    tablinks[i].style.fontWeight = "normal";
+                }
+
+  
+                document.getElementById(tabName).style.display = "block";
+                evt.currentTarget.style.backgroundColor = "#007bff";
+                evt.currentTarget.style.color = "#fff";
+                evt.currentTarget.style.fontWeight = "bold";
             }
+
+         
+            window.onload = function () {
+                document.getElementById("defaultTab").click();
+            };
 
             let timerInterval = null;
             let seconds = 0;
@@ -515,7 +478,7 @@
             function startTimer() {
                 stopTimer();
                 seconds = 0;
-                //console.log("Starting call timer...");
+                
                 timerInterval = setInterval(() => {
                     seconds++;
                     document.getElementById("callTimer").innerText = formatTime(seconds);
@@ -527,7 +490,7 @@
                 timerInterval = null;
                 seconds = 0;
                 document.getElementById("callTimer").innerText = "00:00:00";
-                //console.log("Stopping call timer...");
+             
             }
 
             function formatTime(sec) {
@@ -604,7 +567,7 @@
                     const statusElem = document.getElementById("status");
                     if (statusElem) statusElem.innerText = "Disconnected. Please refresh the page.";
                 });
-                let lastFsStatus = ""; 
+                let lastFsStatus = "";
 
                 connection.on("OnFsEvent", message => {
                     const statusElem = document.getElementById("status");
@@ -623,31 +586,33 @@
 
                     console.log("SignalR FreeSWITCH status:", msg);
 
-                  
+
                     ["#dialGroup", "#Hold", "#unhold", "#confo", "#merge", "#party"].forEach(sel => $(sel).hide());
                     ["#break", "#getnext"].forEach(sel =>
                         $(sel).addClass("disabled").css({ "pointer-events": "none", "opacity": 0.5 })
                     );
 
-                  
+
                     if (msg.includes("waiting")) {
+
                         $("#break").removeClass("disabled").css({ "pointer-events": "auto", "opacity": 1 });
                         $("#dialGroup").css("display", "flex");
                         $("#getnext").removeClass("disabled").css({ "pointer-events": "auto", "opacity": 1 });
                     }
 
-                   
+
                     if (msg.includes("talking")) {
+                        stopRingtone();
                         $("#Hold, #confo, #merge, #party").attr("style", "display: flex !important");
                         $("#dialGroup, #getnext").attr("style", "display: none !important");
                     }
 
-                 
+
                     if (msg.includes("hold")) {
                         $("#unhold").attr("style", "display: flex !important");
                     }
 
-                 
+
                     if (msg.includes("wraping")) {
                         $("#dialGroup").css("display", "flex");
                         ["#hold", "#unhold", "#confo", "#merge", "#party"].forEach(sel =>
@@ -657,7 +622,7 @@
                         $("#getnext").addClass("disabled").css({ "pointer-events": "none", "opacity": 0.5 });
                     }
 
-                  
+
                     if (
                         ["talking", "wraping", "dialing", "waiting", "established", "outbound call established", "inbound call established", "break"].some(s => msg.includes(s))
                     ) {
@@ -666,7 +631,18 @@
                         ["call ended", "disconnected", "hangup", "idle"].some(s => msg.includes(s))
                     ) {
                         stopTimer();
+                        stopRingtone();
                     }
+            
+                    if (msg.includes("dialing")) {
+                        StartRingtone();
+                    }
+                    else {
+                        stopRingtone();
+                    }
+                   
+
+                    
                 });
 
 
@@ -687,6 +663,7 @@
             async function updateStatus() {
                 const urlParams = new URLSearchParams(window.location.search);
                 const agentId = urlParams.get('empCode');
+              
                 if (!agentId) return;
                 try {
                     await fetch('/api/FreeswitchDialer/SetAgentStatus', {
@@ -697,8 +674,10 @@
                 } catch (err) {
                     console.error("Failed to get agent status:", agentId);
                 }
+
+                loadProcesses(agentId);
             }
-            
+
 
             function callAPI(action, method = 'POST', data = {}) {
 
@@ -724,18 +703,12 @@
                                     });
                             } else throw new Error(errorText || "API call failed");
                         } else {
-                            console.log("✅ API call successful.");
+                          
                         }
                     })
                     .catch(err => Swal.fire({ icon: 'warning', title: 'Oops...', text: err.message || "Something went wrong!" }));
             }
-            function makeCall() {
-                const phone = document.getElementById("phoneInput").value.trim();
-                if (!phone) { alert("Please enter a number"); return; }
-                if (!/^\d{10}$/.test(phone)) { alert("Phone number must be exactly 10 digits."); return; }
-
-                callAPI("makecall", "POST", { phone });
-            }
+           
 
             function openConferencePrompt() {
 
@@ -754,40 +727,7 @@
                     if (result.isConfirmed) callAPI('conference', 'POST', { Phone: result.value });
                 });
             }
-            function disconnectCall() {
-                callAPI("disconnect");
-            }
-            function holdCall() {
-                callAPI("hold");
-            }
-            function unholdCall() {
-                callAPI("unhold");
-
-            }
-
-            function mergeCall() {
-                callAPI("merge");
-            }
-
-            function partyCall() {
-                callAPI("party");
-            }
-
-            function logOut() {
-                callAPI("LogOut");
-            }
-
-
-            function sendBreak(reasonCode) {
-                if (!reasonCode) return Swal.fire({ icon: 'warning', title: 'No break reason selected', text: 'Please select a valid reason.' });
-                callAPI("break", "POST", { reasonCode });
-            }
-            function sendTransfer(route) {
-                if (!route) return Swal.fire({ icon: 'warning', title: 'No transfer route selected', text: 'Please select a valid route.' });
-                callAPI("transfer", "POST", { route });
-                setTimeout(() => selectElement.selectedIndex = 0, 300);
-            }
-
+          
 
 
             const subDispositions = {
@@ -831,9 +771,10 @@
                 }
             }
 
+
             let userAgent = null;
             let session = null;
-
+            const ringtone = document.getElementById('ringtone');
             async function initSoftphone(config) {
 
                 console.log(JSON.stringify(config));
@@ -870,6 +811,7 @@
 
                         $('#btnAnswer').click(function () {
                             if (session && session.direction === 'incoming') {
+
                                 session.answer({
                                     mediaConstraints: { audio: true, video: false }
                                 });
@@ -879,36 +821,53 @@
 
                                 let currentStatus2 = "Incoming call";
                                 statusElem.innerText = currentStatus2;
-                               
+                                stopRingtone();
+
                             } else {
-                                console.warn("No incoming call to answer");
+                               
                             }
                         });
 
                         if (session.direction === 'incoming') {
-                           // document.getElementById("currentEvent").textContent = "Incoming call from " + session.remote_identity.uri.toString();
+
+                            ringtone.play().catch(err => console.log("Ringtone blocked", err));
                             session.on('peerconnection', e => {
                                 const pc = e.peerconnection;
                                 pc.ontrack = ev => {
 
                                     if (ev.streams && ev.streams[0]) {
+                                 
                                         document.getElementById("remoteAudio").srcObject = ev.streams[0];
+
                                     }
                                 };
                             });
 
-                            session.on('ended', () => console.log(" Call ended"));
-                            session.on('failed', e => console.error(" Call failed", e));
-                            session.on('confirmed', () => console.log(" Call answered"));
+                            session.answer({
+                                mediaConstraints: { audio: true, video: false }
+                            });
+                            
+                            session.on('ended', () => { stopRingtone(); logStatus("Call ended");  });
+                            session.on('failed', () => { stopRingtone(); logStatus("Call failed"); });
+                            session.on('confirmed', () => { stopRingtone(); logStatus("Call answered"); });
                         }
+
 
                         if (session.direction === 'outgoing') {
                             if (localStream) {
                                 localStream.getTracks().forEach(track => {
                                     session.connection.addTrack(track, localStream);
                                 });
+
                             }
+
+                            session.answer({
+                                mediaConstraints: { audio: true, video: false }
+                            });
+                            session.on('confirmed', () => { stopRingtone(); logStatus("Call answered"); });
                         }
+
+
                     });
                     userAgent.start();
 
@@ -919,6 +878,20 @@
                 }
             }
 
+
+            
+            function logStatus(msg) {
+                console.log("[Softphone] " + msg || "");
+                
+            }
+         
+
+            function StartRingtone() {
+                ringtone.play().catch(err => console.log("Ringtone blocked", err));
+            }
+            function stopRingtone() {
+                ringtone.pause(); ringtone.currentTime = 0;
+            }
             $(document).ready(function () {
                 const sipConfig = JSON.parse(sessionStorage.getItem("sipConfig"));
 
@@ -930,6 +903,7 @@
                         console.log("Loaded SIP config:", res);
                         sessionStorage.setItem("sipConfig", JSON.stringify(res));
                         initSoftphone(res);
+
                     }).fail(err => console.error("Failed to fetch SIP config", err));
                 }
             });
@@ -940,15 +914,184 @@
                     if (!response.ok) throw new Error("Failed to fetch status");
                     const data = await response.json();
                     console.log("Agent status:", data);
-                    
+
                 } catch (err) {
                     console.error("Error refreshing status:", err);
                 }
             }
+            function makeCall() {
+                const phone = document.getElementById("phoneInput").value.trim();
+                if (!phone) { alert("Please enter a number"); return; }
+                if (!/^\d{10}$/.test(phone)) { alert("Phone number must be exactly 10 digits."); return; }
+                
+                callAPI("makecall", "POST", { phone });
+
+               
+            }
+            function disconnectCall() {
+                callAPI("disconnect");
+            }
+            function holdCall() {
+                if (session) session.hold();
+                callAPI("hold");
+            }
+            function unholdCall() {
+                if (session) session.unhold();
+                callAPI("unhold");
+
+            }
+
+            function mergeCall() {
+                callAPI("merge");
+            }
+
+            function partyCall() {
+                callAPI("party");
+            }
+
+            function logOut() {
+                callAPI("LogOut");
+            }
+
+
+            function sendBreak(reasonCode) {
+                if (!reasonCode) return Swal.fire({ icon: 'warning', title: 'No break reason selected', text: 'Please select a valid reason.' });
+                callAPI("break", "POST", { reasonCode });
+            }
+            function sendTransfer(route) {
+                if (!route) return Swal.fire({ icon: 'warning', title: 'No transfer route selected', text: 'Please select a valid route.' });
+                callAPI("transfer", "POST", { route });
+                setTimeout(() => selectElement.selectedIndex = 0, 300);
+            }
+
 
         </script>
 
+        <script>
+            const apiBase = "http://localhost:5008/api/InfoPage";
 
+
+            async function loadProcesses(empcode1) {
+                try {
+                    const res = await fetch(`${apiBase}/ProcessName`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ Status: empcode1 })  
+                    });
+
+                    if (!res.ok) {
+                        throw new Error("Failed to load process");
+                    }
+
+                    const data = await res.json();
+                    console.log("Process API response:", data);
+
+                    if (data.processname) {
+                       
+                        await loadDisplayFields(data.processname);
+                    } else {
+                        console.warn("No process name found in API response");
+                    }
+                } catch (err) {
+                    console.error("Error in loadProcesses:", err);
+                }
+            }
+
+            async function loadDisplayFields(process) {
+                const res = await fetch(`${apiBase}/displayfields/${process}`);
+                const fields = await res.json();
+
+                console.log("Fields:", fields);
+                const form = document.getElementById("displayForm");
+                form.innerHTML = "";
+
+                fields.forEach(f => {
+                    const col = document.createElement("div");
+                    col.style.display = "inline-block";
+                    col.style.width = "30%";
+                    col.style.minWidth = "250px";
+                    col.style.margin = "10px";
+                    col.style.verticalAlign = "top";
+
+                    const label = `<label style="display:block; font-weight:bold; margin-bottom:6px; font-size:14px; color:#333;">${f.label}</label>`;
+                    let input = "";
+
+                
+                    const inputStyle = "width:100%; padding:8px; font-size:14px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box;";
+
+                    if (f.type === "TextBox") {
+                        input = `<input type="text" id="ctrl${f.fieldName}" style="${inputStyle}" ${f.isRequired ? "required" : ""}>`;
+                    }
+                    else if (f.type === "TextArea") {
+                        input = `<textarea rows="3" id="ctrl${f.fieldName}" style="${inputStyle} resize:vertical;" ${f.isRequired ? "required" : ""}></textarea>`;
+                    }
+                    else if (f.type === "Dropdown") {
+                        let opts = `<option value="">-- Select --</option>`;
+                        if (f.options) f.options.split(",").forEach(o => opts += `<option value="${o.trim()}">${o.trim()}</option>`);
+                        input = `<select id="ctrl${f.fieldName}" style="${inputStyle}" ${f.isRequired ? "required" : ""}>${opts}</select>`;
+                    }
+                    else if (f.type === "DateTimePicker") {
+                        input = `<input type="datetime-local" id="ctrl${f.fieldName}" style="${inputStyle}" ${f.isRequired ? "required" : ""}>`;
+                    }
+                    else {
+                        input = `<input type="text" id="ctrl${f.fieldName}" style="${inputStyle}" ${f.isRequired ? "required" : ""}>`;
+                    }
+
+                    col.innerHTML = label + input;
+                    form.appendChild(col);
+                });
+            }
+
+
+
+            async function loadSubDispositions(disp) {
+                const res = await fetch(`${apiBase}/subdispositions/${disp}`);
+                const subs = await res.json();
+                const ddl = document.getElementById("ddlSubDisposition");
+                ddl.innerHTML = "<option value=''>-- Select --</option>";
+                subs.forEach(s => ddl.innerHTML += `<option value="${s}">${s}</option>`);
+            }
+
+
+            async function loadHistory() {
+                const res = await fetch(`${apiBase}/history`);
+                const data = await res.json();
+                const tbody = document.getElementById("historyBody");
+                tbody.innerHTML = "";
+                data.forEach(h => {
+                    tbody.innerHTML += `<tr><td>${h.disposition}</td><td>${h.subDisposition}</td><td>${h.callback}</td><td>${h.remarks}</td></tr>`;
+                });
+            }
+
+
+            document.getElementById("btnSubmit").addEventListener("click", async (e) => {
+                e.preventDefault();
+                const payload = {
+                    Disposition: document.getElementById("ddlDisposition").value,
+                    SubDisposition: document.getElementById("ddlSubDisposition").value,
+                    Callback: document.getElementById("txtCallback").value,
+                    Remarks: document.getElementById("txtRemarks").value
+                };
+                await fetch(`${apiBase}/submit`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                loadHistory();
+                alert("Saved!");
+            });
+
+
+          
+
+            document.getElementById("ddlDisposition").addEventListener("change", (e) => {
+                if (e.target.value) loadSubDispositions(e.target.value);
+            });
+         
+            loadHistory();
+        </script>
 
 </body>
 </html>
